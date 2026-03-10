@@ -3,43 +3,56 @@
     {
       "name": "session-start-discipline-reminder",
       "event": "SessionStart",
-      "description": "Display Rushee pipeline banner and check for missing context map",
-      "script": "hooks/session-start.sh"
+      "script": "hooks/session-start.sh",
+      "description": "Display the Rushee pipeline banner and warn if no context map exists"
     },
     {
       "name": "guard-no-code-before-feature-card",
       "event": "PreToolUse",
       "tools": ["Write"],
-      "description": "Warn if creating production Java files without a Feature Card",
-      "script": "hooks/guard-feature-card.sh"
+      "filePattern": "src/main/java/**/*.java",
+      "script": "hooks/guard-feature-card.sh",
+      "description": "Warn if writing production Java code without a Feature Card"
     },
     {
       "name": "guard-domain-purity",
       "event": "PreToolUse",
       "tools": ["Write"],
-      "description": "Block JPA and Spring annotations from being written into the domain layer",
-      "script": "hooks/guard-domain-purity.sh"
+      "filePattern": "**/domain/**/*.java",
+      "script": "hooks/guard-domain-purity.sh",
+      "description": "BLOCK @Entity, @Service, Spring/JPA annotations in domain layer"
     },
     {
       "name": "guard-no-hardcoded-secrets",
       "event": "PreToolUse",
       "tools": ["Write"],
-      "description": "Block hardcoded passwords, API keys, and secrets in any source file",
-      "script": "hooks/guard-no-hardcoded-secrets.sh"
+      "filePattern": "**/*.{java,yml,properties,dart}",
+      "script": "hooks/guard-no-hardcoded-secrets.sh",
+      "description": "BLOCK hardcoded passwords, API keys, tokens in any source file"
+    },
+    {
+      "name": "guard-openapi-contract-sync",
+      "event": "PostToolUse",
+      "tools": ["Write"],
+      "filePattern": "**/*-api.yaml,**/*.openapi.yaml",
+      "script": "hooks/guard-openapi-contract-sync.sh",
+      "description": "Remind to regenerate both API clients after any OpenAPI spec change"
     },
     {
       "name": "remind-migration-on-entity-change",
       "event": "PostToolUse",
       "tools": ["Write"],
-      "description": "Remind developer to create a Flyway migration when a JPA entity is modified",
-      "script": "hooks/remind-migration-on-entity-change.sh"
+      "filePattern": "**/infrastructure/persistence/**/*Entity.java",
+      "script": "hooks/remind-migration-on-entity-change.sh",
+      "description": "Remind to create Flyway migration when JPA entity changes"
     },
     {
       "name": "auto-run-tests-after-edit",
       "event": "PostToolUse",
       "tools": ["Write"],
-      "description": "After editing a test file, remind to run the test suite",
-      "script": "hooks/remind-run-tests.sh"
+      "filePattern": "**/*Test.java,**/*Spec.java,**/*_test.dart",
+      "script": "hooks/remind-run-tests.sh",
+      "description": "Remind to run the test suite after editing a test file"
     }
   ]
 }
