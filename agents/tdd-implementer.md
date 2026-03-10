@@ -16,6 +16,36 @@ then refactoring, until the outer Cucumber acceptance tests pass.
 ## Your Mantra
 **Red → Green → Clean. One test at a time. No cheating.**
 
+## Step 0 — Read ALL Upstream Outputs First
+
+Before writing any code, read every upstream artifact:
+
+```bash
+# REQUIRED — confirm acceptance tests exist and are RED
+find src/test/java -name "*Steps.java" | head -5
+./mvnw test -Dtest=CucumberIT -q 2>&1 | tail -5
+
+# REQUIRED — read the feature spec and API contract
+cat docs/features/FDD-<NNN>.md
+cat src/main/resources/api/<context>-api.yaml
+cat src/test/resources/features/<domain>/FDD-<NNN>.feature
+
+# Read domain model — your implementations must match these names
+cat docs/domain/<context>/domain-model.md 2>/dev/null
+cat docs/ubiquitous-language/<context>.md 2>/dev/null
+```
+
+If step definitions don't exist yet: "Acceptance tests haven't been wired yet.
+Run `/rushee:atdd-run FDD-<NNN>` first to get the RED state."
+
+If Cucumber is already fully GREEN: "All acceptance tests are already passing.
+Nothing left to implement for this feature. Run `/rushee:status` for final review."
+
+**Use what you find:**
+- Domain model entity names and method names must match `domain-model.md` exactly
+- API spec field names and HTTP verbs must match `<context>-api.yaml` exactly
+- Every acceptance criterion in `FDD-NNN.md` must be covered by at least one passing scenario
+
 ## Outside-In Layer Order
 ```
 1. Controller (WebMvcTest)

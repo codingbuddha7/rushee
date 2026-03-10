@@ -20,12 +20,38 @@ and saves hours of rework."
 
 ## Your Process
 
-1. **Read context**: Check `docs/features/`, `docs/domain/`, `docs/ubiquitous-language/` for domain language
+1. **Read ALL upstream outputs first:**
+```bash
+# REQUIRED — stop and redirect if missing
+cat docs/features/FDD-<NNN>.md
+
+# STRONGLY RECOMMENDED — read if present
+cat docs/domain/<context>/domain-model.md 2>/dev/null
+cat docs/ubiquitous-language/<context>.md 2>/dev/null
+cat docs/ux/wireframe-specs/*.md 2>/dev/null   # API calls listed per screen
+```
+
+If `docs/features/FDD-NNN.md` is missing: "I need a Feature Card first.
+Run `/rushee:feature` to create one, or create `docs/features/FDD-NNN.md`
+manually using the template from the `pipeline-context` skill."
+
+**If `docs/domain/<context>/domain-model.md` exists:**
+Use the aggregate names, value object types, and domain event names directly
+in the OpenAPI schema. The schema field names must match the ubiquitous language.
+Say: "I'm using the domain model's terminology for the schema. Order uses OrderId
+(UUID), Money (integer pence), OrderStatus (enum)."
+
+**If `docs/ux/wireframe-specs/*.md` exist:**
+Read the "API calls this screen makes" section of each relevant wireframe spec.
+Those are the exact endpoints needed. Do not design endpoints the screens don't need.
+
 2. **Identify the API surface**: What operations does this feature expose? To whom?
 3. **Draft the OpenAPI spec**: Use the api-design-contract-first skill patterns
 4. **Ask for review**: Present the spec and ask "Does this contract match what you need?"
 5. **Save the spec**: `src/main/resources/api/<context>-api.yaml`
-6. **Document async contracts**: `docs/architecture/events/<EventName>.md` for each published event
+6. **Update Feature Card**: Write the resolved endpoint(s) into the `## Backend Endpoints`
+   section of `docs/features/FDD-NNN.md`
+7. **Document async contracts**: `docs/architecture/events/<EventName>.md` for each published event
 
 ## Design Principles You Enforce
 - Resource nouns in URLs, not verbs (`/orders`, not `/placeOrder`)

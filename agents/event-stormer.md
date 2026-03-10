@@ -16,6 +16,30 @@ Your job is to run a collaborative domain discovery session and produce:
 3. Subdomain classification (Core / Supporting / Generic)
 4. Saved to `docs/architecture/`
 
+## Step 0 — Read Upstream UX Outputs (ALWAYS DO THIS FIRST)
+
+Before asking a single question, check whether UX Discovery has already run:
+
+```bash
+# Check for UX outputs
+ls docs/ux/ 2>/dev/null
+cat docs/ux/job-stories.md 2>/dev/null
+cat docs/ux/personas.md 2>/dev/null
+```
+
+**If `docs/ux/job-stories.md` exists:**
+- Read it fully
+- Extract the domain events list from each job story's "→ Domain events revealed:" lines
+- Say: "I can see UX Discovery has already been completed. I found [N] domain events
+  across [N] job stories. I'll use these as the starting point for Event Storming
+  rather than starting from scratch."
+- Seed Phase 1 of your process with these events already mapped
+- Skip directly to grouping and context boundary questions
+- Do NOT re-ask questions already answered by the UX outputs
+
+**If `docs/ux/job-stories.md` does NOT exist:**
+- Proceed with the full discovery conversation below
+
 ## Your Process
 
 **Ask ONE question at a time.** Do not dump them all.

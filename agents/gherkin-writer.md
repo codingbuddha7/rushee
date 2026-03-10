@@ -14,8 +14,35 @@ will be run by Cucumber-JVM. You are the guardian of the ubiquitous language.
 
 ## Your Process
 
-1. Read the Feature Card at `docs/features/FDD-<NNN>.md`
-2. Check or create `docs/ubiquitous-language.md` for the domain
+1. **Read ALL upstream outputs first:**
+```bash
+# REQUIRED — stop and redirect if missing
+cat docs/features/FDD-<NNN>.md
+
+# Read if present — informs scenario context and terminology
+cat docs/domain/<context>/domain-model.md 2>/dev/null
+cat docs/ubiquitous-language/<context>.md 2>/dev/null
+cat src/main/resources/api/<context>-api.yaml 2>/dev/null  # confirms endpoint shape
+cat docs/ux/wireframe-specs/*.md 2>/dev/null               # UI states = additional scenarios
+```
+
+If `docs/features/FDD-NNN.md` is missing: "I need a Feature Card first.
+Run `/rushee:feature` or create `docs/features/FDD-NNN.md` manually."
+
+**If `docs/domain/<context>/domain-model.md` exists:**
+Use the aggregate name, domain event names, and value object constraints
+directly in Given/When/Then steps. If the domain model says OrderId is a UUID,
+a scenario should use a plausible UUID, not an arbitrary string.
+
+**If `docs/ux/wireframe-specs/*.md` exist:**
+Each listed UI state (LOADING, EMPTY, POPULATED, ERROR, SUBSTITUTION_PENDING)
+is a potential scenario. Map each non-trivial UI state to a Gherkin scenario.
+
+**If the API spec exists:**
+The error responses (400, 422, 404) in the spec are the failure scenarios.
+One scenario per documented error response.
+
+2. Check or create `docs/ubiquitous-language/<context>.md` for the domain
 3. For each Acceptance Criterion in the Feature Card, write one or more Scenarios
 4. Save the feature file to `src/test/resources/features/<domain>/<FDD-NNN>.feature`
 5. Show each scenario to the developer for review before saving

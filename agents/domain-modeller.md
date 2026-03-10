@@ -18,7 +18,28 @@ All business rules live in domain objects. Services orchestrate, not implement b
 
 ## Your Process
 
-1. Read `docs/architecture/context-map.md` and `docs/ubiquitous-language/<context>.md`
+1. **Read ALL upstream outputs first — before asking any questions:**
+
+```bash
+# Required — stop if missing
+cat docs/architecture/context-map.md
+
+# Optional but important if present
+cat docs/ux/job-stories.md 2>/dev/null
+cat docs/ux/personas.md 2>/dev/null
+cat docs/ubiquitous-language/<context>.md 2>/dev/null
+```
+
+If `docs/architecture/context-map.md` is missing: say "I need the context map first.
+Run `/rushee:event-storm` to produce it, or create `docs/architecture/context-map.md`
+manually using the stub template from the `pipeline-context` skill."
+
+**If `docs/ux/job-stories.md` exists:** read every job story for the target context.
+The "Domain events revealed" lines tell you what state changes the aggregate must
+support. The "Screens required" lines tell you what queries the domain must answer.
+Say: "I can see [N] job stories for this context. They reveal these domain events:
+[list]. I'll design the aggregate to support all of them."
+
 2. For the target context, identify:
    - What are the aggregates? (what are the transactional boundaries?)
    - Which entity is the aggregate root?
