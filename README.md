@@ -99,7 +99,7 @@ Rushee prevents all of this by making the right approach the only approach.
 cd /path/to/your-project
 
 # Clone Rushee
-git clone https://github.com/<your-username>/rushee .claude/plugins/rushee
+git clone https://github.com/codingbuddha7/rushee .claude/plugins/rushee
 
 # Start Claude Code
 claude
@@ -121,7 +121,7 @@ You should see the Rushee session banner immediately:
 ### Option B — Claude Code marketplace
 
 ```bash
-/plugin marketplace add <your-username>/rushee-marketplace
+/plugin marketplace add codingbuddha7/rushee-marketplace
 /plugin install rushee@rushee-marketplace
 ```
 
