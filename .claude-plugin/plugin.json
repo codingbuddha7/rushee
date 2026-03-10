@@ -1,0 +1,49 @@
+{
+  "name": "rushee",
+  "version": "2.0.0",
+  "description": "Full-stack Spring Boot engineering discipline: Strategic DDD → Tactical DDD → FDD → BDD → ATDD → TDD → Security → Observability. Junior developers follow the complete outer-to-inner engineering loop through disciplined prompting.",
+  "author": "your-github-username",
+  "license": "MIT",
+  "commands": [
+    "commands/feature.md",
+    "commands/bdd-spec.md",
+    "commands/atdd-run.md",
+    "commands/tdd-cycle.md",
+    "commands/ddd-model.md",
+    "commands/event-storm.md",
+    "commands/api-design.md",
+    "commands/security-check.md",
+    "commands/status.md"
+  ],
+  "agents": [
+    "agents/event-stormer.md",
+    "agents/domain-modeller.md",
+    "agents/feature-analyst.md",
+    "agents/gherkin-writer.md",
+    "agents/acceptance-enforcer.md",
+    "agents/tdd-implementer.md",
+    "agents/spec-guardian.md",
+    "agents/api-designer.md",
+    "agents/security-reviewer.md",
+    "agents/ops-reviewer.md",
+    "agents/spring-reviewer.md"
+  ],
+  "skills": [
+    "skills/ddd-strategic-design",
+    "skills/ddd-ubiquitous-language",
+    "skills/ddd-tactical-design",
+    "skills/fdd-feature-design",
+    "skills/bdd-gherkin-spec",
+    "skills/atdd-acceptance-first",
+    "skills/tdd-red-green-refactor",
+    "skills/api-design-contract-first",
+    "skills/clean-architecture-ports-adapters",
+    "skills/event-driven-architecture",
+    "skills/solid-principles-enforcer",
+    "skills/database-migration-discipline",
+    "skills/security-by-design",
+    "skills/observability-and-ops",
+    "skills/spring-boot-patterns"
+  ],
+  "hooks": "hooks/hooks.json"
+}
