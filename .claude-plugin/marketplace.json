@@ -5,7 +5,7 @@
     {
       "name": "rushee",
       "description": "Complete engineering discipline for Spring Boot projects. 15 skills, 11 agents, 9 commands, 6 hooks. Enforces Strategic DDD, Tactical DDD, contract-first API design, BDD/ATDD/TDD, security-by-design, and production observability. Junior developers follow the full pipeline through simple prompts.",
-      "repository": "https://github.com/<your-username>/rushee",
+      "repository": "https://github.com/codingbuddha7/rushee",
       "version": "2.0.0",
       "tags": ["spring-boot", "ddd", "tdd", "bdd", "atdd", "fdd", "cucumber", "java", "security", "observability", "hexagonal-architecture", "clean-architecture"]
     }
