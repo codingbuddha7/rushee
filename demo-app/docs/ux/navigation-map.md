@@ -1,7 +1,7 @@
-# Navigation Map — Quick Notes
+# Navigation Map — Sample Ecommerce App
 
-- **Entry:** Note List Screen (S01) — default route.
-- **S01 → S02:** FAB or "New note" button opens Create Note Screen (modal or push).
-- **S02 → S01:** On save, dismiss (modal) or pop (push); list refreshes.
+- **S01 Product List** → (tap product, set qty) → Add to cart; (tap Cart) → **S02 Cart**
+- **S02 Cart** → (tap Place order) → **S03 Order Confirmation** (modal or new screen)
+- **S03 Order Confirmation** → (tap Done) → back to **S01 Product List**
 
-**State:** List screen has persistent list state (BLoC). Create screen is scoped (BLoC for form); on success, emit event so list refreshes.
+Top-level: Single stack (no tabs). Cart accessible via icon/button from S01.

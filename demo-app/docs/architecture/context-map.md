@@ -1,21 +1,18 @@
-# Context Map — Quick Notes
+# Context Map — Sample Ecommerce App
 
-## Bounded Contexts
+## Bounded contexts
 
-| Context | Responsibility        | Subdomain |
-|---------|------------------------|-----------|
-| Notes   | Create and list notes  | Core      |
+- **Catalog** (Core): Products available for sale. Provides product list.
+- **Order** (Core): Cart and orders. Consumes product info to create order lines; places order.
 
-Single context for MVP. No upstream/downstream; no other contexts.
+## Relationships
 
-## Domain Events (from UX)
+- **Order** → **Catalog**: Order lines reference product ID and snapshot (name, price). No runtime call during place order if snapshot is stored.
+- For minimal demo: single deployment; Catalog and Order can be same process with clear package boundaries.
 
-- NoteCreated
-- NoteListViewed
-- NoteViewed
+## Domain events (from UX)
 
-## Event Timeline (simplified)
-
-1. User creates note → **NoteCreated**
-2. User opens list → **NoteListViewed**
-3. User opens one note → **NoteViewed** (future)
+- ProductListViewed  
+- ItemAddedToCart  
+- CartViewed  
+- OrderPlaced  

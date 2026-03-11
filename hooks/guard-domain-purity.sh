@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # guard-domain-purity.sh
 # Blocks Jakarta Persistence / Spring annotations being written into domain layer classes
 

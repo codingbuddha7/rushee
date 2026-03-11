@@ -1,24 +1,19 @@
-# Quick Notes Backend
+# Ecommerce demo backend
 
-Spring Boot API for the Rushee demo app. Uses **H2 in-memory** by default (no install needed).
+Spring Boot 3.2, H2 in-memory. Products, cart (in-memory), place order.
 
 ## Run
 
 ```bash
-mvn spring-boot:run
+./mvnw spring-boot:run
+# Or, if Maven wrapper is not present: mvn spring-boot:run
 ```
 
-API: http://localhost:8080/api/v1/notes
+API base: `http://localhost:8080`
 
-## If you see `ClassNotFoundException: org.postgresql.Driver`
+- `GET /api/v1/products` — list products
+- `GET /api/v1/cart` — get cart (optional header `X-Cart-Id`)
+- `POST /api/v1/cart/items` — body `{"productId":"<uuid>","quantity":1}`
+- `POST /api/v1/orders` — place order from current cart
 
-Spring is trying to use PostgreSQL because something is overriding the datasource config (e.g. `SPRING_DATASOURCE_URL` or an `application.yml` in a parent directory).
-
-- **Use H2 (default):** Unset `SPRING_DATASOURCE_URL` and `SPRING_DATASOURCE_DRIVER_CLASS_NAME`, and run from this directory so no parent `application.yml` is loaded.
-- **Use PostgreSQL:** The project includes the PostgreSQL driver. Set `spring.datasource.url`, `username`, and `password` (or env vars) to your Postgres instance.
-
-## Tests
-
-```bash
-mvn test -Dtest=CucumberIT
-```
+H2 console: http://localhost:8080/h2-console (JDBC URL: `jdbc:h2:mem:ecommerce`).

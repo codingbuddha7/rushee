@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # guard-no-hardcoded-secrets.sh
 # Blocks hardcoded passwords, API keys, and secrets from being committed
 

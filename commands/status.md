@@ -24,3 +24,5 @@ FDD-002 ...  |  ✅ |  ✅ |    ✅    |     ❌     |  🔄 |   --     |   ❌
 ```
 
 Legend: ✅ Done, ❌ Missing/Failing, 🔄 In Progress
+
+**Phase gates:** Before moving to the next phase, run the checks in `docs/phase-gates-and-prs.md` (in the Rushee plugin repo). Optional: open a PR after Phase 2b, 3b, 4, or 4f if a reviewer is available.

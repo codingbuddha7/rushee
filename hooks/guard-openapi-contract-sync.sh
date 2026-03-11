@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # guard-openapi-contract-sync.sh
 # Fires when any *-api.yaml file is modified
 # WARNS developer to regenerate both API clients before committing

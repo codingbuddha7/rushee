@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # session-start.sh — Rushee v2.2 pipeline banner + smart state detection
 
 echo ""

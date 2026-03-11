@@ -4,7 +4,7 @@
   "plugins": [
     {
       "name": "rushee",
-      "description": "Complete engineering discipline for full-stack Flutter + Spring Boot: 25 skills, 17 agents, 15 commands, 7 hooks. Enforces UX-first, DDD, contract-first API, BDD/ATDD/TDD, Flutter clean architecture, security, and observability. Junior developers follow the full pipeline through simple prompts.",
+      "description": "Complete engineering discipline for full-stack Flutter + Spring Boot: 27 skills, 18 agents, 16 commands, 7 hooks. Enforces UX-first, DDD, contract-first API, BDD/ATDD/TDD, Flutter clean architecture, security, and observability. Junior developers follow the full pipeline through simple prompts.",
       "repository": "https://github.com/codingbuddha7/rushee",
       "version": "2.2.0",
       "tags": ["spring-boot", "flutter", "ddd", "tdd", "bdd", "atdd", "fdd", "cucumber", "java", "dart", "security", "observability", "hexagonal-architecture", "clean-architecture", "openapi", "juniors"]

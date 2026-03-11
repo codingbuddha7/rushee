@@ -1,34 +1,13 @@
-# Quick Notes (Flutter)
+# Ecommerce demo mobile
 
-Flutter app for the Rushee demo. Connects to the notes backend at `http://localhost:8080`.
+Flutter app: product list, cart, place order. Uses `http://localhost:8080` by default.
 
-## "No supported devices connected" / "macOS or web not supported"
+## Run
 
-This project was set up manually and **does not have platform folders** (macos/, web/, ios/, android/) until you generate them. Run:
+1. Start the backend: `cd ../backend && ./mvnw spring-boot:run`
+2. Create platforms if needed: `flutter create . --platforms=web,macos` (or `ios`, `android`)
+3. Run: `flutter run -d chrome` or `flutter run -d macos`
 
-```bash
-cd demo-app/mobile
-flutter create . --platforms=macos,web
-```
+## CORS
 
-That adds support for **macOS** and **Chrome (web)**. Then:
-
-```bash
-flutter pub get
-flutter run
-```
-
-Pick the device when prompted (e.g. `macos` or `chrome`).
-
-To enable iOS/Android as well, run instead:
-
-```bash
-flutter create .
-```
-
-Then run on a simulator/emulator or a connected device.
-
-## Run with backend
-
-1. Start the backend: `cd ../backend && mvn spring-boot:run`
-2. Run Flutter: `flutter run` (choose macos or chrome if you have no phone connected).
+Backend is configured to allow `http://localhost:*` for `/api/**`. For web, use Chrome or ensure backend CORS matches your origin.

@@ -36,8 +36,8 @@ is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
 ## 1. What is Rushee?
 
-Rushee is a Claude Code plugin — a collection of **25 skills**, **17 agents**,
-**15 commands**, and **7 hooks** that enforce a structured engineering methodology
+Rushee is a Claude Code plugin — a collection of **27 skills**, **18 agents**,
+**16 commands**, and **7 hooks** that enforce a structured engineering methodology
 across a full-stack Flutter + Spring Boot project. Start with **`/rushee:start`** for a guided entry point.
 
 ### The Problem Rushee Solves
@@ -91,6 +91,8 @@ Rushee prevents all of this by making the right approach the only approach.
 - **Flutter 3.7+** and **Dart 3.0+** for the mobile app
 - **Git** with a monorepo or two-repo setup
 - **openapi-generator-cli** for contract code generation (optional but recommended)
+
+**Platform support:** Rushee hooks and scripts are written for **macOS, Linux, and Windows**. On **Windows**, run hooks and `scripts/phase-gate.sh` from **Git Bash** or **WSL** so that the shell and Maven wrapper (`./mvnw`) work as in the docs. Paths in skills and agents use forward slashes; Git Bash and WSL accept these. On Windows CMD/PowerShell you can run Maven with `mvnw.cmd` (or `mvn`) directly when following command examples that show `./mvnw`.
 
 Rushee can be installed in **Claude Code** (`.claude-plugin/`) or **Cursor** (`.cursor-plugin/`); the same repo works for both.
 
@@ -258,9 +260,35 @@ OpenAPI contract generates code for both codebases.
 Never reverse this order. Never start from the database schema. Never start from
 the API spec. Always start from what the user is trying to accomplish.
 
+### Phase gates and optional PR verification
+
+After each phase (or key sub-step), the pipeline uses **phase gates** to verify
+outputs before continuing. PRs are **optional** — recommended when a mentor or
+reviewer is available, but not required to proceed.
+
+| When | Phase gate (verify before next phase) | Optional PR? |
+|------|--------------------------------------|--------------|
+| After Phase 0 (UX) | Personas, job stories, screen inventory, wireframe specs exist | Commit; PR optional for visibility |
+| After Phase 1 / 1b | Context map and domain model outputs present | Commit; PR optional |
+| After Phase 2b (api-design) | OpenAPI spec valid (e.g. `openapi-generator validate`) | **Recommended** — contract review prevents rework |
+| After Phase 3b (atdd-run) | Cucumber runs; acceptance tests RED (pending/fail, no app logic in steps) | **Recommended** — small PR to confirm step-defs only |
+| After Phase 4 / 4f | Backend tests green; Flutter builds | **Recommended** — code review and CI |
+
+- **Phase gate = automated or manual check** that expected artifacts exist and
+  pass minimal checks (e.g. spec valid, tests RED then green). The next phase
+  does **not** require a merged PR — only that the phase gate passed.
+- **Optional PR**: After Phase 2b, 3b, 4, and 4f, consider opening a PR for
+  review if you have a mentor. If not, commit and continue; the pipeline does
+  not block on "PR merged."
+
+See [Phase gates and optional PRs](docs/phase-gates-and-prs.md) in this repo for
+lightweight phase-gate commands and when to open PRs.
+
 ---
 
 ## 4. Repository Structure
+
+**Plugin version (for contributors):** When releasing, keep the version in sync in `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and `.claude-plugin/marketplace.json`.
 
 ### Recommended Monorepo Layout
 
@@ -339,10 +367,10 @@ first discovered in a user's journey — or it shouldn't exist at all.
 ```
 /rushee:ux-discovery
 > "Tell me about the people who will use this app."
-You: "Two personas: shoppers placing grocery orders, and store managers fulfilling them"
-[Agent builds persona profiles, extracts job stories, discovers 14 domain events,
- creates screen inventory with 16 screens, writes wireframe specs]
-> "UX Discovery complete. You have 14 domain events ready for /rushee:event-storm"
+You: "Shoppers on mobile who want to browse products, add to cart, and place an order"
+[Agent builds persona profiles, extracts job stories, discovers domain events,
+ creates screen inventory and wireframe specs]
+> "UX Discovery complete. Domain events ready for /rushee:event-storm"
 ```
 
 ---
@@ -364,7 +392,7 @@ as the starting point — the session will be dramatically faster.
 /rushee:event-storm
 [Agent imports domain events from UX discovery]
 [Facilitates timeline building, context identification, relationship mapping]
-> "4 bounded contexts identified: Order, Payment, Inventory, Notification"
+> "Bounded context(s) identified (e.g. Notes). Next: /rushee:ddd-model <context>"
 ```
 
 ---
@@ -382,10 +410,9 @@ zero Spring/JPA annotations.
 **Output**: `docs/domain/<context>/domain-model.md`, domain skeleton Java classes
 
 ```
-/rushee:ddd-model order-management
-[Agent designs: Order (aggregate root), OrderLine (entity), Money (value object),
- OrderId (value object), OrderStatus (enum), OrderPlaced (domain event),
- OrderRepository (output port interface)]
+/rushee:ddd-model notes
+[Agent designs: Note (aggregate), NoteId (value object), NoteCreated (domain event),
+ NoteRepository (output port interface)]
 ```
 
 ---
@@ -758,7 +785,7 @@ echo "=== Both clients regenerated and verified ==="
 
 ## 9. Step-by-Step Walkthrough
 
-Here is a complete worked example building a grocery ordering app from scratch.
+Here is a complete worked example building a **sample ecommerce mobile app** (browse products, cart, place order) from scratch. The same example, with step-by-step artifacts and code, is in **[demo-app/STEPS.md](demo-app/STEPS.md)** in this repository.
 
 ### Starting a New Project
 
@@ -775,36 +802,37 @@ claude   (from project root — Rushee banner appears)
 /rushee:ux-discovery
 
 > "Tell me about the people who will use this app."
-You: "Two types: shoppers ordering groceries on mobile, store managers managing stock"
+You: "Shoppers on mobile who want to browse products, add to cart, and place an order"
 
 > "For the Shopper persona — what's their situation when they open the app?"
-You: "Usually on their phone, commuting or at home, wants to order quickly"
+You: "On their phone, commuting or at home, wants to order quickly"
 
-[Agent writes Amara (Returning Shopper) and Marcus (Store Manager) personas]
+[Agent writes Amara (Shopper) persona and job stories]
 
-> "Now let's map Amara's jobs. When does she open the app? What is she trying to do?"
-You: "She opens it to reorder her weekly groceries without searching each time"
+> "Now let's map the jobs. When do they open the app? What are they trying to do?"
+You: "They open it to see products, add items to cart, and place an order"
 
-> "Job Story JS-001: When I open the app after a week away, I want to see my
->  previous order ready to repeat, so I can reorder without searching.
->  Domain events found: OrderHistoryViewed, ReorderRequested
->  Screens required: Order History Screen, Reorder Confirmation Screen
+> "Job Story JS-001: When I open the app, I want to see a list of products,
+>  so I can choose what to buy.
+>  Domain events found: ProductListViewed
+>  Screens required: Product List Screen
 >  
->  What's the next job story?"
+>  Job Story JS-002: When I tap a product, I want to add it to my cart, so I can buy it later.
+>  Domain events found: ItemAddedToCart
+>  ...
+>  Job Story JS-003: When my cart has items, I want to place an order, so I can complete the purchase.
+>  Domain events found: OrderPlaced
+>  Screens required: Cart Screen, Checkout / Order Confirmation"
 
-[Agent builds 8 job stories across 2 personas]
-[Agent extracts 14 domain events]
-[Agent builds screen inventory: 16 screens]
-[Agent writes wireframe specs for MVP screens S01–S16]
+[Agent builds job stories, extracts domain events, screen inventory, wireframe specs]
 
 > "UX Discovery complete:
->  ✅ 2 personas defined
->  ✅ 8 job stories written
->  ✅ 14 domain events ready for event-storm
->  ✅ Screen inventory: 16 screens
->  ✅ Wireframe specs: 16 screens
+>  ✅ Persona(s) defined
+>  ✅ Job stories written
+>  ✅ Domain events ready for event-storm
+>  ✅ Screen inventory and wireframe specs
 >  
->  Next: /rushee:event-storm (pass these 14 domain events as input)"
+>  Next: /rushee:event-storm (pass these domain events as input)"
 ```
 
 ### Step 1 — Event Storming
@@ -812,23 +840,20 @@ You: "She opens it to reorder her weekly groceries without searching each time"
 ```
 /rushee:event-storm
 
-[Agent starts with the 14 domain events from UX discovery]
-[Builds timeline: OrderBrowsed → CartUpdated → OrderPlaced → PaymentProcessed → ...]
-[Identifies 4 bounded contexts: Order, Payment, Inventory, Notification]
-[Classifies: Order=Core, Payment=Core, Inventory=Supporting, Notification=Generic]
+[Agent starts with the domain events from UX discovery]
+[Builds timeline: ProductListViewed → ItemAddedToCart → OrderPlaced]
+[Identifies bounded contexts: Catalog, Cart, Order]
 
-> "4 contexts mapped. Core domains: Order, Payment.
->  Next: /rushee:ddd-model order-management"
+> "Context(s) mapped. Next: /rushee:ddd-model order (or catalog, cart)"
 ```
 
 ### Step 2 — Domain Model
 
 ```
-/rushee:ddd-model order-management
+/rushee:ddd-model order
 
-[Agent designs: Order (aggregate), OrderLine (entity), Money + OrderId (VOs),
- OrderStatus (enum), OrderPlaced/Cancelled (domain events),
- OrderRepository (output port)]
+[Agent designs: Order (aggregate), OrderId (VO), OrderPlaced (domain event),
+ OrderRepository (output port); Cart/Product as needed]
 [Generates Java skeleton classes with ZERO Spring/JPA annotations]
 
 > "Domain model approved. Next: /rushee:feature"
@@ -837,11 +862,11 @@ You: "She opens it to reorder her weekly groceries without searching each time"
 ### Step 3 — Feature Card
 
 ```
-/rushee:feature "Allow customers to place an order with multiple product lines"
+/rushee:feature "Place order from cart (checkout)"
 
-[Agent writes FDD-001 with acceptance criteria AND screen links to S13, S14, S15]
+[Agent writes FDD-001 with acceptance criteria AND screen links]
 
-> "FDD-001 created. Screens: S13 Cart Review ✅, S14 Checkout ✅, S15 Confirmation ✅
+> "FDD-001 created. Screens: Cart ✅, Checkout ✅
 >  Next: /rushee:api-design FDD-001"
 ```
 
@@ -850,17 +875,13 @@ You: "She opens it to reorder her weekly groceries without searching each time"
 ```
 /rushee:api-design FDD-001
 
-[api-designer drafts OpenAPI spec: POST /api/v1/orders → 201 OrderDto]
-> "Is this contract correct? POST /api/v1/orders with CartId + payment details
->  returning OrderDto {orderId, status, totalAmount, placedAt}?"
-You: "Add estimatedDelivery to the response"
-[Agent updates spec]
+[api-designer drafts OpenAPI spec: GET /api/v1/products, POST /api/v1/cart/items, POST /api/v1/orders]
 [Spec saved → guard-openapi-contract-sync hook fires]
 
 > "⚡ Contract saved. Run: ./regenerate-clients.sh
 >  This regenerates both the Spring Boot API interface and the Flutter Dart client."
 
-./regenerate-clients.sh   (run in terminal)
+./regenerate-clients.sh   (run in terminal, or on Windows: Git Bash/WSL)
 > ✅ Backend interfaces generated
 > ✅ Flutter client generated
 > ✅ Contract tests pass
@@ -874,15 +895,15 @@ You: "Add estimatedDelivery to the response"
 ```
 /rushee:bdd-spec FDD-001
 
-[gherkin-writer produces 4 scenarios in domain language]
-[spec-guardian validates: rejects 2 steps for technical language, fixed]
+[gherkin-writer produces scenarios in domain language]
+[spec-guardian validates: no HTTP/URL/class names in steps]
 > "Scenarios saved. Next: /rushee:atdd-run FDD-001"
 
 /rushee:atdd-run FDD-001
 
-[acceptance-enforcer generates PlaceOrderSteps.java with PendingException]
-[runs ./mvnw test -Dtest="CucumberIT"]
-> Tests run: 4, Errors: 4 — PENDING ✅
+[acceptance-enforcer generates step definitions with PendingException]
+[runs ./mvnw test -Dtest="CucumberIT" — or mvnw.cmd on Windows CMD]
+> Tests run: N, PENDING ✅
 > "Acceptance tests confirmed RED. Ready for implementation."
 ```
 
@@ -896,16 +917,14 @@ You: "Add estimatedDelivery to the response"
  and it's read-only during implementation]
 
 BACKEND stream owns:
-  backend/src/main/java/.../infrastructure/web/OrderController.java
+  backend/src/main/java/.../infrastructure/web/OrderController.java, ProductController.java
   backend/src/main/java/.../application/OrderApplicationService.java
   backend/src/main/java/.../infrastructure/persistence/JpaOrderRepository.java
   All test files for the above
 
 FLUTTER stream owns:
-  mobile/lib/features/order/domain/entities/order.dart
-  mobile/lib/features/order/application/usecases/place_order_usecase.dart
-  mobile/lib/features/order/presentation/bloc/order_bloc.dart
-  mobile/lib/features/order/presentation/screens/cart_review_screen.dart
+  mobile/lib/features/order/ (or catalog, cart) domain, data, presentation
+  mobile/lib/features/.../presentation/screens/product_list_screen.dart, cart_screen.dart, checkout_screen.dart
   All test files for the above
 ```
 
@@ -1334,6 +1353,10 @@ class PlaceOrderUseCase {
          ↓
 9. Feature Cards            (each card links to specific screen IDs)
 ```
+
+### Where visual verification happens (Figma, wireframes)
+
+The plugin **does not run** Figma, Miro, or other visual tools. Phase 0 produces **text** artifacts only: personas, job stories, screen inventory, navigation map, and **wireframe specs** (markdown descriptions of each screen). Designers use those specs to build in Figma; you then update the screen inventory’s “Figma Status” and extract design tokens into `mobile/lib/core/theme/` before Flutter implementation. Golden tests in Flutter compare to a stored baseline, not to Figma. So: **visual verification is in your process** (approve in Figma, update status, extract tokens), not inside the plugin. **How UX output feeds later phases:** event-stormer reads domain events from job stories; feature-analyst reads screen inventory and personas for Feature Cards; api-designer reads wireframe specs for “API calls this screen makes”; flutter-implementer reads screen inventory (and Figma status) and design tokens. Full detail: [UX discovery and downstream](docs/ux-discovery-and-downstream.md).
 
 ### Design Token Extraction
 

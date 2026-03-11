@@ -1,10 +1,10 @@
-# Personas — Quick Notes
+# Personas — Sample Ecommerce App
 
-## Persona 1: The Casual Note-Taker
+## Persona 1: The Mobile Shopper
 
-**Name:** Sam  
-**Context:** Jots down ideas and to-dos on the phone during the day; often on the move.  
-**Primary goal:** Capture a note in under 10 seconds and see it in a list later.  
-**Biggest frustration:** Forgetting an idea because opening the app or saving was too slow.  
-**Technical comfort:** Medium — uses a few apps daily.  
-**Key constraint:** One-handed use; short sessions.
+**Name**: Amara  
+**Context**: Browsing and ordering on her phone, often during a commute or at home. Wants to complete a purchase quickly.  
+**Primary goal**: See products, add items to cart, and place an order in under a few minutes.  
+**Biggest frustration**: Long forms or unclear checkout steps.  
+**Technical comfort**: Medium — uses apps daily.  
+**Key constraint**: One-handed use, intermittent connectivity.

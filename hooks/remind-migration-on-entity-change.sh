@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # remind-migration-on-entity-change.sh
 # Reminds developer to create a Flyway migration when a JPA entity is modified
 

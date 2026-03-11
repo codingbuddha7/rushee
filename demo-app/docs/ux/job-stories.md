@@ -1,17 +1,27 @@
-# Job Stories — Quick Notes
+# Job Stories — Sample Ecommerce App
 
-## JS-001
-When I have a quick idea or to-do, I want to type a title and body and save it, so I can find it later in my list.
+## Job Stories — Amara (Mobile Shopper)
 
-→ **Domain events revealed:** NoteCreated  
-→ **Screens required:** Create Note Screen, Note List Screen
+### JS-001
+When I open the app,
+I want to see a list of products I can buy,
+so I can choose what to add to my order.
 
-## JS-002
-When I open the app, I want to see my notes in a list (newest first), so I can scan and open one.
+→ Domain events revealed: ProductListViewed  
+→ Screens required: Product List Screen (S01)
 
-→ **Domain events revealed:** NoteListViewed, NoteViewed  
-→ **Screens required:** Note List Screen, Note Detail (optional for MVP — list row can show title + snippet)
+### JS-002
+When I see a product I want,
+I want to add it to my cart with a quantity,
+so I can keep shopping and then checkout once.
 
----
+→ Domain events revealed: ItemAddedToCart  
+→ Screens required: Product List Screen (S01), Cart Screen (S02)
 
-**Extracted domain events for event storm:** NoteCreated, NoteListViewed, NoteViewed
+### JS-003
+When my cart has items,
+I want to review the cart and place an order,
+so I can complete my purchase.
+
+→ Domain events revealed: CartViewed, OrderPlaced  
+→ Screens required: Cart Screen (S02), Order Confirmation (S03)

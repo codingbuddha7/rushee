@@ -80,6 +80,13 @@ Based on the scan, say:
 - If backend code exists but no Flutter: "Backend done. **Next: `/rushee:flutter-feature FDD-NNN`** — implement the Flutter app."
 - If Flutter code exists: "Looks like this project is complete through Phase 4f. Run `/rushee:security-check` or `/rushee:status` to confirm readiness to ship."
 
+Then add a single line about verification when the developer has just completed a phase that has a phase gate or optional PR:
+
+- **If they completed Phase 2b (api-design):** "Before BDD: run the phase gate (validate OpenAPI). Consider opening a PR for contract review — see docs/phase-gates-and-prs.md."
+- **If they completed Phase 3b (atdd-run):** "Before TDD: run the phase gate (Cucumber RED). Consider opening a PR for step-defs-only review — see docs/phase-gates-and-prs.md."
+- **If they completed Phase 4 or 4f:** "Phase gate: ensure tests/build pass. Consider opening a PR for code review — see docs/phase-gates-and-prs.md."
+- **Otherwise (Phase 0, 1, 1b, 2, 3):** "Optional: commit and run the checks in docs/phase-gates-and-prs.md before the next phase."
+
 Then ask: "Shall I run that command now? (yes / no / tell me more about this phase)"
 
 ### Step 0d — Transition
@@ -192,7 +199,7 @@ time to formalise the domain design."
 
 ### Step 5 — Launch the target phase
 
-Once all REQUIRED files exist, launch the target agent:
+Once all REQUIRED files exist, launch the target agent. When you hand off, add one line: "When this phase is done, run the phase gate and optionally open a PR (see docs/phase-gates-and-prs.md) before starting the next phase."
 
 | Target phase | Launch instruction |
 |-------------|-------------------|
@@ -262,3 +269,4 @@ RECOMMENDATION:
 - Never invent content for stub files — ask the developer for the minimum values
 - Always confirm the developer's intent before launching an agent:
   "Ready to launch [agent] for [target]. Shall I proceed?"
+- When recommending the next command (Step 0c), add the appropriate phase-gate and optional-PR reminder for the phase they just completed (see Step 0c above). Do not block the next phase on "PR merged" — only on phase gate passed.

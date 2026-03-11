@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # remind-run-tests.sh
 # After editing a test file, remind to actually run it
 

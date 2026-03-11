@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # guard-feature-card.sh
 # Warns when production Java files are being written without a Feature Card
 
