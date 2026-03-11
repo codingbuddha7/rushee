@@ -49,22 +49,22 @@ if [ "$API_SPEC_COUNT" -gt 0 ]; then
   PHASE_REACHED=5
 fi
 
-FEATURE_FILE_COUNT=$(find src/test/resources/features -name "*.feature" 2>/dev/null | wc -l | tr -d ' ')
+FEATURE_FILE_COUNT=$(find . -path "*/src/test/resources/features/*.feature" 2>/dev/null | wc -l | tr -d ' ')
 if [ "$FEATURE_FILE_COUNT" -gt 0 ]; then
   PHASE_REACHED=6
 fi
 
-STEP_COUNT=$(find src/test/java -name "*Steps.java" 2>/dev/null | wc -l | tr -d ' ')
+STEP_COUNT=$(find . -path "*/src/test/java/*Steps.java" 2>/dev/null | wc -l | tr -d ' ')
 if [ "$STEP_COUNT" -gt 0 ]; then
   PHASE_REACHED=7
 fi
 
-PROD_CLASS_COUNT=$(find src/main/java -name "*.java" -not -path "*/domain/*" 2>/dev/null | wc -l | tr -d ' ')
+PROD_CLASS_COUNT=$(find . -path "*/src/main/java/*.java" ! -path "*/domain/*" ! -path "*/test/*" 2>/dev/null | wc -l | tr -d ' ')
 if [ "${PROD_CLASS_COUNT:-0}" -gt 5 ]; then
   PHASE_REACHED=8
 fi
 
-FLUTTER_COUNT=$(find mobile/lib/features -name "*.dart" 2>/dev/null | wc -l | tr -d ' ')
+FLUTTER_COUNT=$(find . \( -path "*/mobile/lib/*" -o -path "lib/features/*" \) -name "*.dart" 2>/dev/null | wc -l | tr -d ' ')
 if [ "${FLUTTER_COUNT:-0}" -gt 0 ]; then
   PHASE_REACHED=9
 fi
