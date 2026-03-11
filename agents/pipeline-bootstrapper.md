@@ -138,18 +138,18 @@ ls docs/ux/screen-inventory.md 2>/dev/null && echo "  ✅ screen-inventory.md" |
 # Phase 3 — BDD
 echo "Phase 3 prerequisites:"
 ls docs/features/FDD-*.md 2>/dev/null && echo "  ✅ Feature Card(s) found" || echo "  ❌ docs/features/FDD-NNN.md MISSING (REQUIRED)"
-ls src/main/resources/api/*-api.yaml 2>/dev/null && echo "  ✅ OpenAPI spec found" || echo "  ⚠️  api.yaml not found (recommended — gherkin will be less precise)"
+(ls backend/src/main/resources/api/*-api.yaml 2>/dev/null || ls src/main/resources/api/*-api.yaml 2>/dev/null) && echo "  ✅ OpenAPI spec found" || echo "  ⚠️  api.yaml not found (recommended — gherkin will be less precise)"
 
 # Phase 4 — TDD
 echo "Phase 4 prerequisites:"
-find src/test/resources/features -name "*.feature" 2>/dev/null | head -3 && echo "  ✅ Feature file(s) found" || echo "  ❌ .feature files MISSING (REQUIRED)"
-find src/test/java -name "*Steps.java" 2>/dev/null | head -3 && echo "  ✅ Step definitions found" || echo "  ❌ *Steps.java MISSING (REQUIRED)"
+find backend/src/test/resources/features src/test/resources/features -name "*.feature" 2>/dev/null | head -3 && echo "  ✅ Feature file(s) found" || echo "  ❌ .feature files MISSING (REQUIRED)"
+find backend/src/test/java src/test/java -name "*Steps.java" 2>/dev/null | head -3 && echo "  ✅ Step definitions found" || echo "  ❌ *Steps.java MISSING (REQUIRED)"
 
 # Phase 4f — Flutter
 echo "Phase 4f prerequisites:"
 ls docs/features/FDD-*.md 2>/dev/null && echo "  ✅ Feature Card(s) found" || echo "  ❌ Feature Card MISSING"
 ls docs/ux/screen-inventory.md 2>/dev/null && echo "  ✅ Screen inventory found" || echo "  ❌ Screen inventory MISSING"
-ls src/main/resources/api/*-api.yaml 2>/dev/null && echo "  ✅ OpenAPI spec found" || echo "  ❌ OpenAPI spec MISSING"
+(ls backend/src/main/resources/api/*-api.yaml 2>/dev/null || ls src/main/resources/api/*-api.yaml 2>/dev/null) && echo "  ✅ OpenAPI spec found" || echo "  ❌ OpenAPI spec MISSING"
 ls mobile/lib/core/theme/app_colors.dart 2>/dev/null && echo "  ✅ Design tokens found" || echo "  ❌ Design tokens MISSING"
 ```
 
@@ -163,7 +163,7 @@ RUSHEE BOOTSTRAP — Phase <N>: <phase name>
 
 REQUIRED (must exist before this phase can run):
   ✅ docs/features/FDD-001.md          — found
-  ❌ src/main/resources/api/order-api.yaml — MISSING
+  ❌ backend/src/main/resources/api/order-api.yaml — MISSING
 
 RECOMMENDED (phase runs better with these):
   ⚪ docs/domain/order/domain-model.md  — not found (Gherkin will use generic terms)
@@ -221,10 +221,10 @@ echo "Existing API specs:"
 find . \( -name "*api*.yaml" -o -name "*openapi*.yaml" \) ! -path "*/node_modules/*" 2>/dev/null
 
 echo "Existing domain classes:"
-find src/main/java -path "*/domain/*.java" 2>/dev/null | head -10
+find backend/src/main/java src/main/java -path "*/domain/*.java" 2>/dev/null | head -10
 
 echo "Existing test structure:"
-find src/test -name "*.java" -o -name "*.feature" 2>/dev/null | head -10
+find backend/src/test src/test -name "*.java" -o -name "*.feature" 2>/dev/null | head -10
 
 echo "Existing Flutter structure:"
 find mobile/lib -name "*.dart" 2>/dev/null | head -10

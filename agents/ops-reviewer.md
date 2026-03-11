@@ -18,7 +18,7 @@ A feature with no logs, no metrics, and no tracing is not a finished feature.
 ### Step 1 — Logging scan
 ```bash
 # Services with no log statements (likely missing instrumentation)
-for f in $(find src/main/java -name "*Service*.java" -not -name "*Test*"); do
+for f in $(find backend/src/main/java src/main/java -name "*Service*.java" -not -name "*Test*" 2>/dev/null); do
   count=$(grep -c "log\." "$f" 2>/dev/null || echo 0)
   echo "$count $f"
 done | sort -n | head -10
@@ -27,16 +27,16 @@ done | sort -n | head -10
 grep -rn "log\.\(info\|debug\|warn\|error\).*password\|token\|secret\|card" src/ --include="*.java"
 
 # Missing @Slf4j or Logger declaration
-grep -rL "@Slf4j\|LoggerFactory" src/main/java/**/*Service*.java 2>/dev/null
+grep -rL "@Slf4j\|LoggerFactory" backend/src/main/java src/main/java --include="*Service*.java" 2>/dev/null
 ```
 
 ### Step 2 — Metrics scan
 ```bash
 # Services with no Micrometer instrumentation
-grep -rL "MeterRegistry\|@Observed\|Counter\|Timer" src/main/java --include="*Service*.java"
+grep -rL "MeterRegistry\|@Observed\|Counter\|Timer" backend/src/main/java src/main/java --include="*Service*.java" 2>/dev/null
 
 # Check actuator is configured
-grep -rn "management.endpoints" src/main/resources/ 2>/dev/null
+grep -rn "management.endpoints" backend/src/main/resources src/main/resources 2>/dev/null
 ```
 
 ### Step 3 — Tracing scan
@@ -45,20 +45,20 @@ grep -rn "management.endpoints" src/main/resources/ 2>/dev/null
 grep "micrometer-tracing" pom.xml
 
 # Check application name is set (required for trace context)
-grep "spring.application.name" src/main/resources/application.yml
+grep "spring.application.name" backend/src/main/resources/application.yml src/main/resources/application.yml 2>/dev/null
 ```
 
 ### Step 4 — Health check scan
 ```bash
 # Custom HealthIndicators for external dependencies
-grep -rn "HealthIndicator\|HealthContributor" src/main/java/ --include="*.java"
+grep -rn "HealthIndicator\|HealthContributor" backend/src/main/java src/main/java --include="*.java" 2>/dev/null
 ```
 
 ### Step 5 — Config scan
 ```bash
 # Ensure no hardcoded URLs or config values that should be externalised
-grep -rn "localhost\|127.0.0.1" src/main/resources/application.yml | grep -v "local\|dev"
-grep -rn "http://" src/main/resources/application.yml | grep -v "#\|local\|dev"
+grep -rn "localhost\|127.0.0.1" backend/src/main/resources/application.yml src/main/resources/application.yml 2>/dev/null | grep -v "local\|dev"
+grep -rn "http://" backend/src/main/resources/application.yml src/main/resources/application.yml 2>/dev/null | grep -v "#\|local\|dev"
 ```
 
 ## Checklist — Required for Every Service

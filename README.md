@@ -37,8 +37,8 @@ is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 ## 1. What is Rushee?
 
 Rushee is a Claude Code plugin — a collection of **25 skills**, **17 agents**,
-**14 commands**, and **7 hooks** that enforce a structured engineering methodology
-across a full-stack Flutter + Spring Boot project.
+**15 commands**, and **7 hooks** that enforce a structured engineering methodology
+across a full-stack Flutter + Spring Boot project. Start with **`/rushee:start`** for a guided entry point.
 
 ### The Problem Rushee Solves
 
@@ -148,6 +148,14 @@ your-project/
     └── plugins/
         └── rushee/   ← this plugin
 ```
+
+**Run from project root.** Always start Claude Code or Cursor from the directory that contains `backend/`, `mobile/`, and `docs/`. Rushee’s agents and hooks assume this layout: backend code under `backend/src/`, Flutter under `mobile/lib/`, shared docs under `docs/`. If your backend lives at project root (no `backend/` folder), use `src/` instead of `backend/src/` in any path the agent shows you. Run Maven (`./mvnw`) from the directory that contains `pom.xml` (usually `backend/`).
+
+### First day / minimum setup
+
+- **Phases 0–2 (UX, event-storm, feature, api-design):** You need Git, a text editor, and Claude Code or Cursor. No Java or Flutter required yet.
+- **Phases 3–4 (BDD, ATDD, TDD):** Add Java 17+, Maven 3.8+, and a backend project (e.g. `backend/` with `pom.xml`). Optional: `openapi-generator-cli` for generated API interfaces.
+- **Phase 4f (Flutter):** Add Flutter 3.7+, Dart 3.0+, and a `mobile/` project. Design tokens (e.g. `mobile/lib/core/theme/app_colors.dart`) are required for the presentation layer; Figma or a stub is needed. Run `/rushee:start` to see what’s missing for your current phase.
 
 ---
 
@@ -1548,6 +1556,12 @@ A: Yes — that's the point of a full-stack discipline. A Feature Card represent
 a user-visible behaviour. User-visible behaviours require a screen (Flutter) and
 data from an API (Spring Boot). Both streams implement from the same OpenAPI spec,
 so the work is parallel and independent, not sequential and blocking.
+
+**Q: We only have a backend (no Flutter app). Can we still use Rushee?**
+A: Yes. Run the pipeline through Phase 4: `/rushee:ux-discovery` → … → `/rushee:tdd-cycle FDD-NNN`. Then run `/rushee:security-check` and `/rushee:status`. Stop after backend approval. Use `/rushee:bootstrap phase-4 FDD-NNN` if you already have code and want to add discipline.
+
+**Q: We only have a Flutter app; the API is external or in another repo. Can we use Rushee?**
+A: Yes. You need an OpenAPI spec for the API (from the other team or a stub). Put shared docs in `docs/` (UX, screen inventory, feature cards). Run `/rushee:bootstrap phase-4f FDD-NNN` and ensure the OpenAPI spec path is correct (e.g. `backend/src/main/resources/api/<context>-api.yaml` or a path you provide). Flutter implementer will generate the client from that spec.
 
 **Q: What if the Figma design isn't ready when I want to start the Flutter feature?**
 A: The flutter-implementer will stop at the design token check and report which

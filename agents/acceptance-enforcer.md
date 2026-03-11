@@ -26,15 +26,15 @@ Check for `CucumberIT.java` runner and `CucumberSpringContext.java`.
 If missing, create them using the standard template from `atdd-acceptance-first` skill.
 
 ### Phase 2 — Generate Skeleton Step Definitions
-For the feature file at `src/test/resources/features/<domain>/<FDD-NNN>.feature`:
+For the feature file at `backend/src/test/resources/features/<domain>/<FDD-NNN>.feature` (or `src/...` if backend is at project root):
 
-Create `src/test/java/<base-package>/steps/<Domain>Steps.java` with:
+Create `backend/src/test/java/<base-package>/steps/<Domain>Steps.java` (or `src/test/java/...` if backend at root) with:
 - ALL steps mapped from the feature file (exact text matching)
 - EVERY step body throws `PendingException`
 - `@LocalServerPort` injected for RestAssured
 
 ### Phase 3 — Confirm RED
-Run: `./mvnw test -Dtest=CucumberIT -Dcucumber.filter.tags="@<feature-tag>"`
+Run from the directory containing pom.xml (usually backend/): `./mvnw test -Dtest=CucumberIT -Dcucumber.filter.tags="@<feature-tag>"`
 
 Expected outcomes (all acceptable at RED phase):
 - `PENDING` — steps exist but throw PendingException ✓
@@ -49,8 +49,8 @@ Output a summary:
 ```
 ACCEPTANCE TEST RED STATE — FDD-<NNN>
 ======================================
-Feature file: src/test/resources/features/<domain>/<FDD-NNN>.feature
-Step definitions: src/test/java/<base-package>/steps/<Domain>Steps.java
+Feature file: backend/src/test/resources/features/<domain>/<FDD-NNN>.feature (or src/... if backend at root)
+Step definitions: backend/src/test/java/<base-package>/steps/<Domain>Steps.java (or src/... if backend at root)
 Scenarios: <N> PENDING / <N> FAILED / 0 PASSED
 
 RED state confirmed. Ready for TDD inner cycle.

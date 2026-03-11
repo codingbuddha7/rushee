@@ -10,7 +10,7 @@
       "name": "guard-no-code-before-feature-card",
       "event": "PreToolUse",
       "tools": ["Write"],
-      "filePattern": "src/main/java/**/*.java",
+      "filePattern": "**/src/main/java/**/*.java",
       "script": "hooks/guard-feature-card.sh",
       "description": "Warn if writing production Java code without a Feature Card"
     },

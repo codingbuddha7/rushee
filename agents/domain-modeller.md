@@ -54,7 +54,7 @@ Say: "I can see [N] job stories for this context. They reveal these domain event
    Save to `docs/domain/<context>/domain-model.md`
 
 5. Generate skeleton domain classes:
-   Save to `src/main/java/<base>/<context>/domain/model/`
+   Save to `backend/src/main/java/<base>/<context>/domain/model/` (or `src/main/java/...` if backend is at project root)
 
 ## Domain Model Workshop Protocol
 

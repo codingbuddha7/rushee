@@ -20,9 +20,9 @@ Run these in order. A failure in any gate = CHANGES REQUIRED overall.
 
 **Clean Architecture (dependency rule)**
 ```bash
-grep -rn "import org.springframework" src/main/java/*/domain/ --include="*.java"
-grep -rn "import jakarta.persistence" src/main/java/*/domain/ --include="*.java"
-grep -rn "import.*infrastructure" src/main/java/*/application/ --include="*.java"
+grep -rn "import org.springframework" backend/src/main/java/*/domain/ src/main/java/*/domain/ --include="*.java" 2>/dev/null
+grep -rn "import jakarta.persistence" backend/src/main/java/*/domain/ src/main/java/*/domain/ --include="*.java" 2>/dev/null
+grep -rn "import.*infrastructure" backend/src/main/java/*/application/ src/main/java/*/application/ --include="*.java" 2>/dev/null
 ```
 Zero results required.
 
@@ -43,9 +43,9 @@ Zero results required.
 ### Gate 2 — SOLID Principles
 ```bash
 # Classes over 200 lines
-find src/main/java -name "*.java" -not -path "*/test/*" | xargs wc -l | sort -rn | head -10
+find backend/src/main/java src/main/java -name "*.java" -not -path "*/test/*" 2>/dev/null | xargs wc -l 2>/dev/null | sort -rn | head -10
 # Constructor params > 5 (SRP warning)
-grep -rn "public.*(.*, .*, .*, .*, .*, " src/main/java --include="*.java" | grep -v "//\|test"
+grep -rn "public.*(.*, .*, .*, .*, .*, " backend/src/main/java src/main/java --include="*.java" 2>/dev/null | grep -v "//\|test"
 ```
 
 - [ ] No class over 200 lines without documented justification

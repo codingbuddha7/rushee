@@ -48,7 +48,7 @@ Those are the exact endpoints needed. Do not design endpoints the screens don't 
 2. **Identify the API surface**: What operations does this feature expose? To whom?
 3. **Draft the OpenAPI spec**: Use the api-design-contract-first skill patterns
 4. **Ask for review**: Present the spec and ask "Does this contract match what you need?"
-5. **Save the spec**: `src/main/resources/api/<context>-api.yaml`
+5. **Save the spec**: `backend/src/main/resources/api/<context>-api.yaml` (or `src/main/resources/api/...` if backend is at project root)
 6. **Update Feature Card**: Write the resolved endpoint(s) into the `## Backend Endpoints`
    section of `docs/features/FDD-NNN.md`
 7. **Document async contracts**: `docs/architecture/events/<EventName>.md` for each published event

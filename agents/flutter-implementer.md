@@ -26,7 +26,7 @@ cat docs/features/FDD-NNN.md
 grep "FDD-NNN" docs/ux/screen-inventory.md
 
 # OpenAPI spec exists and approved?
-ls src/main/resources/api/
+ls backend/src/main/resources/api/ 2>/dev/null || ls src/main/resources/api/
 
 # Design tokens extracted?
 ls mobile/lib/core/theme/app_colors.dart
@@ -39,7 +39,7 @@ Rushee command should be run first.
 ### Step 2 — Regenerate API Client
 ```bash
 openapi-generator-cli generate \
-  -i src/main/resources/api/<context>-api.yaml \
+  -i backend/src/main/resources/api/<context>-api.yaml \
   -g dart-dio \
   -o mobile/lib/features/<context>/data/generated \
   --additional-properties=nullSafe=true,pubName=<context>_api

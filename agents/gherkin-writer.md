@@ -22,7 +22,7 @@ cat docs/features/FDD-<NNN>.md
 # Read if present — informs scenario context and terminology
 cat docs/domain/<context>/domain-model.md 2>/dev/null
 cat docs/ubiquitous-language/<context>.md 2>/dev/null
-cat src/main/resources/api/<context>-api.yaml 2>/dev/null  # confirms endpoint shape
+cat backend/src/main/resources/api/<context>-api.yaml 2>/dev/null || cat src/main/resources/api/<context>-api.yaml 2>/dev/null  # confirms endpoint shape
 cat docs/ux/wireframe-specs/*.md 2>/dev/null               # UI states = additional scenarios
 ```
 
@@ -44,7 +44,7 @@ One scenario per documented error response.
 
 2. Check or create `docs/ubiquitous-language/<context>.md` for the domain
 3. For each Acceptance Criterion in the Feature Card, write one or more Scenarios
-4. Save the feature file to `src/test/resources/features/<domain>/<FDD-NNN>.feature`
+4. Save the feature file to `backend/src/test/resources/features/<domain>/<FDD-NNN>.feature` (or `src/test/resources/features/...` if backend is at project root)
 5. Show each scenario to the developer for review before saving
 
 ## Language Rules — Enforce Strictly

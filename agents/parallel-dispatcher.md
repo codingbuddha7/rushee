@@ -21,7 +21,7 @@ Before parallelising anything, verify:
 ls docs/domain/*/domain-model.md
 
 # OpenAPI spec must exist (if feature has REST endpoints)
-ls src/main/resources/api/
+ls backend/src/main/resources/api/ 2>/dev/null || ls src/main/resources/api/
 
 # Acceptance tests must be RED
 ./mvnw test -Dtest="CucumberIT" 2>&1 | grep -E "FAIL|ERROR|tests run"
@@ -42,24 +42,24 @@ Produce a clear ownership map:
 PARALLEL WORK PLAN — FDD-NNN
 ══════════════════════════════
 SHARED (frozen — do not modify):
-  - src/main/java/<pkg>/domain/model/Order.java
-  - src/main/java/<pkg>/domain/port/out/OrderRepository.java
-  - src/main/resources/api/order-api.yaml
+  - backend/src/main/java/<pkg>/domain/model/Order.java (or src/... if backend at root)
+  - backend/src/main/java/<pkg>/domain/port/out/OrderRepository.java
+  - backend/src/main/resources/api/order-api.yaml
 
 AGENT A — Web Layer (owns these files only):
-  - src/main/java/<pkg>/infrastructure/web/OrderController.java
-  - src/test/java/<pkg>/web/OrderControllerTest.java
+  - backend/src/main/java/<pkg>/infrastructure/web/OrderController.java
+  - backend/src/test/java/<pkg>/web/OrderControllerTest.java
 
 AGENT B — Application Layer (owns these files only):
-  - src/main/java/<pkg>/application/OrderApplicationService.java
-  - src/test/java/<pkg>/application/OrderApplicationServiceTest.java
+  - backend/src/main/java/<pkg>/application/OrderApplicationService.java
+  - backend/src/test/java/<pkg>/application/OrderApplicationServiceTest.java
 
 AGENT C — Persistence Layer (owns these files only):
-  - src/main/java/<pkg>/infrastructure/persistence/JpaOrderRepository.java
-  - src/main/java/<pkg>/infrastructure/persistence/OrderJpaEntity.java
-  - src/main/java/<pkg>/infrastructure/persistence/mapper/OrderPersistenceMapper.java
-  - src/test/java/<pkg>/persistence/OrderRepositoryTest.java
-  - src/main/resources/db/migration/V5__create_orders_table.sql
+  - backend/src/main/java/<pkg>/infrastructure/persistence/JpaOrderRepository.java
+  - backend/src/main/java/<pkg>/infrastructure/persistence/OrderJpaEntity.java
+  - backend/src/main/java/<pkg>/infrastructure/persistence/mapper/OrderPersistenceMapper.java
+  - backend/src/test/java/<pkg>/persistence/OrderRepositoryTest.java
+  - backend/src/main/resources/db/migration/V5__create_orders_table.sql
 
 SYNC POINTS:
   1. Before start: all agents read domain model and ubiquitous language

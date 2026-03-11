@@ -1,0 +1,18 @@
+# Demo app: uses H2 in-memory by default. If you see "ClassNotFoundException: org.postgresql.Driver",
+# something is overriding the datasource (e.g. SPRING_DATASOURCE_URL or a parent application.yml).
+# Either unset those, or the app also includes the PostgreSQL driver so it can start with external config.
+spring:
+  application:
+    name: notes-backend
+  datasource:
+    url: jdbc:h2:mem:notesdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true

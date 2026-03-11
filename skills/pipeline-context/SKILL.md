@@ -50,7 +50,7 @@ Phase 1b: DDD Model
   Reads:   docs/architecture/context-map.md        ← REQUIRED
            docs/ux/job-stories.md                  ← if exists
   Outputs: docs/domain/<context>/domain-model.md
-           src/main/java/.../domain/ skeleton
+           backend/src/main/java/.../domain/ skeleton (or src/... if backend at root)
   Skip condition: Provide docs/domain/<context>/domain-model.md
 
 Phase 2a: Feature Card
@@ -63,17 +63,17 @@ Phase 2a: Feature Card
 Phase 2b: API Contract
   Reads:   docs/features/FDD-NNN.md                ← REQUIRED
            docs/domain/<context>/domain-model.md   ← if exists
-  Outputs: src/main/resources/api/<context>-api.yaml
+  Outputs: backend/src/main/resources/api/<context>-api.yaml (or src/... if backend at root)
   Skip condition: Provide the OpenAPI spec file
 
 Phase 3a: BDD Gherkin
   Reads:   docs/features/FDD-NNN.md                ← REQUIRED
-  Outputs: src/test/resources/features/.../*.feature
+  Outputs: backend/src/test/resources/features/.../*.feature (or src/... if backend at root)
   Skip condition: Provide the .feature file(s)
 
 Phase 3b: ATDD Wire
-  Reads:   src/test/resources/features/.../*.feature  ← REQUIRED
-  Outputs: src/test/java/.../steps/*Steps.java (RED)
+  Reads:   backend/src/test/resources/features/.../*.feature (or src/...)  ← REQUIRED
+  Outputs: backend/src/test/java/.../steps/*Steps.java (RED) (or src/... if backend at root)
   Skip condition: Provide step definitions in RED state
 
 Phase 4: Implementation
@@ -132,6 +132,8 @@ Every agent checks for its required inputs first and reads them if present.
 ---
 
 ## Stub File Templates
+
+All paths below assume you run from **project root**. Backend paths use `backend/` when your backend lives in a `backend/` folder; if backend is at project root, use `src/` instead of `backend/src/`.
 
 ### Minimum stub for skipping UX Discovery (to Phase 1)
 
