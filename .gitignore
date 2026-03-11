@@ -10,3 +10,6 @@ Thumbs.db
 # Build artifacts (if any test project is added)
 target/
 *.class
+
+docs/plans
+.worktrees/

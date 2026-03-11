@@ -14,6 +14,81 @@ working at the right pipeline phase as fast as possible — whether they are
 starting a new project, skipping phases they don't need, or retrofitting
 Rushee onto an existing codebase.
 
+## Onboarding Mode
+
+**Enter onboarding mode when ANY of these conditions are true:**
+- The command was `/rushee:start` (with or without an argument)
+- The developer says they don't know where to begin, e.g. "where do I start",
+  "how do I use Rushee", "I'm new to this", "what do I do first"
+
+**Do NOT enter onboarding mode for `/rushee:bootstrap <phase>`** — those
+invocations have an explicit target phase and go directly to Your Process → Step 1.
+
+When onboarding mode applies, run Steps 0a–0d below BEFORE the normal bootstrap process.
+
+### Step 0a — Print the pipeline map
+
+Print this exactly:
+
+    ╔══════════════════════════════════════════════════════════════╗
+    ║           RUSHEE v2.2 — FULL-STACK PIPELINE                  ║
+    ╠══════════════════════════════════════════════════════════════╣
+    ║  Phase 0  /rushee:ux-discovery    Who are your users?        ║
+    ║  Phase 1  /rushee:event-storm     What events happen?        ║
+    ║  Phase 1b /rushee:ddd-model       What are the aggregates?   ║
+    ║  Phase 2  /rushee:feature         What is being built?       ║
+    ║  Phase 2b /rushee:api-design      What is the contract?      ║
+    ║  Phase 3  /rushee:bdd-spec        What must be true?         ║
+    ║  Phase 3b /rushee:atdd-run        Wire the failing tests     ║
+    ║  Phase 4  /rushee:tdd-cycle       Build the backend          ║
+    ║  Phase 4f /rushee:flutter-feature Build the Flutter app      ║
+    ║  Phase 5  /rushee:security-check  Is it secure?              ║
+    ║  Phase 6  /rushee:status          Is it ready to ship?       ║
+    ╚══════════════════════════════════════════════════════════════╝
+
+    Golden Rule: UX → Domain → Contract → Code
+    Never write code before its acceptance test is RED.
+    Never design a contract before the domain model exists.
+
+### Step 0b — Scan for existing work
+
+```bash
+echo "=== SCANNING FOR EXISTING RUSHEE WORK ==="
+ls docs/ux/personas.md 2>/dev/null           && echo "✅ Phase 0 output found (UX personas)"     || echo "⬜ Phase 0 not started"
+ls docs/architecture/context-map.md 2>/dev/null && echo "✅ Phase 1 output found (context map)"  || echo "⬜ Phase 1 not started"
+find docs/domain -name "domain-model.md" 2>/dev/null | grep -q . && echo "✅ Phase 1b output found (domain model)" || echo "⬜ Phase 1b not started"
+ls docs/features/FDD-*.md 2>/dev/null           && echo "✅ Phase 2 output found (feature cards)" || echo "⬜ Phase 2 not started"
+ls src/main/resources/api/*-api.yaml 2>/dev/null && echo "✅ Phase 2b output found (OpenAPI spec)" || echo "⬜ Phase 2b not started"
+find src/test/resources/features -name "*.feature" 2>/dev/null | grep -q . && echo "✅ Phase 3 output found (Gherkin)"     || echo "⬜ Phase 3 not started"
+find src/test/java -name "*Steps.java" 2>/dev/null | grep -q .              && echo "✅ Phase 3b output found (step defs)"  || echo "⬜ Phase 3b not started"
+find src/main/java -name "*.java" ! -path "*/test/*" 2>/dev/null | grep -q . && echo "✅ Phase 4 output found (backend code)" || echo "⬜ Phase 4 not started"
+find mobile/lib -name "*.dart" 2>/dev/null | grep -q .                       && echo "✅ Phase 4f output found (Flutter code)" || echo "⬜ Phase 4f not started"
+```
+
+### Step 0c — Report and recommend next command
+
+Based on the scan, say:
+
+- If nothing found: "This looks like a brand new project. **Start here: `/rushee:ux-discovery`** — tell me who your users are and what they need to do."
+- If Phase 0 done but not Phase 1: "UX discovery is done. **Next: `/rushee:event-storm`** — map the domain events from your job stories."
+- If Phase 1 done but not Phase 1b: "Context map exists. **Next: `/rushee:ddd-model <context-name>`** — design the aggregates for your core domain."
+- If Phase 1b done but no feature cards: "Domain model exists. **Next: `/rushee:feature <description>`** — create your first Feature Card."
+- If feature cards exist but no OpenAPI spec: "Feature card(s) found. **Next: `/rushee:api-design FDD-NNN`** — design the API contract."
+- If OpenAPI spec exists but no Gherkin: "Contract is ready. **Next: `/rushee:bdd-spec FDD-NNN`** — write the acceptance scenarios."
+- If Gherkin exists but no step defs: "Gherkin ready. **Next: `/rushee:atdd-run FDD-NNN`** — wire the failing step definitions."
+- If step defs exist but no backend code: "Acceptance tests are RED. **Next: `/rushee:tdd-cycle FDD-NNN`** — implement the backend."
+- If backend code exists but no Flutter: "Backend done. **Next: `/rushee:flutter-feature FDD-NNN`** — implement the Flutter app."
+- If Flutter code exists: "Looks like this project is complete through Phase 4f. Run `/rushee:security-check` or `/rushee:status` to confirm readiness to ship."
+
+Then ask: "Shall I run that command now? (yes / no / tell me more about this phase)"
+
+### Step 0d — Transition
+
+If yes: run the pre-flight check for that phase (normal bootstrap Steps 1–5 below).
+If no: wait for the developer's next instruction.
+
+---
+
 ## Your Process
 
 ### Step 1 — Determine the target phase
@@ -143,7 +218,7 @@ echo "Existing docs:"
 find docs/ -name "*.md" 2>/dev/null | head -20
 
 echo "Existing API specs:"
-find . -name "*api*.yaml" -o -name "*openapi*.yaml" 2>/dev/null | grep -v node_modules
+find . \( -name "*api*.yaml" -o -name "*openapi*.yaml" \) ! -path "*/node_modules/*" 2>/dev/null
 
 echo "Existing domain classes:"
 find src/main/java -path "*/domain/*.java" 2>/dev/null | head -10

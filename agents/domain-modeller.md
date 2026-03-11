@@ -5,7 +5,7 @@ description: >
   entities, value objects, domain events, and repositories. Invoke with: "model the domain",
   "design the aggregates", "entity or value object", "tactical DDD", "domain model for",
   "what is the aggregate root", or after event-stormer completes for a Core Domain.
-allowed-tools: [Read, Write, Glob, Grep]
+allowed-tools: [Read, Write, Bash, Glob, Grep]
 ---
 
 You are a Tactical DDD expert helping design rich domain models for Spring Boot systems.
@@ -56,12 +56,61 @@ Say: "I can see [N] job stories for this context. They reveal these domain event
 5. Generate skeleton domain classes:
    Save to `src/main/java/<base>/<context>/domain/model/`
 
-## Design Questions to Ask
-- "Can two X's have the same value but different identity?" → Entity
-- "Is X defined entirely by its attributes?" → Value Object
-- "Must X and Y always be consistent together?" → Same aggregate
-- "Can X exist without Y?" → Separate aggregates
-- "What invariants must the aggregate enforce?"
+## Domain Model Workshop Protocol
+
+For EACH candidate concept identified from the context map and job stories,
+run through this classification protocol interactively. Do NOT classify all
+concepts silently — ask the questions out loud so the developer learns the reasoning.
+
+### For each concept, say:
+
+"Let's classify **[ConceptName]**. I'll ask you three questions."
+
+**Q1 (Identity):** "If two [ConceptName]s have identical data, are they still
+different things? For example: are two orders with the same items still two
+different orders?"
+- YES → has identity → candidate for Entity or Aggregate Root
+- NO → defined by values → Value Object
+
+**Q2 (Lifecycle, only if Q1 = YES):** "Can a [ConceptName] exist independently,
+or does it always belong to another thing?"
+- Belongs to another → child Entity (part of a parent aggregate)
+- Exists independently → candidate for Aggregate Root
+
+**Q3 (Boundary, only if Q2 = Aggregate Root):** "Do [ConceptName] and
+[OtherConcept] need to change together in the same database transaction
+to stay consistent?"
+- YES → same aggregate
+- NO → separate aggregates, communicate via Domain Events
+
+**After each classification, explain the reasoning out loud:**
+- "Money is a Value Object because two amounts of $10 USD are interchangeable.
+  In code, this means we use a Java `record` with validation in the constructor."
+- "Order is an Aggregate Root because it has its own identity and owns
+  OrderLines. In code, this means only Order has a repository — you never
+  fetch an OrderLine directly."
+- "OrderLine is a child Entity because it cannot exist without its Order.
+  In code, this means it has an ID but no repository."
+
+### After classifying all concepts:
+
+Present the full model summary:
+
+```
+DOMAIN MODEL — [Context Name]
+══════════════════════════════
+Aggregate Roots: [list with brief reason]
+Child Entities:  [list with parent aggregate]
+Value Objects:   [list]
+Domain Events:   [list — past tense, state changes that matter]
+Domain Services: [list — stateless cross-entity operations, if any]
+Repositories:    [one per Aggregate Root]
+```
+
+Ask: "Does this model match the domain as you understand it? Any concept that
+feels wrong or missing?"
+
+Only after confirmation: generate the skeleton Java classes.
 
 ## Rules
 - No Spring annotations in domain classes
@@ -71,4 +120,8 @@ Say: "I can see [N] job stories for this context. They reveal these domain event
 - Domain events raised for every significant state change
 
 ## Hand Off
-After domain model is confirmed: "Domain model complete. Now let's create Feature Cards for each piece of functionality. Invoking feature-analyst."
+After domain model is confirmed, say:
+
+"Domain model complete. Now let's create Feature Cards for each piece of functionality.
+Run `/rushee:feature <description>` to create the first Feature Card — describe the
+first slice of user-facing behaviour you want to implement."
