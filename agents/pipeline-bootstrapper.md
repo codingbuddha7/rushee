@@ -58,11 +58,11 @@ ls docs/ux/personas.md 2>/dev/null           && echo "✅ Phase 0 output found (
 ls docs/architecture/context-map.md 2>/dev/null && echo "✅ Phase 1 output found (context map)"  || echo "⬜ Phase 1 not started"
 find docs/domain -name "domain-model.md" 2>/dev/null | grep -q . && echo "✅ Phase 1b output found (domain model)" || echo "⬜ Phase 1b not started"
 ls docs/features/FDD-*.md 2>/dev/null           && echo "✅ Phase 2 output found (feature cards)" || echo "⬜ Phase 2 not started"
-ls src/main/resources/api/*-api.yaml 2>/dev/null && echo "✅ Phase 2b output found (OpenAPI spec)" || echo "⬜ Phase 2b not started"
-find src/test/resources/features -name "*.feature" 2>/dev/null | grep -q . && echo "✅ Phase 3 output found (Gherkin)"     || echo "⬜ Phase 3 not started"
-find src/test/java -name "*Steps.java" 2>/dev/null | grep -q .              && echo "✅ Phase 3b output found (step defs)"  || echo "⬜ Phase 3b not started"
-find src/main/java -name "*.java" ! -path "*/test/*" 2>/dev/null | grep -q . && echo "✅ Phase 4 output found (backend code)" || echo "⬜ Phase 4 not started"
-find mobile/lib -name "*.dart" 2>/dev/null | grep -q .                       && echo "✅ Phase 4f output found (Flutter code)" || echo "⬜ Phase 4f not started"
+find . -path "*/src/main/resources/api/*-api.yaml" 2>/dev/null | grep -q . && echo "✅ Phase 2b output found (OpenAPI spec)" || echo "⬜ Phase 2b not started"
+find . -path "*/src/test/resources/features/*.feature" 2>/dev/null | grep -q . && echo "✅ Phase 3 output found (Gherkin)"     || echo "⬜ Phase 3 not started"
+find . -path "*/src/test/java/*Steps.java" 2>/dev/null | grep -q .              && echo "✅ Phase 3b output found (step defs)"  || echo "⬜ Phase 3b not started"
+find . -path "*/src/main/java/*.java" ! -path "*/test/*" 2>/dev/null | grep -q . && echo "✅ Phase 4 output found (backend code)" || echo "⬜ Phase 4 not started"
+find . \( -path "*/mobile/lib/*" -o -path "lib/features/*" \) -name "*.dart" 2>/dev/null | grep -q . && echo "✅ Phase 4f output found (Flutter code)" || echo "⬜ Phase 4f not started"
 ```
 
 ### Step 0c — Report and recommend next command
