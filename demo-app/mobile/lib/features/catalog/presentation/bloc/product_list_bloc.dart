@@ -26,11 +26,14 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   }
 
   Future<void> _onAddedToCart(ProductAddedToCart event, Emitter<ProductListState> emit) async {
+    final current = state;
+    if (current is! ProductListLoaded) return;
     try {
       await _cartRepo.addToCart(event.productId, event.quantity);
-      if (state is ProductListLoaded) {
-        emit(ProductListLoaded((state as ProductListLoaded).products));
-      }
-    } catch (_) {}
+      emit(ProductListLoaded(current.products));
+    } catch (e) {
+      emit(ProductListAddToCartFailed(e.toString()));
+      emit(ProductListLoaded(current.products));
+    }
   }
 }

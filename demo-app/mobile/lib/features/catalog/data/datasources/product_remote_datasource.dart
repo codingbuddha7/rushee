@@ -14,10 +14,12 @@ class ProductRemoteDataSource {
   }
 
   static Product _fromJson(Map<String, dynamic> j) {
+    // Backend (Jackson) serializes UUID as string; ensure we always get a string
+    final id = j['id'];
     return Product(
-      id: j['id'] as String,
-      name: j['name'] as String,
-      price: (j['price'] as num).toDouble(),
+      id: id == null ? '' : id.toString(),
+      name: j['name'] as String? ?? '',
+      price: (j['price'] as num?)?.toDouble() ?? 0.0,
     );
   }
 }

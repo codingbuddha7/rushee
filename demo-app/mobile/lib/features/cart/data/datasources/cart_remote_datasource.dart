@@ -21,7 +21,9 @@ class CartRemoteDataSource {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'productId': productId, 'quantity': quantity}),
     );
-    if (r.statusCode != 200) throw Exception('Failed to add to cart');
+    if (r.statusCode != 200) {
+      throw Exception('Failed to add to cart: ${r.statusCode} ${r.body}');
+    }
   }
 
   Future<Order> placeOrder() async {

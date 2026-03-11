@@ -19,3 +19,11 @@ final class ProductListError extends ProductListState {
   @override
   List<Object?> get props => [message];
 }
+
+/// Emitted when add-to-cart fails; listener should show SnackBar then bloc clears by re-emitting loaded.
+final class ProductListAddToCartFailed extends ProductListState {
+  ProductListAddToCartFailed(this.message);
+  final String message;
+  @override
+  List<Object?> get props => [message];
+}

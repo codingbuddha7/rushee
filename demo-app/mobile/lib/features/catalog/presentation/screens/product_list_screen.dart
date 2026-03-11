@@ -25,7 +25,15 @@ class ProductListScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<ProductListBloc, ProductListState>(
+      body: BlocListener<ProductListBloc, ProductListState>(
+        listener: (context, state) {
+          if (state is ProductListAddToCartFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Add to cart failed: ${state.message}')),
+            );
+          }
+        },
+        child: BlocBuilder<ProductListBloc, ProductListState>(
         builder: (context, state) {
           if (state is ProductListLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -54,6 +62,7 @@ class ProductListScreen extends StatelessWidget {
           }
           return const Center(child: Text('Pull to load products.'));
         },
+      ),
       ),
     );
   }

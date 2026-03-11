@@ -43,6 +43,13 @@ The app talks to **http://localhost:8080**. CORS is enabled for localhost.
 1. Backend running → open http://localhost:8080/api/v1/products (you should see JSON).
 2. Flutter app running → you should see the product list; add to cart, open cart, place order.
 
+### Troubleshooting: Add to cart does nothing or fails
+
+- **Backend must be running** on port 8080 before you add to cart. The app calls `http://localhost:8080/api/v1/cart/items`.
+- **Flutter web**: Use the same machine for backend and browser; CORS allows `http://localhost:*`.
+- **Device/emulator**: `localhost` in the app points to the device. Use your machine IP in `main.dart` or run on Chrome/macos so localhost is your machine.
+- **Errors**: If add-to-cart fails, a SnackBar shows the error (e.g. connection refused, or backend Product not found).
+
 ---
 
 ## What’s in this repo
