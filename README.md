@@ -92,6 +92,8 @@ Rushee prevents all of this by making the right approach the only approach.
 - **Git** with a monorepo or two-repo setup
 - **openapi-generator-cli** for contract code generation (optional but recommended)
 
+Rushee can be installed in **Claude Code** (`.claude-plugin/`) or **Cursor** (`.cursor-plugin/`); the same repo works for both.
+
 ### Option A — Clone directly into your project (recommended)
 
 ```bash
@@ -105,7 +107,9 @@ git clone https://github.com/codingbuddha7/rushee .claude/plugins/rushee
 claude
 ```
 
-You should see the Rushee session banner immediately:
+**For Cursor:** Clone into the directory Cursor uses for plugins (see [Cursor Plugins](https://cursor.com/docs/plugins)) so the cloned folder contains `.cursor-plugin/plugin.json`. Commands and skills then appear in Cursor.
+
+You should see the Rushee session banner immediately (Claude Code) or have Rushee commands available (Cursor):
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
@@ -118,12 +122,16 @@ You should see the Rushee session banner immediately:
 ║  ...                                                            ║
 ```
 
+If hooks do not run in Cursor, see [Cursor Hooks](https://cursor.com/docs/hooks) for event names and schema.
+
 ### Option B — Claude Code marketplace
 
 ```bash
 /plugin marketplace add codingbuddha7/rushee-marketplace
 /plugin install rushee@rushee-marketplace
 ```
+
+Cursor users can install via Cursor’s marketplace or plugin flow when the plugin is published there.
 
 ### Monorepo Layout (recommended)
 
