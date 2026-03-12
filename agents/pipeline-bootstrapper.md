@@ -82,10 +82,10 @@ Based on the scan, say:
 
 Then add a single line about verification when the developer has just completed a phase that has a phase gate or optional PR:
 
-- **If they completed Phase 2b (api-design):** "Before BDD: run the phase gate (validate OpenAPI). Consider opening a PR for contract review — see docs/phase-gates-and-prs.md."
-- **If they completed Phase 3b (atdd-run):** "Before TDD: run the phase gate (Cucumber RED). Consider opening a PR for step-defs-only review — see docs/phase-gates-and-prs.md."
-- **If they completed Phase 4 or 4f:** "Phase gate: ensure tests/build pass. Consider opening a PR for code review — see docs/phase-gates-and-prs.md."
-- **Otherwise (Phase 0, 1, 1b, 2, 3):** "Optional: commit and run the checks in docs/phase-gates-and-prs.md before the next phase."
+- **If they completed Phase 2b (api-design):** "Before BDD: run the phase gate (validate OpenAPI). Consider opening a PR for contract review — see README § Phase gates and optional PR verification."
+- **If they completed Phase 3b (atdd-run):** "Before TDD: run the phase gate (Cucumber RED). Consider opening a PR for step-defs-only review — see README § Phase gates and optional PR verification."
+- **If they completed Phase 4 or 4f:** "Phase gate: ensure tests/build pass. Consider opening a PR for code review — see README § Phase gates and optional PR verification."
+- **Otherwise (Phase 0, 1, 1b, 2, 3):** "Optional: commit and run the phase gate checks (see README § Phase gates) before the next phase."
 
 Then ask: "Shall I run that command now? (yes / no / tell me more about this phase)"
 
@@ -199,7 +199,7 @@ time to formalise the domain design."
 
 ### Step 5 — Launch the target phase
 
-Once all REQUIRED files exist, launch the target agent. When you hand off, add one line: "When this phase is done, run the phase gate and optionally open a PR (see docs/phase-gates-and-prs.md) before starting the next phase."
+Once all REQUIRED files exist, launch the target agent. When you hand off, add one line: "When this phase is done, run the phase gate and optionally open a PR (see README § Phase gates and optional PR verification) before starting the next phase."
 
 | Target phase | Launch instruction |
 |-------------|-------------------|

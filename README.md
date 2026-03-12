@@ -262,27 +262,52 @@ the API spec. Always start from what the user is trying to accomplish.
 
 ### Phase gates and optional PR verification
 
-After each phase (or key sub-step), the pipeline uses **phase gates** to verify
-outputs before continuing. PRs are **optional** — recommended when a mentor or
-reviewer is available, but not required to proceed.
+**Platforms:** Phase gate checks run on **Windows (Git Bash or WSL), macOS, and Linux**. On Windows CMD/PowerShell, run Maven commands manually (e.g. `mvnw.cmd test ...`) or use the phase-gate script from Git Bash/WSL.
 
-| When | Phase gate (verify before next phase) | Optional PR? |
-|------|--------------------------------------|--------------|
-| After Phase 0 (UX) | Personas, job stories, screen inventory, wireframe specs exist | Commit; PR optional for visibility |
-| After Phase 1 / 1b | Context map and domain model outputs present | Commit; PR optional |
-| After Phase 2b (api-design) | OpenAPI spec valid (e.g. `openapi-generator validate`) | **Recommended** — contract review prevents rework |
-| After Phase 3b (atdd-run) | Cucumber runs; acceptance tests RED (pending/fail, no app logic in steps) | **Recommended** — small PR to confirm step-defs only |
-| After Phase 4 / 4f | Backend tests green; Flutter builds | **Recommended** — code review and CI |
+Rushee does **not** require a pull request after every phase. It recommends:
 
-- **Phase gate = automated or manual check** that expected artifacts exist and
-  pass minimal checks (e.g. spec valid, tests RED then green). The next phase
-  does **not** require a merged PR — only that the phase gate passed.
-- **Optional PR**: After Phase 2b, 3b, 4, and 4f, consider opening a PR for
-  review if you have a mentor. If not, commit and continue; the pipeline does
-  not block on "PR merged."
+1. **Phase gates** — verify that each phase's outputs exist and pass minimal checks before starting the next phase.
+2. **Optional, small PRs** — after Phase 2b, 3b, 4, and 4f, open a **small** PR (that phase's changes only) for review if you have a mentor; otherwise commit and continue.
 
-See [Phase gates and optional PRs](docs/phase-gates-and-prs.md) in this repo for
-lightweight phase-gate commands and when to open PRs.
+The next phase is **blocked only on the phase gate**, not on "PR merged."
+
+#### Small PRs, not one huge PR
+
+Each recommended PR is **one phase's worth of work**:
+
+| PR moment | What's in the PR | Review focus |
+|-----------|------------------|--------------|
+| After 2b (API design) | OpenAPI YAML + Feature Card update | Contract only — a few files, no code |
+| After 3b (ATDD) | Feature file + step-def classes (RED, no app logic) | "Do the scenarios match the feature?" — no implementation yet |
+| After 4 (backend) | Backend code for one feature | Backend tests green; one FDD |
+| After 4f (Flutter) | Flutter feature + backend if same branch | Full-stack one feature |
+
+If you skip PRs and only commit, the phase gate still gives you a checkpoint; artifacts (specs, domain model, Gherkin) remain **reviewable in the repo** even without a formal PR.
+
+#### Phase gates (what to check before continuing)
+
+**After Phase 0 — UX Discovery:** `docs/ux/personas.md` exists with at least one persona; `docs/ux/job-stories.md`, `docs/ux/screen-inventory.md`, `docs/ux/navigation-map.md` exist; wireframe specs under `docs/ux/wireframe-specs/` or `docs/ux/wireframes/`. No automated check. Optionally commit and open a PR for visibility.
+
+**After Phase 1 / 1b:** `docs/architecture/context-map.md` exists; `docs/domain/<context>/domain-model.md` and domain skeleton classes exist. No automated check. Optional PR if someone can review the domain design.
+
+**After Phase 2b — API design:** OpenAPI spec at `backend/src/main/resources/api/*-api.yaml`. **Phase gate:** Validate the spec. From project root: `bash path/to/rushee/scripts/phase-gate.sh 2b [backend]` or manually: `npx @openapitools/openapi-generator-cli validate -i backend/src/main/resources/api/<name>-api.yaml`. **Optional PR:** Strongly recommended for contract review.
+
+**After Phase 3b — ATDD:** Feature file(s) under `backend/src/test/resources/features/`; step-def classes (every step throws `PendingException` or fails). **Phase gate:** Run Cucumber and confirm RED. Example: `bash path/to/rushee/scripts/phase-gate.sh 3b backend FDD-001` or `cd backend && ./mvnw test -Dtest=*Cucumber* -Dcucumber.filter.tags="@FDD-001"`. **Optional PR:** Recommended — small "step defs only, RED" PR.
+
+**After Phase 4 — Backend:** All Cucumber tests GREEN; unit/integration tests pass. **Phase gate:** `./mvnw test`. **Optional PR:** Recommended before Flutter or next feature.
+
+**After Phase 4f — Flutter:** Flutter app builds. **Phase gate:** No build errors; optional tests/lint. **Optional PR:** Recommended — full-stack feature ready for review.
+
+| Phase | Phase gate focus | Open a PR? |
+|-------|------------------|------------|
+| 0 | Artifacts exist | Optional (visibility) |
+| 1 / 1b | Context map, domain model | Optional |
+| 2b | OpenAPI valid | **Recommended** — contract review |
+| 3b | Cucumber RED | **Recommended** — step-defs only |
+| 4 | Backend tests green | **Recommended** — code review + CI |
+| 4f | Flutter builds | **Recommended** — ready to ship |
+
+**Reality check:** Many teams won't open a PR after every phase. Phase gates are quick local checks; artifacts stay reviewable in the repo. Running `spring-reviewer` / `flutter-reviewer` before merge still catches issues. If you don't have a reviewer, commit after the phase gate and continue.
 
 ---
 
@@ -1356,7 +1381,32 @@ class PlaceOrderUseCase {
 
 ### Where visual verification happens (Figma, wireframes)
 
-The plugin **does not run** Figma, Miro, or other visual tools. Phase 0 produces **text** artifacts only: personas, job stories, screen inventory, navigation map, and **wireframe specs** (markdown descriptions of each screen). Designers use those specs to build in Figma; you then update the screen inventory’s “Figma Status” and extract design tokens into `mobile/lib/core/theme/` before Flutter implementation. Golden tests in Flutter compare to a stored baseline, not to Figma. So: **visual verification is in your process** (approve in Figma, update status, extract tokens), not inside the plugin. **How UX output feeds later phases:** event-stormer reads domain events from job stories; feature-analyst reads screen inventory and personas for Feature Cards; api-designer reads wireframe specs for “API calls this screen makes”; flutter-implementer reads screen inventory (and Figma status) and design tokens. Full detail: [UX discovery and downstream](docs/ux-discovery-and-downstream.md).
+The plugin **does not run** Figma, Miro, or other visual tools. Phase 0 produces **text** artifacts only: personas, job stories, screen inventory, navigation map, and **wireframe specs** (markdown descriptions of each screen). Designers use those specs to build in Figma; you then update the screen inventory’s “Figma Status” and extract design tokens into `mobile/lib/core/theme/` before Flutter implementation. Golden tests in Flutter compare to a stored baseline, not to Figma. So: **visual verification is in your process** (approve in Figma, update status, extract tokens), not inside the plugin. **How UX output feeds later phases:** event-stormer reads domain events from job stories; feature-analyst reads screen inventory and personas for Feature Cards; api-designer reads wireframe specs for “API calls this screen makes”; flutter-implementer reads screen inventory (and Figma status) and design tokens. See below for UX outputs and how they feed later phases.
+
+#### What the plugin produces in UX discovery (Phase 0)
+
+| Output | Location | What it is |
+|--------|----------|------------|
+| Personas | `docs/ux/personas.md` | Who uses the app; context, goals, constraints |
+| Job stories | `docs/ux/job-stories.md` | When/I want/so I can + **domain events** + screens required |
+| Screen inventory | `docs/ux/screen-inventory.md` | Every screen (ID, name, persona, job story, status) |
+| Navigation map | `docs/ux/navigation-map.md` | How screens connect (tabs, modals, wizards) |
+| Wireframe **specs** | `docs/ux/wireframe-specs/<ScreenName>.md` | **Text** description: purpose, UI states, content order, interactions, **API calls** |
+
+Wireframe specs are not visual — they are markdown. Designers use these specs to build in Figma; the plugin does not generate or open Figma files. **After** Phase 0, a designer builds Figma from the wireframe specs. Update the screen inventory's Figma Status when approved. Design tokens (colors, typography, spacing) are extracted into e.g. `mobile/lib/core/theme/app_colors.dart`; the plugin expects these before Flutter implementation and does not pull them from Figma automatically.
+
+#### How UX output is fed into subsequent phases
+
+| Phase | Command / agent | Reads from UX | How it uses UX output |
+|-------|------------------|---------------|------------------------|
+| Phase 1 | `/rushee:event-storm` | `job-stories.md`, `personas.md` | Domain events from job stories for Event Storming |
+| Phase 1b | `/rushee:ddd-model` | context map, job stories, personas | Align aggregate/entity names with user journeys |
+| Phase 2 | `/rushee:feature` | screen inventory, personas, job stories | Screens table from inventory; Actor from personas; criteria from job stories |
+| Phase 2b | `/rushee:api-design` | FDD-NNN.md, domain-model, **wireframe-specs/*.md** | Wireframe specs' "API calls this screen makes" → endpoints and request/response shapes |
+| Phase 3 | `/rushee:bdd-spec` | FDD-NNN.md, optionally wireframe-specs | Wireframe specs can suggest UI states (loading, empty, error) as scenarios |
+| Phase 4f | `/rushee:flutter-feature` | FDD-NNN.md, **screen-inventory** (Figma status), design tokens | Screen list + Figma status; theme tokens; widget naming aligned with Figma |
+
+**Quick reference:** `personas.md` → event-stormer, domain-modeller, feature-analyst (Actor). `job-stories.md` → event-stormer (domain events), domain-modeller, feature-analyst (criteria). `screen-inventory.md` → feature-analyst (Screens table), flutter-implementer (screen list + Figma status). `wireframe-specs/*.md` → api-designer (API calls per screen), gherkin-writer (optional UI states). Design tokens in `mobile/lib/core/theme/` are required by flutter-implementer before building screens.
 
 ### Design Token Extraction
 
