@@ -7,34 +7,109 @@ professional engineering discipline for full-stack **Flutter + Spring Boot** pro
 from first UX sketch to production deployment. Every stage is guided, every shortcut
 is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
+**First time here?** You only need to remember **one command**: run **`/rushee:start`** from your project root (the folder that contains `backend/`, `mobile/`, and `docs/`). It will look at your project and tell you **exactly what to do next**. No need to memorise the whole pipeline.
+
 ---
 
 ## Table of Contents
 
-1. [What is Rushee?](#1-what-is-rushee)
-2. [Installation](#2-installation)
-3. [The Full-Stack Pipeline](#3-the-full-stack-pipeline)
-4. [Repository Structure](#4-repository-structure)
-5. [Commands Reference](#5-commands-reference)
-6. [Skills Reference](#6-skills-reference)
-7. [Agents Reference](#7-agents-reference)
-8. [Hooks Reference](#8-hooks-reference)
-9. [Step-by-Step Full-Stack Walkthrough](#9-step-by-step-walkthrough)
-10. [Non-Negotiable Rules](#10-non-negotiable-rules)
-11. [Project Structure — Backend](#11-backend-project-structure)
-12. [Project Structure — Flutter Mobile](#12-flutter-project-structure)
-13. [The OpenAPI Contract Bridge](#13-the-openapi-contract-bridge)
-14. [Flutter Architecture Deep Dive](#14-flutter-architecture)
-15. [UX Design Workflow](#15-ux-design-workflow)
-16. [Debugging with Rushee](#16-debugging-with-rushee)
-17. [Running Features in Parallel](#17-parallel-features)
-18. [Extending Rushee](#18-extending-rushee)
-19. [Technology Stack](#19-technology-stack)
-20. [FAQ](#20-faq)
+1. [Quick start & paths](#1-quick-start--paths) — **Start here**
+2. [What is Rushee?](#2-what-is-rushee)
+3. [Installation](#3-installation)
+4. [The Full-Stack Pipeline](#4-the-full-stack-pipeline)
+5. [Repository Structure](#5-repository-structure)
+6. [Commands Reference](#6-commands-reference)
+7. [Skills Reference](#7-skills-reference)
+8. [Agents Reference](#8-agents-reference)
+9. [Hooks Reference](#9-hooks-reference)
+10. [Step-by-Step Full-Stack Walkthrough](#10-step-by-step-walkthrough)
+11. [Non-Negotiable Rules](#11-non-negotiable-rules)
+12. [Project Structure — Backend](#12-backend-project-structure)
+13. [Project Structure — Flutter Mobile](#13-flutter-project-structure)
+14. [The OpenAPI Contract Bridge](#14-the-openapi-contract-bridge)
+15. [Flutter Architecture Deep Dive](#15-flutter-architecture)
+16. [UX Design Workflow](#16-ux-design-workflow)
+17. [Debugging with Rushee](#17-debugging-with-rushee)
+18. [Running Features in Parallel](#18-parallel-features)
+19. [Extending Rushee](#19-extending-rushee)
+20. [Technology Stack](#20-technology-stack)
+21. [FAQ](#21-faq)
 
 ---
 
-## 1. What is Rushee?
+## 1. Quick start & paths
+
+**New to the team or straight out of college?** This section is for you. You don’t need to know the whole pipeline — just one command and your path below.
+
+**Goal:** Get you from zero to “I know what to do next” in under a minute. No jargon — just one command and three simple paths.
+
+### The one command you need
+
+| Command | When to use it | What it does |
+|--------|----------------|--------------|
+| **`/rushee:start`** | Every time you open the project or finish a step | Looks at your repo (docs, backend, mobile) and tells you the **next step** in plain language. You don’t need to memorise the pipeline. |
+
+**Rule:** Run `/rushee:start` from your **project root** (the folder that has `backend/`, `mobile/`, and `docs/`). If you’re not sure where that is, open the project in your editor and run it from the top-level folder.
+
+---
+
+### Which path are you on?
+
+Pick the one that matches your situation. Then follow the steps in order. Each path uses the same command: **`/rushee:start`** tells you what to do next.
+
+---
+
+#### Path A — I’m building a full app (backend + mobile) from scratch
+
+**Who this is for:** New project, or you want both the API and the Flutter app done the “Rushee way.”
+
+1. **Install** Rushee (see [Installation](#3-installation)). Create a project folder with `backend/`, `mobile/`, and `docs/` (or follow the layout Rushee suggests).
+2. **Open** your project in Claude Code or Cursor. Make sure you’re in the **project root**.
+3. Run **`/rushee:start`**. It will say something like: “Run `/rushee:ux-discovery` first.”
+4. **Do that step** (e.g. run `/rushee:ux-discovery` and answer the questions).
+5. When that step is done, run **`/rushee:start`** again. It will give you the **next** step (e.g. event-storm, then ddd-model, then feature, then api-design, then BDD, then backend code, then Flutter).
+6. **Repeat:** run `/rushee:start` → do what it says → run `/rushee:start` again. Keep going until the feature is done.
+
+**Summary:** You only need to remember **`/rushee:start`**. It’s your guide. Do what it says, then ask it again.
+
+---
+
+#### Path B — I’m only building the backend (no Flutter yet)
+
+**Who this is for:** You’re doing API-first. The mobile app will come later, or someone else will build it.
+
+1. **Install** Rushee. Have a `backend/` folder (Spring Boot) and `docs/` at project root.
+2. Run **`/rushee:start`**. It will guide you through: UX discovery (you can keep it minimal) → event-storm → ddd-model → feature → api-design → bdd-spec → atdd-run → tdd-cycle.
+3. **Stop after** the backend is done (all tests green). You can ignore Flutter commands. The OpenAPI spec and Feature Card are already there for when someone builds the app later.
+
+**Summary:** Same as Path A, but you stop after the backend phase. `/rushee:start` still tells you the next step; when it suggests Flutter, you’re done.
+
+---
+
+#### Path C — The API already exists; I’m building the Flutter app
+
+**Who this is for:** Backend (or contract) is ready. You’re implementing the mobile UI.
+
+1. **You need:** An **OpenAPI spec** (e.g. `backend/src/main/resources/api/*-api.yaml`) and a **Feature Card** (e.g. `docs/features/FDD-001.md`) for the feature you’re implementing. Ask your team if you don’t have them.
+2. **You also need:** Design tokens (colors, typography, spacing) in `mobile/lib/core/theme/` (e.g. `app_colors.dart`). If you have Figma, extract them; otherwise use a stub.
+3. Run **`/rushee:start`** to confirm Rushee sees the feature and the contract. Then run **`/rushee:flutter-feature`** (or follow what `/rushee:start` suggests) to implement the Flutter side for that feature.
+
+**Summary:** Start from “API + Feature Card + design tokens exist.” Use `/rushee:start` to check; then use `/rushee:flutter-feature` to build the screen(s).
+
+---
+
+### Cheat sheet: one command, three paths
+
+| Your situation | What you do |
+|----------------|-------------|
+| New to Rushee / not sure | Run **`/rushee:start`** from project root. Do what it says. Repeat. |
+| Full app (backend + mobile) | Path A. Use `/rushee:start` as your loop. |
+| Backend only | Path B. Use `/rushee:start` until backend is done; then stop. |
+| Flutter only (API exists) | Path C. Get OpenAPI + Feature Card + design tokens, then `/rushee:start` and `/rushee:flutter-feature`. |
+
+---
+
+## 2. What is Rushee?
 
 Rushee is a Claude Code plugin — a collection of **27 skills**, **18 agents**,
 **16 commands**, and **7 hooks** that enforce a structured engineering methodology
@@ -82,7 +157,7 @@ Rushee prevents all of this by making the right approach the only approach.
 
 ---
 
-## 2. Installation
+## 3. Installation
 
 ### Prerequisites
 
@@ -161,7 +236,7 @@ your-project/
 
 ---
 
-## 3. The Full-Stack Pipeline
+## 4. The Full-Stack Pipeline
 
 Every feature passes through every stage. No stage is optional.
 No stage can start before its predecessor is complete.
@@ -311,7 +386,7 @@ If you skip PRs and only commit, the phase gate still gives you a checkpoint; ar
 
 ---
 
-## 4. Repository Structure
+## 5. Repository Structure
 
 **Plugin version (for contributors):** When releasing, keep the version in sync in `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, and `.claude-plugin/marketplace.json`.
 
@@ -361,7 +436,7 @@ your-project/
 
 ---
 
-## 5. Commands Reference
+## 6. Commands Reference
 
 ### Phase 0 — UX Discovery
 
@@ -661,7 +736,7 @@ Full pipeline status + 8-gate backend review + 5-gate Flutter review.
 
 ---
 
-## 6. Skills Reference
+## 7. Skills Reference
 
 Skills fire **automatically** when your conversation matches their trigger phrases.
 
@@ -727,7 +802,7 @@ Skills fire **automatically** when your conversation matches their trigger phras
 
 ---
 
-## 7. Agents Reference
+## 8. Agents Reference
 
 | Agent | Invoked by | Purpose |
 |-------|-----------|---------|
@@ -751,7 +826,7 @@ Skills fire **automatically** when your conversation matches their trigger phras
 
 ---
 
-## 8. Hooks Reference
+## 9. Hooks Reference
 
 | Hook | Fires | Behaviour |
 |------|-------|-----------|
@@ -808,7 +883,7 @@ echo "=== Both clients regenerated and verified ==="
 
 ---
 
-## 9. Step-by-Step Walkthrough
+## 10. Step-by-Step Walkthrough
 
 Here is a complete worked example building a **sample ecommerce mobile app** (browse products, cart, place order) from scratch. The same example, with step-by-step artifacts and code, is in **[demo-app/STEPS.md](demo-app/STEPS.md)** in this repository.
 
@@ -1044,7 +1119,7 @@ OVERALL: ✅ APPROVED — Ready to merge FDD-001
 
 ---
 
-## 10. Non-Negotiable Rules
+## 11. Non-Negotiable Rules
 
 ### UX Rules
 1. **No Feature Card before user journey is mapped** — screens in the Feature Card must exist in the Screen Inventory.
@@ -1087,7 +1162,7 @@ OVERALL: ✅ APPROVED — Ready to merge FDD-001
 
 ---
 
-## 11. Backend Project Structure
+## 12. Backend Project Structure
 
 ```
 backend/src/
@@ -1140,7 +1215,7 @@ backend/src/
 
 ---
 
-## 12. Flutter Project Structure
+## 13. Flutter Project Structure
 
 ```
 mobile/lib/
@@ -1209,7 +1284,7 @@ test/
 
 ---
 
-## 13. The OpenAPI Contract Bridge
+## 14. The OpenAPI Contract Bridge
 
 The OpenAPI spec at `backend/src/main/resources/api/<context>-api.yaml` is
 **the single most important file in the entire project**. It is the contract
@@ -1275,7 +1350,7 @@ void main() {
 
 ---
 
-## 14. Flutter Architecture
+## 15. Flutter Architecture
 
 Flutter's clean architecture in Rushee is a direct mirror of Spring Boot's hexagonal architecture.
 
@@ -1355,7 +1430,7 @@ class PlaceOrderUseCase {
 
 ---
 
-## 15. UX Design Workflow
+## 16. UX Design Workflow
 
 ### The Right Order
 
@@ -1456,7 +1531,7 @@ every developer on the team knows exactly which file to open.
 
 ---
 
-## 16. Debugging with Rushee
+## 17. Debugging with Rushee
 
 ```
 /rushee:debug "<what failed>"
@@ -1486,7 +1561,7 @@ every developer on the team knows exactly which file to open.
 
 ---
 
-## 17. Parallel Features
+## 18. Parallel Features
 
 ### Mode 1 — Backend + Flutter in parallel (most common)
 
@@ -1516,7 +1591,7 @@ git worktree add ../project-FDD-006 -b feature/FDD-006-notifications
 
 ---
 
-## 18. Extending Rushee
+## 19. Extending Rushee
 
 ```
 /rushee:extend skill <name>
@@ -1552,7 +1627,7 @@ precedence when names conflict.
 
 ---
 
-## 19. Technology Stack
+## 20. Technology Stack
 
 ### Backend
 
@@ -1601,7 +1676,7 @@ precedence when names conflict.
 
 ---
 
-## 20. FAQ
+## 21. FAQ
 
 **Q: Do I have to use BLoC for Flutter state management? What about Riverpod?**
 A: Rushee's `flutter-clean-architecture` skill uses BLoC as the default because it
