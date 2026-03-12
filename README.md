@@ -1719,7 +1719,7 @@ precedence when names conflict.
 
 ## 20. Technology Stack
 
-### Backend
+### Backend (default: Spring Boot + Spring ecosystem)
 
 | Concern | Technology | Version |
 |---------|-----------|---------|
@@ -1736,6 +1736,25 @@ precedence when names conflict.
 | Security | Spring Security + OAuth2 | Boot 3.x |
 | Observability | Micrometer + OpenTelemetry | Latest |
 | Messaging | Apache Kafka / RabbitMQ | Latest |
+
+**Spring ecosystem (umbrella — all usable with Rushee; keep in infrastructure):**
+
+| Project | Purpose |
+|---------|---------|
+| **Spring Boot** | Core, auto-config, **embedded server** (Tomcat/Jetty/Undertow) |
+| **Spring AI** | AI/LLM (Chat, Embeddings, RAG, multi-provider: OpenAI, Anthropic, etc.) |
+| **Spring Integration** | EIP, messaging adapters, channels, gateways |
+| **Spring Cloud** | Config Server, Discovery, Gateway, OpenFeign, LoadBalancer, Circuit Breaker |
+| **Spring Cloud Stream** | Binder abstraction (Kafka, Rabbit) |
+| **Spring Batch** | Batch jobs, chunking, readers/writers, job repository |
+| **Spring Data** | JPA, Redis, MongoDB, Elasticsearch, etc. |
+| **Spring for Apache Kafka** | KafkaTemplate, @KafkaListener |
+| **Spring AMQP** | RabbitMQ |
+| **Spring Session** | Session storage (Redis, JDBC) |
+| **Spring HATEOAS** | Hypermedia REST |
+| **Spring Statemachine** | State machines |
+
+All of these live in **infrastructure** (adapters); the **domain** layer stays pure (no Spring imports). Use the **spring-ecosystem** skill when adopting any of these. See [spring.io/projects](https://spring.io/projects) for the full portfolio.
 
 ### Flutter Mobile
 
