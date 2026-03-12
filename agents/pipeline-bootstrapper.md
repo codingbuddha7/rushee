@@ -41,7 +41,7 @@ Print this exactly:
     ║  Phase 3  /rushee:bdd-spec        What must be true?         ║
     ║  Phase 3b /rushee:atdd-run        Wire the failing tests     ║
     ║  Phase 4  /rushee:tdd-cycle       Build the backend          ║
-    ║  Phase 4f /rushee:flutter-feature Build the Flutter app      ║
+    ║  Phase 4f /rushee:angular-feature Build the Angular app     ║
     ║  Phase 5  /rushee:security-check  Is it secure?              ║
     ║  Phase 6  /rushee:status          Is it ready to ship?       ║
     ╚══════════════════════════════════════════════════════════════╝
@@ -62,7 +62,7 @@ find . -path "*/src/main/resources/api/*-api.yaml" 2>/dev/null | grep -q . && ec
 find . -path "*/src/test/resources/features/*.feature" 2>/dev/null | grep -q . && echo "✅ Phase 3 output found (Gherkin)"     || echo "⬜ Phase 3 not started"
 find . -path "*/src/test/java/*Steps.java" 2>/dev/null | grep -q .              && echo "✅ Phase 3b output found (step defs)"  || echo "⬜ Phase 3b not started"
 find . -path "*/src/main/java/*.java" ! -path "*/test/*" 2>/dev/null | grep -q . && echo "✅ Phase 4 output found (backend code)" || echo "⬜ Phase 4 not started"
-find . \( -path "*/mobile/lib/*" -o -path "lib/features/*" \) -name "*.dart" 2>/dev/null | grep -q . && echo "✅ Phase 4f output found (Flutter code)" || echo "⬜ Phase 4f not started"
+find . \( -path "*/frontend/src/*" -name "*.ts" -o -path "*/mobile/lib/*" -name "*.dart" \) 2>/dev/null | grep -q . && echo "✅ Phase 4f output found (frontend code)" || echo "⬜ Phase 4f not started"
 ```
 
 ### Step 0c — Report and recommend next command
@@ -77,8 +77,8 @@ Based on the scan, say:
 - If OpenAPI spec exists but no Gherkin: "Contract is ready. **Next: `/rushee:bdd-spec FDD-NNN`** — write the acceptance scenarios."
 - If Gherkin exists but no step defs: "Gherkin ready. **Next: `/rushee:atdd-run FDD-NNN`** — wire the failing step definitions."
 - If step defs exist but no backend code: "Acceptance tests are RED. **Next: `/rushee:tdd-cycle FDD-NNN`** — implement the backend."
-- If backend code exists but no Flutter: "Backend done. **Next: `/rushee:flutter-feature FDD-NNN`** — implement the Flutter app."
-- If Flutter code exists: "Looks like this project is complete through Phase 4f. Run `/rushee:security-check` or `/rushee:status` to confirm readiness to ship."
+- If backend code exists but no frontend: "Backend done. **Next: `/rushee:angular-feature FDD-NNN`** — implement the Angular app (or `/rushee:flutter-feature` / `/rushee:react-feature` for other frontends)."
+- If frontend code exists (Angular in frontend/, or Flutter in mobile/): "Looks like this project is complete through Phase 4f. Run `/rushee:security-check` or `/rushee:status` to confirm readiness to ship."
 
 Then add a single line about verification when the developer has just completed a phase that has a phase gate or optional PR:
 
@@ -115,7 +115,7 @@ Map their intent to a target phase:
 | "skip domain model" / "start at feature" | phase-2 (feature) |
 | "skip to BDD" / "I have a Feature Card and API spec" | phase-3 (bdd-spec) |
 | "skip BDD" / "start at implementation" | phase-4 (tdd-cycle) |
-| "Flutter only" / "backend is done" | phase-4f (flutter-feature) |
+| "Frontend only" / "backend is done" | phase-4f (angular-feature, or flutter-feature / react-feature) |
 | "existing codebase" / "retrofit" | retrofit |
 
 ### Step 2 — Pre-flight check
@@ -157,7 +157,7 @@ echo "Phase 4f prerequisites:"
 ls docs/features/FDD-*.md 2>/dev/null && echo "  ✅ Feature Card(s) found" || echo "  ❌ Feature Card MISSING"
 ls docs/ux/screen-inventory.md 2>/dev/null && echo "  ✅ Screen inventory found" || echo "  ❌ Screen inventory MISSING"
 (ls backend/src/main/resources/api/*-api.yaml 2>/dev/null || ls src/main/resources/api/*-api.yaml 2>/dev/null) && echo "  ✅ OpenAPI spec found" || echo "  ❌ OpenAPI spec MISSING"
-ls mobile/lib/core/theme/app_colors.dart 2>/dev/null && echo "  ✅ Design tokens found" || echo "  ❌ Design tokens MISSING"
+(ls frontend/src/styles/*.scss frontend/src/theme/*.scss mobile/lib/core/theme/app_colors.dart 2>/dev/null | head -1) && echo "  ✅ Design tokens found" || echo "  ❌ Design tokens MISSING (frontend or mobile)"
 ```
 
 ### Step 3 — Report results clearly
@@ -209,7 +209,7 @@ Once all REQUIRED files exist, launch the target agent. When you hand off, add o
 | phase-2 | "All clear. Invoking feature-analyst." |
 | phase-3 | "All clear. Invoking gherkin-writer for FDD-<NNN>." |
 | phase-4 | "All clear. Invoking tdd-implementer for FDD-<NNN>." |
-| phase-4f | "All clear. Invoking flutter-implementer for FDD-<NNN>." |
+| phase-4f | "All clear. Invoking angular-implementer for FDD-<NNN>." (default; or flutter-implementer / react-implementer / svelte-implementer for other frontends) |
 
 ---
 
@@ -234,7 +234,7 @@ echo "Existing test structure:"
 find backend/src/test src/test -name "*.java" -o -name "*.feature" 2>/dev/null | head -10
 
 echo "Existing Flutter structure:"
-find mobile/lib -name "*.dart" 2>/dev/null | head -10
+find frontend/src mobile/lib -name "*.ts" -o -name "*.dart" 2>/dev/null | head -10
 ```
 
 Then report the inferred pipeline state:

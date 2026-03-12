@@ -29,4 +29,4 @@ in the Screen Inventory. Add the screen to inventory first.
 - `docs/ux/navigation-map.md`
 - `docs/ux/wireframe-specs/<ScreenName>.md` (one per screen — **text specs**, not visual; designers use these to build in Figma)
 
-**Visual tools (Figma, wireframes):** The plugin does not run Figma or other visual tools. Wireframe specs are text; you or a designer build visuals from them and update the screen inventory’s “Figma Status” when approved. Design tokens are then extracted into `mobile/lib/core/theme/` before Flutter implementation. See README § Where visual verification happens and § How UX output is fed into subsequent phases.
+**Visual tools (Figma, wireframes):** The plugin does not run Figma or other visual tools. Wireframe specs are text; you or a designer build visuals from them and update the screen inventory’s “Figma Status” when approved. Design tokens are then extracted into `frontend/src/` (Angular) or `mobile/lib/core/theme/` (Flutter) before frontend implementation. See README § Where visual verification happens and § How UX output is fed into subsequent phases.

@@ -1,12 +1,12 @@
-# Rushee v2.2 — Full-Stack Flutter + Spring Boot Engineering Discipline
+# Rushee v2.2 — Full-Stack Angular + Spring Boot Engineering Discipline
 
 > *"Start with the user. End with production. Never skip a step."*
 
 **Rushee** is a [Claude Code](https://claude.ai/code) plugin that enforces a complete,
-professional engineering discipline for full-stack projects — from first UX sketch to production deployment. **Default:** Flutter + Spring Boot. **Also supported:** React, Svelte, Angular (frontends); FastAPI, NestJS, Go, Rust (backends); same pipeline and OpenAPI contract. Every stage is guided, every shortcut
+professional engineering discipline for full-stack projects — from first UX sketch to production deployment. **Default:** Angular + Spring Boot. **Also supported:** React, Svelte, Flutter (frontends); FastAPI, NestJS, Go, Rust (backends); same pipeline and OpenAPI contract. Every stage is guided, every shortcut
 is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
-**First time here?** You only need to remember **one command**: run **`/rushee:start`** from your project root (the folder that contains `backend/`, `mobile/`, and `docs/`). It will look at your project and tell you **exactly what to do next**. No need to memorise the whole pipeline.
+**First time here?** You only need to remember **one command**: run **`/rushee:start`** from your project root (the folder that contains `backend/`, `frontend/`, and `docs/`). It will look at your project and tell you **exactly what to do next**. No need to memorise the whole pipeline.
 
 ---
 
@@ -46,9 +46,9 @@ is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
 | Command | When to use it | What it does |
 |--------|----------------|--------------|
-| **`/rushee:start`** | Every time you open the project or finish a step | Looks at your repo (docs, backend, mobile) and tells you the **next step** in plain language. You don’t need to memorise the pipeline. |
+| **`/rushee:start`** | Every time you open the project or finish a step | Looks at your repo (docs, backend, frontend) and tells you the **next step** in plain language. You don’t need to memorise the pipeline. |
 
-**Rule:** Run `/rushee:start` from your **project root** (the folder that has `backend/`, `mobile/`, and `docs/`). If you’re not sure where that is, open the project in your editor and run it from the top-level folder.
+**Rule:** Run `/rushee:start` from your **project root** (the folder that has `backend/`, `frontend/`, and `docs/`). If you’re not sure where that is, open the project in your editor and run it from the top-level folder.
 
 **Stuck on *how* to do a step?** (e.g. “What’s an aggregate?” “How do I write a repository?”) Use a **deep-dive or companion skill** for that topic in the same session — Rushee tells you *when* to do each step; a deep-dive helps with the *how*. See [Using companion skills (e.g. deep-dive) with Rushee](#using-companion-skills-eg-deep-dive-with-rushee) for when to use what.
 
@@ -69,15 +69,15 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 
 ---
 
-#### Path A — I’m building a full app (backend + mobile) from scratch
+#### Path A — I’m building a full app (backend + frontend) from scratch
 
 **Who this is for:** New project, or you want both the API and the Flutter app done the “Rushee way.”
 
-1. **Install** Rushee (see [Installation](#3-installation)). Create a project folder with `backend/`, `mobile/`, and `docs/` (or follow the layout Rushee suggests).
+1. **Install** Rushee (see [Installation](#3-installation)). Create a project folder with `backend/`, `frontend/` (Angular), and `docs/` (or follow the layout Rushee suggests).
 2. **Open** your project in Claude Code or Cursor. Make sure you’re in the **project root**.
 3. Run **`/rushee:start`**. It will say something like: “Run `/rushee:ux-discovery` first.”
 4. **Do that step** (e.g. run `/rushee:ux-discovery` and answer the questions).
-5. When that step is done, run **`/rushee:start`** again. It will give you the **next** step (e.g. event-storm, then ddd-model, then feature, then api-design, then BDD, then backend code, then Flutter).
+5. When that step is done, run **`/rushee:start`** again. It will give you the **next** step (e.g. event-storm, then ddd-model, then feature, then api-design, then BDD, then backend code, then Angular).
 6. **Repeat:** run `/rushee:start` → do what it says → run `/rushee:start` again. Keep going until the feature is done.
 
 **Summary:** You only need to remember **`/rushee:start`**. It’s your guide. Do what it says, then ask it again.
@@ -90,7 +90,7 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 
 1. **Install** Rushee. Have a `backend/` folder (Spring Boot) and `docs/` at project root.
 2. Run **`/rushee:start`**. It will guide you through: UX discovery (you can keep it minimal) → event-storm → ddd-model → feature → api-design → bdd-spec → atdd-run → tdd-cycle.
-3. **Stop after** the backend is done (all tests green). You can ignore Flutter commands. The OpenAPI spec and Feature Card are already there for when someone builds the app later.
+3. **Stop after** the backend is done (all tests green). You can ignore frontend commands. The OpenAPI spec and Feature Card are already there for when someone builds the app later.
 
 **Summary:** Same as Path A, but you stop after the backend phase. `/rushee:start` still tells you the next step; when it suggests Flutter, you’re done.
 
@@ -101,10 +101,10 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 **Who this is for:** Backend (or contract) is ready. You’re implementing the mobile UI.
 
 1. **You need:** An **OpenAPI spec** (e.g. `backend/src/main/resources/api/*-api.yaml`) and a **Feature Card** (e.g. `docs/features/FDD-001.md`) for the feature you’re implementing. Ask your team if you don’t have them.
-2. **You also need:** Design tokens (colors, typography, spacing) in `mobile/lib/core/theme/` (e.g. `app_colors.dart`). If you have Figma, extract them; otherwise use a stub.
-3. Run **`/rushee:start`** to confirm Rushee sees the feature and the contract. Then run **`/rushee:flutter-feature`** (or follow what `/rushee:start` suggests) to implement the Flutter side for that feature.
+2. **You also need:** Design tokens (colors, typography, spacing) in `frontend/src/` (e.g. Angular theme or `styles/`). If you have Figma, extract them; otherwise use a stub.
+3. Run **`/rushee:start`** to confirm Rushee sees the feature and the contract. Then run **`/rushee:angular-feature`** (or follow what `/rushee:start` suggests) to implement the Angular side for that feature.
 
-**Summary:** Start from “API + Feature Card + design tokens exist.” Use `/rushee:start` to check; then use `/rushee:flutter-feature` to build the screen(s).
+**Summary:** Start from “API + Feature Card + design tokens exist.” Use `/rushee:start` to check; then use `/rushee:angular-feature` to build the screen(s).
 
 ---
 
@@ -115,9 +115,9 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 | New to Rushee / not sure | Run **`/rushee:start`** from project root. Do what it says. Repeat. |
 | **New project (greenfield)** | Path A or B. Use `/rushee:start` as your loop from Phase 0. |
 | **Existing project (brownfield)** | Run **`/rushee:start`** — it detects what exists and suggests the next step. Or run **`/rushee:bootstrap retrofit`** to scan and map; then **`/rushee:bootstrap phase-N FDD-NNN`** to jump to a phase. |
-| Full app (backend + mobile) | Path A. Use `/rushee:start` as your loop. |
+| Full app (backend + frontend) | Path A. Use `/rushee:start` as your loop. |
 | Backend only | Path B. Use `/rushee:start` until backend is done; then stop. |
-| Flutter only (API exists) | Path C. Get OpenAPI + Feature Card + design tokens, then `/rushee:start` and `/rushee:flutter-feature`. |
+| Frontend only (API exists) | Path C. Get OpenAPI + Feature Card + design tokens, then `/rushee:start` and `/rushee:angular-feature`. |
 
 ---
 
@@ -125,7 +125,7 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 
 Rushee is a Claude Code plugin — a collection of **33 skills**, **25 agents**,
 **23 commands**, and **7 hooks** that enforce a structured engineering methodology
-across full-stack projects. **Default stack:** Flutter + Spring Boot. **Also supported** (same pipeline, same contract): React, Svelte, Angular (frontends); FastAPI (Python), NestJS (TypeScript), Go, Rust (backends). Start with **`/rushee:start`** for a guided entry point.
+across full-stack projects. **Default stack:** Angular + Spring Boot. **Also supported** (same pipeline, same contract): React, Svelte, Flutter (frontends); FastAPI (Python), NestJS (TypeScript), Go, Rust (backends). Start with **`/rushee:start`** for a guided entry point.
 
 ### The Problem Rushee Solves
 
@@ -148,9 +148,9 @@ Rushee prevents all of this by making the right approach the only approach.
 │                    navigation maps, wireframe specs              │
 │                    (Rushee phase: ux-discovery)                  │
 ├──────────────────────────────────────────────────────────────────┤
-│  FLUTTER CLIENT    Dart · Clean Architecture · BLoC              │
+│  ANGULAR CLIENT    TypeScript · Clean Architecture · NgRx/signals │
 │                    domain → application → data → presentation    │
-│                    (Rushee phase: flutter-feature)               │
+│                    (Rushee phase: angular-feature)               │
 │                              ↕ OpenAPI Contract (the bridge)     │
 │  SPRING BOOT API   Java · DDD · Hexagonal Architecture           │
 │                    domain → application → infrastructure         │
@@ -227,7 +227,7 @@ Cursor users can install via Cursor’s marketplace or plugin flow when the plug
 ```
 your-project/
 ├── backend/          ← Spring Boot project (Maven)
-├── mobile/           ← Flutter project
+├── frontend/         ← Angular project
 ├── docs/             ← UX, domain, feature docs (shared)
 │   ├── ux/
 │   ├── architecture/
@@ -238,13 +238,13 @@ your-project/
         └── rushee/   ← this plugin
 ```
 
-**Run from project root.** Always start Claude Code or Cursor from the directory that contains `backend/`, `mobile/`, and `docs/`. Rushee’s agents and hooks assume this layout: backend code under `backend/src/`, Flutter under `mobile/lib/`, shared docs under `docs/`. If your backend lives at project root (no `backend/` folder), use `src/` instead of `backend/src/` in any path the agent shows you. Run Maven (`./mvnw`) from the directory that contains `pom.xml` (usually `backend/`).
+**Run from project root.** Always start Claude Code or Cursor from the directory that contains `backend/`, `frontend/`, and `docs/`. Rushee’s agents and hooks assume this layout: backend code under `backend/src/`, Angular under `frontend/src/`, shared docs under `docs/`. If your backend lives at project root (no `backend/` folder), use `src/` instead of `backend/src/` in any path the agent shows you. Run Maven (`./mvnw`) from the directory that contains `pom.xml` (usually `backend/`).
 
 ### First day / minimum setup
 
-- **Phases 0–2 (UX, event-storm, feature, api-design):** You need Git, a text editor, and Claude Code or Cursor. No Java or Flutter required yet.
+- **Phases 0–2 (UX, event-storm, feature, api-design):** You need Git, a text editor, and Claude Code or Cursor. No Java or Angular required yet.
 - **Phases 3–4 (BDD, ATDD, TDD):** Add Java 17+, Maven 3.8+, and a backend project (e.g. `backend/` with `pom.xml`). Optional: `openapi-generator-cli` for generated API interfaces.
-- **Phase 4f (Flutter):** Add Flutter 3.7+, Dart 3.0+, and a `mobile/` project. Design tokens (e.g. `mobile/lib/core/theme/app_colors.dart`) are required for the presentation layer; Figma or a stub is needed. Run `/rushee:start` to see what’s missing for your current phase.
+- **Phase 4f (Angular):** Add Node 18+, Angular 17+, and a `frontend/` project. Design tokens (e.g. `frontend/src/styles/ or theme`) are required for the presentation layer; Figma or a stub is needed. Run `/rushee:start` to see what’s missing for your current phase.
 
 ---
 
@@ -312,8 +312,8 @@ No stage can start before its predecessor is complete.
 ║  ─────────────────────────────────────────────────────────────  ║
 ║                                                                  ║
 ║  ┌─────────────────────────┐  ┌──────────────────────────────┐  ║
-║  │ BACKEND STREAM          │  │ FLUTTER STREAM               │  ║
-║  │ /rushee:tdd-cycle       │  │ /rushee:flutter-feature      │  ║
+║  │ BACKEND STREAM          │  │ FRONTEND STREAM (Angular)    │  ║
+║  │ /rushee:tdd-cycle       │  │ /rushee:angular-feature      │  ║
 ║  │                         │  │                              │  ║
 ║  │ Outside-in TDD:         │  │ Regenerate API client        │  ║
 ║  │  Controller tests       │  │ Domain entities (Dart)       │  ║
@@ -411,7 +411,7 @@ your-project/
 │   ├── pom.xml
 │   └── src/
 │
-├── mobile/                        ← Flutter project
+├── frontend/                      ← Angular project (default)
 │   ├── pubspec.yaml
 │   └── lib/
 │
@@ -632,55 +632,40 @@ repository. One failing test at a time. Checks Cucumber acceptance tests every
 
 ---
 
-#### `/rushee:flutter-feature <FDD-NNN>`
+#### `/rushee:angular-feature <FDD-NNN>` **(default frontend)**
 
-Implement the Flutter mobile feature for a Feature Card.
+Implement the Angular frontend feature for a Feature Card.
 
 **When to run**: After Feature Card + OpenAPI contract + Figma screens are all approved.
 Can run **in parallel** with `/rushee:tdd-cycle` since both implement from the same spec.
 
 **What happens**:
 1. Verifies prerequisites: Feature Card, Screen Inventory entry, OpenAPI spec, design tokens
-2. Regenerates the Flutter API client from the spec (`openapi-generator dart-dio`)
-3. Implements the domain layer in Dart (entities, repository interface)
-4. Implements use cases + unit tests (pure Dart, no Flutter)
-5. Implements BLoC + unit tests (mocktail mocks use cases)
-6. Implements widgets + widget tests (pump BLoC with mock states)
-7. Implements screen + integration test (against real or mocked API)
-8. Runs `flutter-reviewer` 5-gate quality check
+2. Generates or uses API client from the OpenAPI spec (e.g. `openapi-generator-cli` typescript-* or project tooling)
+3. Implements the domain layer in TypeScript (entities, repository interfaces — pure, no Angular/HttpClient)
+4. Implements application layer (use cases / services) + unit tests
+5. Implements data layer (repository implementations, API service)
+6. Implements presentation (components, pages, state via NgRx or signals)
+7. Runs tests and lint. Optionally hands to reviewer.
 
-**Flutter test types implemented**:
-
-| Test type | Flutter tool | Spring Boot equivalent |
-|-----------|-------------|----------------------|
-| Use case unit tests | `flutter_test` + `mocktail` | JUnit + Mockito |
-| BLoC unit tests | `bloc_test` + `mocktail` | (application service tests) |
-| Widget tests | `flutter_test pump()` | `@WebMvcTest` |
-| Integration tests | `integration_test` package | `@SpringBootTest` + CucumberIT |
-
-**Output**: Complete Flutter feature implementation with tests at every layer
+**Output**: Complete Angular feature implementation with clean layers and tests.
 
 ```
-/rushee:flutter-feature FDD-001
+/rushee:angular-feature FDD-001
 [Agent verifies prerequisites]
-[Agent regenerates API client from order-api.yaml]
-[Agent generates Order entity (Dart, pure), OrderRepository (abstract)]
-[Agent writes PlaceOrderUseCase + unit test — RED → implement — GREEN]
-[Agent writes OrderBloc + bloc_test — RED → implement — GREEN]
-[Agent writes CartReviewScreen widget tests — RED → implement — GREEN]
-[Agent runs flutter-reviewer 5 gates]
-> Gate F1 Architecture ✅  Gate F2 State ✅  Gate F3 Contract ✅
-> Gate F4 Tests ✅  Gate F5 Security ✅
-> FLUTTER REVIEW: APPROVED
+[Agent generates API client from OpenAPI spec]
+[Domain → application → data → presentation, tests at each layer]
 ```
+
+**Other frontends** (same pipeline): `/rushee:flutter-feature`, `/rushee:react-feature`, `/rushee:svelte-feature`.
 
 #### Other frontends and backends (same pipeline, same contract)
 
 | Command | Stack | Use when |
 |--------|--------|----------|
+| `/rushee:flutter-feature <FDD-NNN>` | Flutter (Dart) | Frontend is Flutter; same Feature Card + OpenAPI |
 | `/rushee:react-feature <FDD-NNN>` | React (Vite, TypeScript) | Frontend is React; same Feature Card + OpenAPI |
 | `/rushee:svelte-feature <FDD-NNN>` | Svelte / SvelteKit | Frontend is Svelte |
-| `/rushee:angular-feature <FDD-NNN>` | Angular | Frontend is Angular |
 | `/rushee:fastapi-tdd-cycle <FDD-NNN>` | Python (FastAPI) | Backend is FastAPI; same Gherkin + OpenAPI |
 | `/rushee:nest-tdd-cycle <FDD-NNN>` | TypeScript (NestJS) | Backend is NestJS |
 | `/rushee:go-tdd-cycle <FDD-NNN>` | Go | Backend is Go (Echo/Gin, Godog) |
@@ -858,11 +843,11 @@ Skills fire **automatically** when your conversation matches their trigger phras
 | **spec-guardian** | After gherkin-writer | Rejects HTTP verbs, URLs, class names, SQL in Gherkin |
 | **acceptance-enforcer** | `/rushee:atdd-run` | Checks Maven deps, generates PendingException skeletons, confirms RED |
 | **tdd-implementer** | `/rushee:tdd-cycle` | Outside-in TDD: one test at a time. Backend only |
-| **flutter-implementer** | `/rushee:flutter-feature` | Outside-in Flutter: use cases → BLoC → widgets → screens. Tests at every layer |
+| **angular-implementer** | `/rushee:angular-feature` | Default frontend: domain → data → presentation (Angular). Tests at each layer |
+| **flutter-implementer** | `/rushee:flutter-feature` | Flutter: use cases → BLoC → widgets → screens. Tests at every layer |
 | **flutter-reviewer** | After flutter-implementer | Runs 5-gate Flutter quality review |
 | **react-implementer** | `/rushee:react-feature` | Same pipeline for React (domain → data → presentation) |
 | **svelte-implementer** | `/rushee:svelte-feature` | Same pipeline for Svelte |
-| **angular-implementer** | `/rushee:angular-feature` | Same pipeline for Angular |
 | **fastapi-tdd-implementer** | `/rushee:fastapi-tdd-cycle` | Same BDD/TDD pipeline for FastAPI (Python) |
 | **nest-tdd-implementer** | `/rushee:nest-tdd-cycle` | Same pipeline for NestJS (TypeScript) |
 | **go-tdd-implementer** | `/rushee:go-tdd-cycle` | Same pipeline for Go |
@@ -1037,7 +1022,7 @@ You: "They open it to see products, add items to cart, and place an order"
 > ✅ Contract tests pass
 
 > "Both clients generated. Next: /rushee:bdd-spec FDD-001 (backend)
->              and simultaneously: /rushee:flutter-feature FDD-001 (Flutter)"
+>              and simultaneously: /rushee:angular-feature FDD-001 (Angular)"
 ```
 
 ### Step 5 — BDD + ATDD (Backend)
@@ -1087,7 +1072,7 @@ cd your-project && claude
 
 # Terminal 2 — Flutter (same project root, different stream)
 cd your-project && claude
-/rushee:flutter-feature FDD-001
+/rushee:angular-feature FDD-001
 ```
 
 Both sessions work independently. Neither blocks the other. Both implement
@@ -1506,7 +1491,7 @@ class PlaceOrderUseCase {
 
 ### Where visual verification happens (Figma, wireframes)
 
-The plugin **does not run** Figma, Miro, or other visual tools. Phase 0 produces **text** artifacts only: personas, job stories, screen inventory, navigation map, and **wireframe specs** (markdown descriptions of each screen). Designers use those specs to build in Figma; you then update the screen inventory’s “Figma Status” and extract design tokens into `mobile/lib/core/theme/` before Flutter implementation. Golden tests in Flutter compare to a stored baseline, not to Figma. So: **visual verification is in your process** (approve in Figma, update status, extract tokens), not inside the plugin. **How UX output feeds later phases:** event-stormer reads domain events from job stories; feature-analyst reads screen inventory and personas for Feature Cards; api-designer reads wireframe specs for “API calls this screen makes”; flutter-implementer reads screen inventory (and Figma status) and design tokens. See below for UX outputs and how they feed later phases.
+The plugin **does not run** Figma, Miro, or other visual tools. Phase 0 produces **text** artifacts only: personas, job stories, screen inventory, navigation map, and **wireframe specs** (markdown descriptions of each screen). Designers use those specs to build in Figma; you then update the screen inventory’s “Figma Status” and extract design tokens into `frontend/src/` (Angular) or `mobile/lib/core/theme/` (Flutter) before frontend implementation. Golden tests (Flutter) compare to a stored baseline, not to Figma. So: **visual verification is in your process** (approve in Figma, update status, extract tokens), not inside the plugin. **How UX output feeds later phases:** event-stormer reads domain events from job stories; feature-analyst reads screen inventory and personas for Feature Cards; api-designer reads wireframe specs for “API calls this screen makes”; angular-implementer (or flutter-implementer) reads screen inventory (and Figma status) and design tokens. See below for UX outputs and how they feed later phases.
 
 #### What the plugin produces in UX discovery (Phase 0)
 
@@ -1518,7 +1503,7 @@ The plugin **does not run** Figma, Miro, or other visual tools. Phase 0 produces
 | Navigation map | `docs/ux/navigation-map.md` | How screens connect (tabs, modals, wizards) |
 | Wireframe **specs** | `docs/ux/wireframe-specs/<ScreenName>.md` | **Text** description: purpose, UI states, content order, interactions, **API calls** |
 
-Wireframe specs are not visual — they are markdown. Designers use these specs to build in Figma; the plugin does not generate or open Figma files. **After** Phase 0, a designer builds Figma from the wireframe specs. Update the screen inventory's Figma Status when approved. Design tokens (colors, typography, spacing) are extracted into e.g. `mobile/lib/core/theme/app_colors.dart`; the plugin expects these before Flutter implementation and does not pull them from Figma automatically.
+Wireframe specs are not visual — they are markdown. Designers use these specs to build in Figma; the plugin does not generate or open Figma files. **After** Phase 0, a designer builds Figma from the wireframe specs. Update the screen inventory's Figma Status when approved. Design tokens (colors, typography, spacing) are extracted into e.g. `frontend/src/styles/ or theme`; the plugin expects these before Flutter implementation and does not pull them from Figma automatically.
 
 #### How UX output is fed into subsequent phases
 
@@ -1529,9 +1514,9 @@ Wireframe specs are not visual — they are markdown. Designers use these specs 
 | Phase 2 | `/rushee:feature` | screen inventory, personas, job stories | Screens table from inventory; Actor from personas; criteria from job stories |
 | Phase 2b | `/rushee:api-design` | FDD-NNN.md, domain-model, **wireframe-specs/*.md** | Wireframe specs' "API calls this screen makes" → endpoints and request/response shapes |
 | Phase 3 | `/rushee:bdd-spec` | FDD-NNN.md, optionally wireframe-specs | Wireframe specs can suggest UI states (loading, empty, error) as scenarios |
-| Phase 4f | `/rushee:flutter-feature` | FDD-NNN.md, **screen-inventory** (Figma status), design tokens | Screen list + Figma status; theme tokens; widget naming aligned with Figma |
+| Phase 4f | `/rushee:angular-feature` | FDD-NNN.md, **screen-inventory** (Figma status), design tokens | Screen list + Figma status; theme tokens; component naming aligned with Figma |
 
-**Quick reference:** `personas.md` → event-stormer, domain-modeller, feature-analyst (Actor). `job-stories.md` → event-stormer (domain events), domain-modeller, feature-analyst (criteria). `screen-inventory.md` → feature-analyst (Screens table), flutter-implementer (screen list + Figma status). `wireframe-specs/*.md` → api-designer (API calls per screen), gherkin-writer (optional UI states). Design tokens in `mobile/lib/core/theme/` are required by flutter-implementer before building screens.
+**Quick reference:** `personas.md` → event-stormer, domain-modeller, feature-analyst (Actor). `job-stories.md` → event-stormer (domain events), domain-modeller, feature-analyst (criteria). `screen-inventory.md` → feature-analyst (Screens table), flutter-implementer (screen list + Figma status). `wireframe-specs/*.md` → api-designer (API calls per screen), gherkin-writer (optional UI states). Design tokens in `frontend/src/` (Angular) or `mobile/lib/core/theme/` (Flutter) are required by the frontend implementer before building screens.
 
 ### Design Token Extraction
 
@@ -1623,7 +1608,7 @@ Once the API contract is approved and backend acceptance tests are RED:
 /rushee:tdd-cycle FDD-001      # Spring Boot implementation
 
 # Terminal 2 (separate window)
-/rushee:flutter-feature FDD-001  # Flutter implementation
+/rushee:angular-feature FDD-001  # Angular implementation
 ```
 
 Both work independently from the same spec. No file conflicts.
@@ -1673,7 +1658,7 @@ You can add **other frontends** (e.g. React, Svelte, Angular) and **other backen
 | Layer | Rushee today | How to add another stack |
 |-------|----------------|---------------------------|
 | **Backend (Phase 4)** | Spring Boot + Java: `tdd-implementer`, `spring-reviewer`, BDD (Cucumber-JVM), domain purity (no framework in domain). | Add a **skill** (e.g. `fastapi-clean-architecture`, `go-ports-adapters`) and an **agent** (e.g. `fastapi-tdd-implementer`, `go-reviewer`) that enforce the same rules: domain pure, ports & adapters, BDD/ATDD then TDD. Use the same OpenAPI spec and Feature Cards; only the implementation language and test runner change (e.g. pytest-bdd, Behave, Godog). |
-| **Frontend (Phase 4f)** | Flutter + Dart: `flutter-implementer`, `flutter-reviewer`, clean layers (domain/data/presentation), BLoC, OpenAPI client. | Add a **skill** (e.g. `react-clean-architecture`, `svelte-ports-adapters`) and an **agent** (e.g. `react-feature-implementer`, `angular-reviewer`) that enforce: domain pure, no API calls in UI, design tokens, generated client from OpenAPI. Same docs (screen inventory, wireframe specs, Feature Card); only the framework and folder layout change (e.g. `src/domain`, `src/application`, `src/infrastructure`, `src/presentation`). |
+| **Frontend (Phase 4f)** | Angular + TypeScript: `angular-implementer`, clean layers (domain/data/presentation), NgRx/signals, OpenAPI client. Also Flutter: `flutter-implementer`, `flutter-reviewer`. | Add a **skill** (e.g. `react-clean-architecture`, `svelte-ports-adapters`) and an **agent** (e.g. `react-feature-implementer`, `angular-reviewer`) that enforce: domain pure, no API calls in UI, design tokens, generated client from OpenAPI. Same docs (screen inventory, wireframe specs, Feature Card); only the framework and folder layout change (e.g. `src/domain`, `src/application`, `src/infrastructure`, `src/presentation`). |
 
 **Example stacks you can add (same architecture style):**
 
@@ -1687,7 +1672,7 @@ You can add **other frontends** (e.g. React, Svelte, Angular) and **other backen
 3. Optionally add a **command** (e.g. `/rushee:react-feature` or `/rushee:fastapi-tdd-cycle`) that invokes your implementer and points to the same upstream docs (FDD-NNN.md, OpenAPI, screen inventory).
 4. Keep **Phase 0–2b and the contract unchanged.** Your new backend/frontend consumes the same `docs/` and `*-api.yaml`.
 
-Rushee’s out-of-the-box flow is **Flutter + Spring Boot**. Adding React, Svelte, Angular, Python, Go, Rust, or TypeScript is done by **extending** with new skills and agents that follow the same architecture and pipeline; the shared pipeline and OpenAPI contract keep everything aligned.
+Rushee’s out-of-the-box flow is **Angular + Spring Boot**. Adding React, Svelte, Flutter, Python, Go, Rust, or TypeScript is done by **extending** with new skills and agents that follow the same architecture and pipeline; the shared pipeline and OpenAPI contract keep everything aligned.
 
 ### Project-specific skills (not for upstream)
 
@@ -1719,7 +1704,7 @@ precedence when names conflict.
 | Phase 2b (API) | Run api-design, write OpenAPI | “How do I design REST?” “What’s a good status code?” | API design / OpenAPI deep-dive |
 | Phase 3 / 3b (BDD / ATDD) | Run bdd-spec, atdd-run | “How do I write good Gherkin?” “How do step defs work?” | BDD / Cucumber / ATDD deep-dive |
 | Phase 4 (Backend) | Run tdd-cycle (or fastapi / nest / go / rust) | “I don’t understand repositories / ports and adapters.” | Spring Boot / FastAPI / Nest / Go / Rust deep-dive for your stack |
-| Phase 4f (Frontend) | Run flutter-feature (or react / svelte / angular) | “I don’t understand BLoC / clean layers / state.” | Flutter / React / Svelte / Angular deep-dive for your stack |
+| Phase 4f (Frontend) | Run angular-feature (or react / svelte / flutter) | “I don’t understand clean layers / state / NgRx.” | Angular / React / Svelte / Flutter deep-dive for your stack |
 | Security / Ops | Run security-check, status | “What’s OWASP?” “How do I add logging?” | Security / observability deep-dive |
 
 **How to use them together**
@@ -1787,7 +1772,7 @@ precedence when names conflict.
 A: Yes. **Greenfield (new project):** Run `/rushee:start` from your project root. It will see no (or minimal) Rushee artifacts and tell you to start with `/rushee:ux-discovery`. Follow the pipeline from there. **Brownfield (existing project):** Run `/rushee:start` — it scans for existing docs (personas, context map, feature cards, OpenAPI, Gherkin, code) and recommends the **next step** based on what it finds. For a codebase that never used Rushee, run **`/rushee:bootstrap retrofit`** first: it scans the repo and infers where you are in the pipeline (e.g. "you have domain classes and an API spec; missing Feature Cards and Gherkin"). Then use **`/rushee:bootstrap phase-N FDD-NNN`** (e.g. `phase-3 FDD-001` to start at BDD, or `phase-4f FDD-001` for Flutter only) to jump to a phase. The bootstrapper will help create any missing stub files (e.g. a minimal Feature Card) so you can run that phase. You can skip phases when you already have the outputs (e.g. "we have an API spec, start at BDD"); you cannot skip **prerequisites** — the bootstrapper helps you add the minimum required files when you skip.
 
 **Q: Can I use React, Svelte, Angular, or Python, Go, Rust, TypeScript instead of Flutter / Spring Boot?**  
-A: Rushee ships with **Flutter + Spring Boot** only. The **pipeline** (UX → domain → contract → code) and the **OpenAPI contract** are stack-agnostic. To use another frontend (React, Svelte, Angular, Vue) or backend (Python/FastAPI, TypeScript/Nest, Go, Rust), you **extend** Rushee: add a skill for that stack’s clean-architecture/ports-adapters rules and an agent (implementer + optional reviewer) that reads the same Feature Cards and OpenAPI spec and implements in your stack. See [Adding other frontend and backend stacks](#adding-other-frontend-and-backend-stacks) in § Extending Rushee. No change to Phase 0–2b or the contract; only the implementation phase (4 and 4f) is stack-specific.
+A: Rushee default stack is **Angular + Spring Boot**. The **pipeline** (UX → domain → contract → code) and the **OpenAPI contract** are stack-agnostic. To use another frontend (React, Svelte, Angular, Vue) or backend (Python/FastAPI, TypeScript/Nest, Go, Rust), you **extend** Rushee: add a skill for that stack’s clean-architecture/ports-adapters rules and an agent (implementer + optional reviewer) that reads the same Feature Cards and OpenAPI spec and implements in your stack. See [Adding other frontend and backend stacks](#adding-other-frontend-and-backend-stacks) in § Extending Rushee. No change to Phase 0–2b or the contract; only the implementation phase (4 and 4f) is stack-specific.
 
 **Q: Do I have to use BLoC for Flutter state management? What about Riverpod?**
 A: Rushee's `flutter-clean-architecture` skill uses BLoC as the default because it
@@ -1856,7 +1841,7 @@ A: Open an issue at `github.com/<your-username>/rushee/issues`.
 1. Fork `github.com/<your-username>/rushee`
 2. Branch: `git checkout -b skill/your-new-skill`
 3. Follow the `extending-rushee` skill guide
-4. Test in a real Flutter + Spring Boot project
+4. Test in a real Angular + Spring Boot project
 5. Submit a PR with the skill, updated `plugin.json`, and a `CHANGELOG.md` entry
 
 Replace `<your-github-username>` in `.claude-plugin/plugin.json` and

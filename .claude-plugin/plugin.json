@@ -1,7 +1,7 @@
 {
   "name": "rushee",
   "version": "2.2.0",
-  "description": "Full-stack Flutter + Spring Boot engineering discipline: UX Discovery → Strategic DDD → Tactical DDD → FDD → OpenAPI Contract → BDD → ATDD → TDD → Flutter Implementation → Security → Observability. Junior developers follow the complete outer-to-inner engineering loop through disciplined prompting.",
+  "description": "Full-stack Angular + Spring Boot engineering discipline: UX Discovery → Strategic DDD → Tactical DDD → FDD → OpenAPI Contract → BDD → ATDD → TDD → Angular Implementation → Security → Observability. Junior developers follow the complete outer-to-inner engineering loop through disciplined prompting.",
   "author": "codingbuddha7",
   "license": "MIT",
   "commands": [

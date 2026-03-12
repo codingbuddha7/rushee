@@ -37,7 +37,7 @@ This command:
 | phase-2 | feature | docs/domain/*/domain-model.md (optional) |
 | phase-3 | bdd-spec | docs/features/FDD-NNN.md + api.yaml |
 | phase-4 | tdd-cycle | feature file + step defs (RED) |
-| phase-4f | flutter-feature | feature card + screen inventory + api.yaml |
+| phase-4f | angular-feature (default) or flutter-feature / react-feature / svelte-feature | feature card + screen inventory + api.yaml |
 | retrofit | — | scans existing codebase, maps to pipeline state |
 
 **Skipping phases is valid. Skipping prerequisites is not.**
