@@ -3,8 +3,7 @@
 > *"Start with the user. End with production. Never skip a step."*
 
 **Rushee** is a [Claude Code](https://claude.ai/code) plugin that enforces a complete,
-professional engineering discipline for full-stack **Flutter + Spring Boot** projects —
-from first UX sketch to production deployment. Every stage is guided, every shortcut
+professional engineering discipline for full-stack projects — from first UX sketch to production deployment. **Default:** Flutter + Spring Boot. **Also supported:** React, Svelte, Angular (frontends); FastAPI, NestJS, Go, Rust (backends); same pipeline and OpenAPI contract. Every stage is guided, every shortcut
 is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
 **First time here?** You only need to remember **one command**: run **`/rushee:start`** from your project root (the folder that contains `backend/`, `mobile/`, and `docs/`). It will look at your project and tell you **exactly what to do next**. No need to memorise the whole pipeline.
@@ -50,6 +49,17 @@ is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 | **`/rushee:start`** | Every time you open the project or finish a step | Looks at your repo (docs, backend, mobile) and tells you the **next step** in plain language. You don’t need to memorise the pipeline. |
 
 **Rule:** Run `/rushee:start` from your **project root** (the folder that has `backend/`, `mobile/`, and `docs/`). If you’re not sure where that is, open the project in your editor and run it from the top-level folder.
+
+**Stuck on *how* to do a step?** (e.g. “What’s an aggregate?” “How do I write a repository?”) Use a **deep-dive or companion skill** for that topic in the same session — Rushee tells you *when* to do each step; a deep-dive helps with the *how*. See [Using companion skills (e.g. deep-dive) with Rushee](#using-companion-skills-eg-deep-dive-with-rushee) for when to use what.
+
+---
+
+### Greenfield vs brownfield
+
+Rushee works for **both**:
+
+- **Greenfield (new project):** Run **`/rushee:start`**. It will see nothing (or only scaffolding) and tell you to start with `/rushee:ux-discovery`. Follow Path A, B, or C from there.
+- **Brownfield (existing project):** Run **`/rushee:start`** anyway. It **scans** your repo (docs, OpenAPI, backend code, Flutter) and tells you the **next step** based on what already exists. If the project never used Rushee, run **`/rushee:bootstrap retrofit`** first — it maps your codebase to the pipeline and suggests where to join. Then you can **skip to a phase** with **`/rushee:bootstrap phase-N FDD-NNN`** (e.g. phase-3 for BDD, phase-4 for backend implementation). The bootstrapper helps create any missing docs or stubs. See [FAQ: Greenfield vs brownfield](#21-faq).
 
 ---
 
@@ -103,6 +113,8 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 | Your situation | What you do |
 |----------------|-------------|
 | New to Rushee / not sure | Run **`/rushee:start`** from project root. Do what it says. Repeat. |
+| **New project (greenfield)** | Path A or B. Use `/rushee:start` as your loop from Phase 0. |
+| **Existing project (brownfield)** | Run **`/rushee:start`** — it detects what exists and suggests the next step. Or run **`/rushee:bootstrap retrofit`** to scan and map; then **`/rushee:bootstrap phase-N FDD-NNN`** to jump to a phase. |
 | Full app (backend + mobile) | Path A. Use `/rushee:start` as your loop. |
 | Backend only | Path B. Use `/rushee:start` until backend is done; then stop. |
 | Flutter only (API exists) | Path C. Get OpenAPI + Feature Card + design tokens, then `/rushee:start` and `/rushee:flutter-feature`. |
@@ -111,9 +123,9 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 
 ## 2. What is Rushee?
 
-Rushee is a Claude Code plugin — a collection of **27 skills**, **18 agents**,
-**16 commands**, and **7 hooks** that enforce a structured engineering methodology
-across a full-stack Flutter + Spring Boot project. Start with **`/rushee:start`** for a guided entry point.
+Rushee is a Claude Code plugin — a collection of **33 skills**, **25 agents**,
+**23 commands**, and **7 hooks** that enforce a structured engineering methodology
+across full-stack projects. **Default stack:** Flutter + Spring Boot. **Also supported** (same pipeline, same contract): React, Svelte, Angular (frontends); FastAPI (Python), NestJS (TypeScript), Go, Rust (backends). Start with **`/rushee:start`** for a guided entry point.
 
 ### The Problem Rushee Solves
 
@@ -662,6 +674,20 @@ Can run **in parallel** with `/rushee:tdd-cycle` since both implement from the s
 > FLUTTER REVIEW: APPROVED
 ```
 
+#### Other frontends and backends (same pipeline, same contract)
+
+| Command | Stack | Use when |
+|--------|--------|----------|
+| `/rushee:react-feature <FDD-NNN>` | React (Vite, TypeScript) | Frontend is React; same Feature Card + OpenAPI |
+| `/rushee:svelte-feature <FDD-NNN>` | Svelte / SvelteKit | Frontend is Svelte |
+| `/rushee:angular-feature <FDD-NNN>` | Angular | Frontend is Angular |
+| `/rushee:fastapi-tdd-cycle <FDD-NNN>` | Python (FastAPI) | Backend is FastAPI; same Gherkin + OpenAPI |
+| `/rushee:nest-tdd-cycle <FDD-NNN>` | TypeScript (NestJS) | Backend is NestJS |
+| `/rushee:go-tdd-cycle <FDD-NNN>` | Go | Backend is Go (Echo/Gin, Godog) |
+| `/rushee:rust-tdd-cycle <FDD-NNN>` | Rust (Actix/Axum) | Backend is Rust |
+
+Same prerequisites: Feature Card, OpenAPI spec, (for frontend) screen inventory and design tokens; (for backend) Gherkin and step defs RED. Domain stays pure; contract-first.
+
 ---
 
 ### Quality Gates
@@ -756,6 +782,23 @@ Skills fire **automatically** when your conversation matches their trigger phras
 | **mobile-security-by-design** | "store token", "JWT Flutter", "SharedPreferences", "flutter_secure_storage", "certificate pinning", "biometric", "OWASP Mobile", "keystore", "keychain", "screenshot prevention" |
 | **openapi-contract-sync** | "add a field", "change the response", "fromJson", "toJson", "dto", "serialization", "api contract", "breaking change", "api versioning", "retrofit", "regenerate", "model mismatch", any edit to `*-api.yaml` |
 
+### Other frontends (same clean-architecture pipeline)
+
+| Skill | Triggers on... |
+|-------|---------------|
+| **react-clean-architecture** | "React", "Vite", "React Query", "Zustand", "react feature", "React layer" |
+| **svelte-clean-architecture** | "Svelte", "SvelteKit", "svelte feature", "Svelte layer" |
+| **angular-clean-architecture** | "Angular", "NgRx", "angular feature", "Angular layer" |
+
+### Other backends (same ports & adapters pipeline)
+
+| Skill | Triggers on... |
+|-------|---------------|
+| **fastapi-clean-architecture** | "FastAPI", "Python backend", "pytest-bdd", "Behave", "FastAPI layer" |
+| **nest-ports-adapters** | "NestJS", "Nest", "TypeScript backend", "Nest domain" |
+| **go-ports-adapters** | "Go", "Golang", "Echo", "Gin", "Godog", "Go backend" |
+| **rust-ports-adapters** | "Rust", "Actix", "Axum", "Rust backend", "cucumber-rs" |
+
 ### Strategic Layer
 
 | Skill | Triggers on... |
@@ -817,6 +860,13 @@ Skills fire **automatically** when your conversation matches their trigger phras
 | **tdd-implementer** | `/rushee:tdd-cycle` | Outside-in TDD: one test at a time. Backend only |
 | **flutter-implementer** | `/rushee:flutter-feature` | Outside-in Flutter: use cases → BLoC → widgets → screens. Tests at every layer |
 | **flutter-reviewer** | After flutter-implementer | Runs 5-gate Flutter quality review |
+| **react-implementer** | `/rushee:react-feature` | Same pipeline for React (domain → data → presentation) |
+| **svelte-implementer** | `/rushee:svelte-feature` | Same pipeline for Svelte |
+| **angular-implementer** | `/rushee:angular-feature` | Same pipeline for Angular |
+| **fastapi-tdd-implementer** | `/rushee:fastapi-tdd-cycle` | Same BDD/TDD pipeline for FastAPI (Python) |
+| **nest-tdd-implementer** | `/rushee:nest-tdd-cycle` | Same pipeline for NestJS (TypeScript) |
+| **go-tdd-implementer** | `/rushee:go-tdd-cycle` | Same pipeline for Go |
+| **rust-tdd-implementer** | `/rushee:rust-tdd-cycle` | Same pipeline for Rust (Actix/Axum) |
 | **debugger** | `/rushee:debug` | Classifies failure (7 backend + 5 Flutter categories), forms hypothesis, applies minimal fix |
 | **parallel-dispatcher** | `/rushee:parallel` | Defines file ownership, per-agent instructions, worktree setup |
 | **security-reviewer** | `/rushee:security-check` | OWASP Top 10 (backend) + OWASP Mobile Top 10 (Flutter) |
@@ -1608,6 +1658,37 @@ git worktree add ../project-FDD-006 -b feature/FDD-006-notifications
 - Push notifications and deep links (`flutter-notifications`)
 - A bug pattern that escaped review and cost you time
 
+### Adding other frontend and backend stacks
+
+You can add **other frontends** (e.g. React, Svelte, Angular) and **other backends** (e.g. Python, TypeScript, Go, Rust) and keep the **same full-stack flow** (UX → domain → contract → code) and **similar architecture styles** (clean/hexagonal, domain at center, contract-first).
+
+**What stays the same (stack-agnostic):**
+
+- **Phases 0–2b:** UX discovery, event storming, DDD model, Feature Card, **OpenAPI contract**. These are framework-agnostic. Personas, job stories, context map, domain-model.md, FDD-NNN.md, and the API spec work for any backend and any frontend.
+- **Contract:** OpenAPI 3.1 remains the single source of truth. Any backend and any frontend can generate clients or server stubs from it.
+- **Pipeline idea:** Never write code before the contract; never design the contract before the domain model; never design the domain before the user journey.
+
+**What is stack-specific (what you add via extend):**
+
+| Layer | Rushee today | How to add another stack |
+|-------|----------------|---------------------------|
+| **Backend (Phase 4)** | Spring Boot + Java: `tdd-implementer`, `spring-reviewer`, BDD (Cucumber-JVM), domain purity (no framework in domain). | Add a **skill** (e.g. `fastapi-clean-architecture`, `go-ports-adapters`) and an **agent** (e.g. `fastapi-tdd-implementer`, `go-reviewer`) that enforce the same rules: domain pure, ports & adapters, BDD/ATDD then TDD. Use the same OpenAPI spec and Feature Cards; only the implementation language and test runner change (e.g. pytest-bdd, Behave, Godog). |
+| **Frontend (Phase 4f)** | Flutter + Dart: `flutter-implementer`, `flutter-reviewer`, clean layers (domain/data/presentation), BLoC, OpenAPI client. | Add a **skill** (e.g. `react-clean-architecture`, `svelte-ports-adapters`) and an **agent** (e.g. `react-feature-implementer`, `angular-reviewer`) that enforce: domain pure, no API calls in UI, design tokens, generated client from OpenAPI. Same docs (screen inventory, wireframe specs, Feature Card); only the framework and folder layout change (e.g. `src/domain`, `src/application`, `src/infrastructure`, `src/presentation`). |
+
+**Example stacks you can add (same architecture style):**
+
+- **Frontends:** React (Vite + React Query / Zustand), Svelte, Angular, Vue — each with domain/application/infrastructure/presentation (or equivalent), OpenAPI-generated client, and a reviewer agent.
+- **Backends:** Python (FastAPI + domain layer + pytest-bdd), TypeScript (NestJS or Node + clean layers + Cucumber/Playwright), Go (standard lib or Echo/Gin + hexagon + Godog), Rust (Actix/Axum + domain crate + BDD) — each with domain purity, ports & adapters, and a reviewer agent.
+
+**Steps to add a new stack:**
+
+1. Use **`/rushee:extend skill <stack>-clean-architecture`** (or `<stack>-ports-adapters`) — document the layer rules, where domain/application/infrastructure live, and “no framework in domain.”
+2. Use **`/rushee:extend agent <stack>-implementer`** (and optionally **`<stack>-reviewer`**) — same pipeline step (read Feature Card + OpenAPI, implement feature, run tests), but for your stack’s layout and test runner.
+3. Optionally add a **command** (e.g. `/rushee:react-feature` or `/rushee:fastapi-tdd-cycle`) that invokes your implementer and points to the same upstream docs (FDD-NNN.md, OpenAPI, screen inventory).
+4. Keep **Phase 0–2b and the contract unchanged.** Your new backend/frontend consumes the same `docs/` and `*-api.yaml`.
+
+Rushee’s out-of-the-box flow is **Flutter + Spring Boot**. Adding React, Svelte, Angular, Python, Go, Rust, or TypeScript is done by **extending** with new skills and agents that follow the same architecture and pipeline; the shared pipeline and OpenAPI contract keep everything aligned.
+
 ### Project-specific skills (not for upstream)
 
 Organisation-specific skills belong in `.claude/skills/`:
@@ -1624,6 +1705,30 @@ your-project/
 
 Claude Code discovers these alongside Rushee's skills. Project skills take
 precedence when names conflict.
+
+### Using companion skills (e.g. deep-dive) with Rushee
+
+**Rushee tells you *what* to do and *when*.** A **deep-dive** (or other companion) skill or plugin tells you *how* in depth — patterns, internals, framework details. Juniors often don’t know when to switch to “go deep,” so use this as a guide.
+
+**When to use a deep-dive (or similar) skill alongside Rushee**
+
+| You’re in this phase / situation | Rushee says | When you’re stuck or unsure | Use a companion skill like… |
+|----------------------------------|-------------|-----------------------------|------------------------------|
+| Phase 0 (UX) | Run ux-discovery, write personas/job stories | “What’s a good job story?” “How do I run a workshop?” | UX / discovery / facilitation deep-dive (if installed) |
+| Phase 1 / 1b (Domain) | Run event-storm, ddd-model | “What’s an aggregate vs entity?” “How do I model this?” | DDD / event storming / domain modelling deep-dive |
+| Phase 2b (API) | Run api-design, write OpenAPI | “How do I design REST?” “What’s a good status code?” | API design / OpenAPI deep-dive |
+| Phase 3 / 3b (BDD / ATDD) | Run bdd-spec, atdd-run | “How do I write good Gherkin?” “How do step defs work?” | BDD / Cucumber / ATDD deep-dive |
+| Phase 4 (Backend) | Run tdd-cycle (or fastapi / nest / go / rust) | “I don’t understand repositories / ports and adapters.” | Spring Boot / FastAPI / Nest / Go / Rust deep-dive for your stack |
+| Phase 4f (Frontend) | Run flutter-feature (or react / svelte / angular) | “I don’t understand BLoC / clean layers / state.” | Flutter / React / Svelte / Angular deep-dive for your stack |
+| Security / Ops | Run security-check, status | “What’s OWASP?” “How do I add logging?” | Security / observability deep-dive |
+
+**How to use them together**
+
+1. **Keep Rushee as your loop:** Run `/rushee:start` and do the next step it suggests.
+2. **When you don’t understand the *how*:** In the same session, ask explicitly, e.g. “Using the [deep-dive / X] skill, explain how to design this aggregate” or “I’m in Phase 4 (backend); give me a deep dive on Spring Boot repositories and then we’ll continue with Rushee.”
+3. **What’s “available”:** Depends on your setup. In Claude Code or Cursor, any installed plugin or skill (e.g. from a marketplace or your org’s “deep dive” framework) is available in the same chat. Rushee doesn’t ship a specific deep-dive product; it just recommends *when* to reach for one so juniors don’t have to guess.
+
+**Summary for juniors:** If Rushee says “do Phase X” and you’re not sure *how* to do it well, that’s the moment to ask for a deep-dive (or similar) on that topic — then continue with Rushee for the next step.
 
 ---
 
@@ -1677,6 +1782,12 @@ precedence when names conflict.
 ---
 
 ## 21. FAQ
+
+**Q: Does Rushee work for greenfield and brownfield projects?**  
+A: Yes. **Greenfield (new project):** Run `/rushee:start` from your project root. It will see no (or minimal) Rushee artifacts and tell you to start with `/rushee:ux-discovery`. Follow the pipeline from there. **Brownfield (existing project):** Run `/rushee:start` — it scans for existing docs (personas, context map, feature cards, OpenAPI, Gherkin, code) and recommends the **next step** based on what it finds. For a codebase that never used Rushee, run **`/rushee:bootstrap retrofit`** first: it scans the repo and infers where you are in the pipeline (e.g. "you have domain classes and an API spec; missing Feature Cards and Gherkin"). Then use **`/rushee:bootstrap phase-N FDD-NNN`** (e.g. `phase-3 FDD-001` to start at BDD, or `phase-4f FDD-001` for Flutter only) to jump to a phase. The bootstrapper will help create any missing stub files (e.g. a minimal Feature Card) so you can run that phase. You can skip phases when you already have the outputs (e.g. "we have an API spec, start at BDD"); you cannot skip **prerequisites** — the bootstrapper helps you add the minimum required files when you skip.
+
+**Q: Can I use React, Svelte, Angular, or Python, Go, Rust, TypeScript instead of Flutter / Spring Boot?**  
+A: Rushee ships with **Flutter + Spring Boot** only. The **pipeline** (UX → domain → contract → code) and the **OpenAPI contract** are stack-agnostic. To use another frontend (React, Svelte, Angular, Vue) or backend (Python/FastAPI, TypeScript/Nest, Go, Rust), you **extend** Rushee: add a skill for that stack’s clean-architecture/ports-adapters rules and an agent (implementer + optional reviewer) that reads the same Feature Cards and OpenAPI spec and implements in your stack. See [Adding other frontend and backend stacks](#adding-other-frontend-and-backend-stacks) in § Extending Rushee. No change to Phase 0–2b or the contract; only the implementation phase (4 and 4f) is stack-specific.
 
 **Q: Do I have to use BLoC for Flutter state management? What about Riverpod?**
 A: Rushee's `flutter-clean-architecture` skill uses BLoC as the default because it
