@@ -3,7 +3,7 @@
 > *"Start with the user. End with production. Never skip a step."*
 
 **Rushee** is a [Claude Code](https://claude.ai/code) plugin that enforces a complete,
-professional engineering discipline for full-stack projects — from first UX sketch to production deployment. **Default:** Angular + Spring Boot. **Also supported:** React, Svelte, Flutter (frontends); FastAPI, NestJS, Go, Rust (backends); same pipeline and OpenAPI contract. Every stage is guided, every shortcut
+professional engineering discipline for full-stack projects — from first UX sketch to production deployment. **Default:** Angular + Spring Boot (with full Spring ecosystem: Spring AI, Integration, Cloud, Batch, Data, Security, etc., in infrastructure; domain stays pure). **Also supported:** React, Svelte (web); Flutter (mobile); FastAPI, NestJS, Go, Rust (backends); same pipeline and OpenAPI contract. Every stage is guided, every shortcut
 is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
 **First time here?** You only need to remember **one command**: run **`/rushee:start`** from your project root (the folder that contains `backend/`, `frontend/`, and `docs/`). It will look at your project and tell you **exactly what to do next**. No need to memorise the whole pipeline.
@@ -92,7 +92,7 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 2. Run **`/rushee:start`**. It will guide you through: UX discovery (you can keep it minimal) → event-storm → ddd-model → feature → api-design → bdd-spec → atdd-run → tdd-cycle.
 3. **Stop after** the backend is done (all tests green). You can ignore frontend commands. The OpenAPI spec and Feature Card are already there for when someone builds the app later.
 
-**Summary:** Same as Path A, but you stop after the backend phase. `/rushee:start` still tells you the next step; when it suggests Flutter, you’re done.
+**Summary:** Same as Path A, but you stop after the backend phase. `/rushee:start` still tells you the next step; when it suggests frontend (Angular), you’re done.
 
 ---
 
@@ -125,7 +125,7 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 
 Rushee is a Claude Code plugin — a collection of **33 skills**, **25 agents**,
 **23 commands**, and **7 hooks** that enforce a structured engineering methodology
-across full-stack projects. **Default stack:** Angular + Spring Boot. **Also supported** (same pipeline, same contract): React, Svelte, Flutter (frontends); FastAPI (Python), NestJS (TypeScript), Go, Rust (backends). Start with **`/rushee:start`** for a guided entry point.
+across full-stack projects. **Default stack:** Angular + Spring Boot (full Spring ecosystem in infrastructure; domain stays pure). **Also supported** (same pipeline, same contract): React, Svelte (web); Flutter (mobile); FastAPI (Python), NestJS (TypeScript), Go, Rust (backends). Start with **`/rushee:start`** for a guided entry point.
 
 ### The Problem Rushee Solves
 
@@ -203,7 +203,7 @@ You should see the Rushee session banner immediately (Claude Code) or have Rushe
 ```
 ╔══════════════════════════════════════════════════════════════════╗
 ║              🚀  RUSHEE  v2.2  — Full-Stack Mode 🚀             ║
-║    Spring Boot Backend + Flutter Mobile Engineering Discipline   ║
+║    Spring Boot Backend + Angular Frontend Engineering Discipline║
 ╠══════════════════════════════════════════════════════════════════╣
 ║  FULL PIPELINE (start here for new projects):                   ║
 ║  /rushee:ux-discovery   → User journeys, personas, screen map   ║
@@ -294,7 +294,7 @@ No stage can start before its predecessor is complete.
 ║                                                                  ║
 ║  /rushee:api-design <FDD-NNN>                                   ║
 ║    → OpenAPI 3.1 spec — the law for BOTH codebases              ║
-║    → Reviewed before any controller or Flutter data source      ║
+║    → Reviewed before any controller or frontend data source      ║
 ║    Output: backend/src/main/resources/api/<context>-api.yaml    ║
 ║                                                                  ║
 ║  PHASE 3 — BDD / ATDD  (backend)                                ║
@@ -308,7 +308,7 @@ No stage can start before its predecessor is complete.
 ║    → Step definitions wired — acceptance tests confirmed RED    ║
 ║    Output: step definitions with PendingException               ║
 ║                                                                  ║
-║  PHASE 4 — PARALLEL IMPLEMENTATION  (backend + Flutter)         ║
+║  PHASE 4 — PARALLEL IMPLEMENTATION  (backend + Angular)         ║
 ║  ─────────────────────────────────────────────────────────────  ║
 ║                                                                  ║
 ║  ┌─────────────────────────┐  ┌──────────────────────────────┐  ║
@@ -316,10 +316,10 @@ No stage can start before its predecessor is complete.
 ║  │ /rushee:tdd-cycle       │  │ /rushee:angular-feature      │  ║
 ║  │                         │  │                              │  ║
 ║  │ Outside-in TDD:         │  │ Regenerate API client        │  ║
-║  │  Controller tests       │  │ Domain entities (Dart)       │  ║
+║  │  Controller tests       │  │ Domain entities (TS)         │  ║
 ║  │  Service tests          │  │ Use cases + unit tests       │  ║
-║  │  Repository tests       │  │ BLoC + unit tests            │  ║
-║  │  Flyway migration       │  │ Widget tests (mocked BLoC)   │  ║
+║  │  Repository tests       │  │ NgRx/signals + unit tests    │  ║
+║  │  Flyway migration       │  │ Component tests (mocked)     │  ║
 ║  │  Cucumber GREEN ✅      │  │ Screen integration test      │  ║
 ║  └─────────────────────────┘  └──────────────────────────────┘  ║
 ║                  ↕ both implement from same OpenAPI spec ↕       ║
@@ -327,10 +327,10 @@ No stage can start before its predecessor is complete.
 ║  PHASE 5 — SECURITY + FINAL REVIEW                              ║
 ║  ─────────────────────────────────────────────────────────────  ║
 ║  /rushee:security-check <FDD-NNN>                               ║
-║    → OWASP Top 10 (backend) + OWASP Mobile Top 10 (Flutter)     ║
+║    → OWASP Top 10 (backend) + frontend security (Angular/Flutter)║
 ║                                                                  ║
 ║  /rushee:status                                                 ║
-║    → spring-reviewer (8 gates) + flutter-reviewer (5 gates)     ║
+║    → spring-reviewer (8 gates) + angular/flutter-reviewer       ║
 ║    → APPROVED → merge                                           ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
@@ -367,7 +367,7 @@ Each recommended PR is **one phase's worth of work**:
 | After 2b (API design) | OpenAPI YAML + Feature Card update | Contract only — a few files, no code |
 | After 3b (ATDD) | Feature file + step-def classes (RED, no app logic) | "Do the scenarios match the feature?" — no implementation yet |
 | After 4 (backend) | Backend code for one feature | Backend tests green; one FDD |
-| After 4f (Flutter) | Flutter feature + backend if same branch | Full-stack one feature |
+| After 4f (Angular) | Angular feature + backend if same branch | Full-stack one feature |
 
 If you skip PRs and only commit, the phase gate still gives you a checkpoint; artifacts (specs, domain model, Gherkin) remain **reviewable in the repo** even without a formal PR.
 
@@ -381,9 +381,9 @@ If you skip PRs and only commit, the phase gate still gives you a checkpoint; ar
 
 **After Phase 3b — ATDD:** Feature file(s) under `backend/src/test/resources/features/`; step-def classes (every step throws `PendingException` or fails). **Phase gate:** Run Cucumber and confirm RED. Example: `bash path/to/rushee/scripts/phase-gate.sh 3b backend FDD-001` or `cd backend && ./mvnw test -Dtest=*Cucumber* -Dcucumber.filter.tags="@FDD-001"`. **Optional PR:** Recommended — small "step defs only, RED" PR.
 
-**After Phase 4 — Backend:** All Cucumber tests GREEN; unit/integration tests pass. **Phase gate:** `./mvnw test`. **Optional PR:** Recommended before Flutter or next feature.
+**After Phase 4 — Backend:** All Cucumber tests GREEN; unit/integration tests pass. **Phase gate:** `./mvnw test`. **Optional PR:** Recommended before frontend or next feature.
 
-**After Phase 4f — Flutter:** Flutter app builds. **Phase gate:** No build errors; optional tests/lint. **Optional PR:** Recommended — full-stack feature ready for review.
+**After Phase 4f — Angular:** Frontend app builds. **Phase gate:** No build errors; optional tests/lint. **Optional PR:** Recommended — full-stack feature ready for review.
 
 | Phase | Phase gate focus | Open a PR? |
 |-------|------------------|------------|
@@ -392,9 +392,9 @@ If you skip PRs and only commit, the phase gate still gives you a checkpoint; ar
 | 2b | OpenAPI valid | **Recommended** — contract review |
 | 3b | Cucumber RED | **Recommended** — step-defs only |
 | 4 | Backend tests green | **Recommended** — code review + CI |
-| 4f | Flutter builds | **Recommended** — ready to ship |
+| 4f | Frontend builds (Angular) | **Recommended** — ready to ship |
 
-**Reality check:** Many teams won't open a PR after every phase. Phase gates are quick local checks; artifacts stay reviewable in the repo. Running `spring-reviewer` / `flutter-reviewer` before merge still catches issues. If you don't have a reviewer, commit after the phase gate and continue.
+**Reality check:** Many teams won't open a PR after every phase. Phase gates are quick local checks; artifacts stay reviewable in the repo. Running `spring-reviewer` / `angular-reviewer` (or `flutter-reviewer` for mobile) before merge still catches issues. If you don't have a reviewer, commit after the phase gate and continue.
 
 ---
 
