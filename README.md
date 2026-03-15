@@ -14,7 +14,7 @@ is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
 1. [Quick start & paths](#1-quick-start--paths) — **Start here**
 2. [What is Rushee?](#2-what-is-rushee)
-3. [Installation](#3-installation)
+3. [Installation](#3-installation) — [Small companies & intern/junior teams](#small-companies-and-internjunior-teams)
 4. [The Full-Stack Pipeline](#4-the-full-stack-pipeline)
 5. [Repository Structure](#5-repository-structure)
 6. [Commands Reference](#6-commands-reference)
@@ -261,6 +261,23 @@ level: intern | junior | mid | senior
 - **mid / senior:** Output stays terse: next command and phase gate reminder only.
 
 The session-start hook does not change; agents read the profile when you run `/rushee:start` or a phase command. If no profile is present, behaviour defaults to mid/senior (terse). Create `.rushee-profile` (e.g. after running `/rushee:skill-check`) if you want the session-start hint to stop appearing.
+
+### Small companies and intern/junior teams
+
+Rushee is **well suited** for product development in small companies where most developers are interns or juniors:
+
+| Need | How Rushee helps |
+|------|------------------|
+| **No one has to memorise the pipeline** | One command: **`/rushee:start`**. It scans the repo and says the next step in plain language. Loop: run it → do the step → run it again. |
+| **Readiness for the next phase** | **`/rushee:skill-check`** runs a short self-assessment for the *next* phase (up to 5 questions), then returns **Ready — proceed** or a prioritised list of skills to develop, with suggested prompts to ask in chat. |
+| **See the full roadmap** | **`/rushee:skill-map`** shows a visual skill tree and a phase–skill table (concepts and “If new, ask” prompts per phase). Helps juniors know what to learn and when to ask for a primer. |
+| **Step-by-step explanations** | Set **Developer profile** to `level: intern` or `level: junior` in the project’s `CLAUDE.md` (see above). The **pipeline-bootstrapper** then runs a **skill-gap probe** when you run `/rushee:start`: it asks 2–3 questions for the next phase and, if needed, adds brief “What is X?” and “Why we do this” before recommending the next command. |
+| **Join an existing codebase** | **`/rushee:bootstrap retrofit`** scans the repo and maps it to the pipeline; **`/rushee:bootstrap phase-N [FDD-NNN]`** lets you jump to a phase (e.g. phase-3 for BDD, phase-4 for backend) and creates or explains missing stubs. No need to have started the project with Rushee. |
+| **No reviewer?** | Phase gates (see § Phase gates and optional PR verification) are the only hard requirement before the next phase. PRs are **optional** — “if you have a mentor, open a small PR; otherwise commit and continue.” |
+| **First-time hint** | The session-start hook suggests `/rushee:start` and `/rushee:skill-check` until a **`.rushee-profile`** file exists (e.g. created after running `/rushee:skill-check`). |
+| **Guards as teachable moments** | Some hooks (e.g. **guard-domain-purity**) block invalid changes and suggest asking in chat for an explanation (e.g. “Explain why domain classes must not use @Entity”) or point to a skill. |
+
+**Summary for leads:** Onboard new or junior devs with: (1) install Rushee, (2) set `DeveloperProfile: level: junior` in `CLAUDE.md` for the project, (3) run `/rushee:start` and follow the recommendation, (4) run `/rushee:skill-check` when unsure about the next phase, (5) use `/rushee:skill-map` for the full skill tree. No need to run PRs every phase if there’s no reviewer — phase gate then commit.
 
 ---
 
@@ -1857,6 +1874,9 @@ Dart layers (entities, use cases) can be built without the Figma design because
 they contain no UI. Only the presentation layer (widgets and screens) requires
 approved design tokens. Use that time to build and test the domain + application
 layers first.
+
+**Q: We're a small company and most of us are interns or juniors. Is Rushee a good fit?**
+A: Yes. Rushee is designed so that no one has to memorise the pipeline: use **`/rushee:start`** as your loop, set **Developer profile** to `junior` (or `intern`) in `CLAUDE.md` for step-by-step explanations and a skill-gap probe, and use **`/rushee:skill-check`** / **`/rushee:skill-map`** for readiness and the full roadmap. Phase gates are required; PRs are optional — if you don't have a reviewer, commit after the phase gate and continue. See [Small companies and intern/junior teams](#small-companies-and-internjunior-teams).
 
 **Q: Can I skip the UX Discovery for a small, internal tool?**
 A: You can, but even for internal tools, mapping the Screen Inventory takes 30 minutes
