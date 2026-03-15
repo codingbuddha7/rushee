@@ -128,6 +128,7 @@ Scenario: Shopper places a successful order
   When Amara places her order
   Then an order is created with status "PENDING"
   And the order total is 109.97
+  # … (1 more step omitted for display)
 ```
 
 Label at top: `FDD-001-place-order.feature` in `#e3b341`.
