@@ -1,6 +1,6 @@
 # Rushee
 
-**Rushee** is a Claude Code plugin enforcing a complete engineering discipline for Angular + Spring Boot projects — from first feature sketch to production deployment. Every phase is guided, every shortcut is blocked, and your architecture stays clean.
+**Rushee** is a Claude Code plugin enforcing a complete engineering discipline for Angular + Spring Boot projects — from first feature sketch to production deployment. Every phase is guided, shortcuts are caught and flagged, and your architecture stays clean.
 
 **Default stack:** Angular (frontend) + Spring Boot (backend). Same pipeline for React, Svelte (web); FastAPI, NestJS, Go, Rust (backends).
 
@@ -18,13 +18,15 @@ claude
 
 Add to your project's `CLAUDE.md`:
 
-```
+(Create `CLAUDE.md` at your project root if it does not already exist.)
+
+```yaml
 level: junior
 ```
 
 Then run:
 
-```
+```bash
 /rushee:start
 ```
 
@@ -32,7 +34,7 @@ Rushee recommends `/rushee:feature-brief` — three questions, ~10 minutes, and 
 
 ### Experienced? (mid / senior)
 
-```
+```bash
 /rushee:start
 ```
 
@@ -44,11 +46,11 @@ Rushee scans your repo and tells you the next step — `/rushee:ux-discovery` fo
 |------|-----------|
 | `guard-domain-purity` | **BLOCKS** Spring/JPA annotations in `domain/` layer |
 | `guard-no-hardcoded-secrets` | **BLOCKS** passwords, tokens, API keys in source |
-| `guard-no-code-before-feature-card` | **WARNS** production code written before Feature Card |
+| `guard-feature-card` | **WARNS** production code written before Feature Card |
 | `guard-openapi-contract-sync` | **WARNS** after spec change — regenerate both clients |
 | `remind-migration-on-entity-change` | **WARNS** entity changed — create Flyway migration |
-| `auto-run-tests-after-edit` | **WARNS** test file saved — run test suite |
-| `session-start-discipline-reminder` | Displays pipeline banner at every session start |
+| `remind-run-tests` | **WARNS** test file saved — run test suite |
+| `session-start` | Displays pipeline banner at every session start |
 
 ---
 
