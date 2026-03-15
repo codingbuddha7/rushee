@@ -46,11 +46,11 @@ Rushee scans your repo and tells you the next step — `/rushee:ux-discovery` fo
 |------|-----------|
 | `guard-domain-purity` | **BLOCKS** Spring/JPA annotations in `domain/` layer |
 | `guard-no-hardcoded-secrets` | **BLOCKS** passwords, tokens, API keys in source |
-| `guard-feature-card` | **WARNS** production code written before Feature Card |
+| `guard-no-code-before-feature-card` | **WARNS** production code written before Feature Card |
 | `guard-openapi-contract-sync` | **WARNS** after spec change — regenerate both clients |
 | `remind-migration-on-entity-change` | **WARNS** entity changed — create Flyway migration |
-| `remind-run-tests` | **WARNS** test file saved — run test suite |
-| `session-start` | Displays pipeline banner at every session start |
+| `auto-run-tests-after-edit` | **WARNS** test file saved — run test suite |
+| `session-start-discipline-reminder` | **INFO** Displays pipeline banner at every session start |
 
 ---
 
