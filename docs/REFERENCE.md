@@ -99,7 +99,7 @@ Five tables. No prose. Everything you need to look up quickly.
 
 ## Hooks
 
-| Hook | Timing | Fires on | Behaviour |
+| Hook | When | Fires on | Behaviour |
 |------|--------|----------|-----------|
 | `guard-domain-purity` | Pre-write | `**/domain/**/*.java` | **BLOCKS** Spring/JPA annotations in `domain/` layer |
 | `guard-no-hardcoded-secrets` | Pre-write | `**/*.{java,yml,properties,dart}` | **BLOCKS** passwords, API keys, tokens in source |
