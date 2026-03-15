@@ -117,7 +117,7 @@ components:
           format: uuid
         status:
           type: string
-          enum: [PENDING, CONFIRMED, SHIPPED]
+          enum: [PENDING, CONFIRMED, SHIPPED]  # CANCELLED omitted — order cancellation is out of scope for FDD-001
         total:
           type: number
           format: double
