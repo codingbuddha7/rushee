@@ -99,15 +99,15 @@ Five tables. No prose. Everything you need to look up quickly.
 
 ## Hooks
 
-| Hook | Fires on | Behaviour |
-|------|----------|-----------|
-| `guard-domain-purity` | Writing `*.java` in `**/domain/**` | **BLOCKS** `@Entity`, `@Service`, Spring/JPA imports in domain layer |
-| `guard-no-hardcoded-secrets` | Writing `*.java`, `*.yml`, `*.properties`, `*.dart` | **BLOCKS** passwords, API keys, tokens in source |
-| `guard-no-code-before-feature-card` | Writing `*.java` in `src/main/java` | **WARNS** production Java without a Feature Card |
-| `guard-openapi-contract-sync` | Writing `*-api.yaml` | **WARNS** — run `./regenerate-clients.sh` and contract tests |
-| `remind-migration-on-entity-change` | Writing `*Entity.java` | **WARNS** — create a Flyway migration |
-| `auto-run-tests-after-edit` | Writing `*Test.java`, `*_test.dart` | **WARNS** — run the test suite |
-| `session-start-discipline-reminder` | Every session start | **INFO** Displays pipeline banner and suggests next command |
+| Hook | Timing | Fires on | Behaviour |
+|------|--------|----------|-----------|
+| `guard-domain-purity` | Pre-write | `**/domain/**/*.java` | **BLOCKS** Spring/JPA annotations in `domain/` layer |
+| `guard-no-hardcoded-secrets` | Pre-write | `**/*.{java,yml,properties,dart}` | **BLOCKS** passwords, API keys, tokens in source |
+| `guard-no-code-before-feature-card` | Pre-write | `**/src/main/java/**/*.java` | **WARNS** production Java without a Feature Card |
+| `guard-openapi-contract-sync` | Post-write | `**/*-api.yaml,**/*.openapi.yaml` | **WARNS** — run `./regenerate-clients.sh` and contract tests |
+| `remind-migration-on-entity-change` | Post-write | `**/infrastructure/persistence/**/*Entity.java` | **WARNS** — create a Flyway migration |
+| `auto-run-tests-after-edit` | Post-write | `**/*Test.java,**/*Spec.java,**/*_test.dart` | **WARNS** — run the test suite |
+| `session-start-discipline-reminder` | Session start | — | **INFO** Displays pipeline banner and suggests next command |
 
 ---
 
@@ -118,10 +118,13 @@ Five tables. No prose. Everything you need to look up quickly.
 | 0 — UX Discovery | `docs/ux/personas.md` exists with ≥ 1 persona; screen inventory, navigation map, wireframes present | `docs/ux/` | Optional |
 | 1 — Event Storm | `docs/architecture/context-map.md` exists | `docs/architecture/` | Optional |
 | 1b — DDD Model | `docs/domain/<context>/domain-model.md` + domain skeleton classes | `docs/domain/` | Optional |
+| 2 — Feature Card | Feature Card exists: `docs/features/FDD-NNN.md` | `docs/features/` | Optional |
 | 2b — API Design | OpenAPI spec valid: `npx @openapitools/openapi-generator-cli validate -i backend/src/main/resources/api/<name>-api.yaml` | `*-api.yaml` | **Recommended** |
+| 3 — BDD Spec | Feature file exists: `backend/src/test/resources/features/...` | `*.feature file` | Optional |
 | 3b — ATDD | Cucumber RED: `cd backend && ./mvnw test -Dtest=*Cucumber*` | step-def classes | **Recommended** |
 | 4 — Backend | All tests GREEN: `./mvnw test` | backend code | **Recommended** |
 | 4f — Frontend | App builds: `ng build` (Angular default) | frontend code | **Recommended** |
+| 5 — Security | `security-reviewer` returns APPROVED | security review notes | Before merge |
 
 ---
 
@@ -129,7 +132,7 @@ Five tables. No prose. Everything you need to look up quickly.
 
 | Layer | Default | Alternatives |
 |-------|---------|-------------|
-| **Frontend** | Angular (NgRx / signals) | React, Svelte |
+| **Frontend** | Angular (NgRx / signals) | React, Svelte (web); see Mobile row for Flutter |
 | **Backend** | Spring Boot 3.x + Java 17 | FastAPI (Python), NestJS (TS), Go, Rust |
 | **Mobile** | — | Flutter 3.7+ / Dart 3.0+ |
 | **API contract** | OpenAPI 3.1 | — (pipeline requires OpenAPI) |
