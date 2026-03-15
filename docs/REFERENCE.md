@@ -62,15 +62,15 @@ Five tables. No prose. Everything you need to look up quickly.
 3. **UX discovery drives domain design** — domain events come from job stories, not database tables.
 
 ### Architecture Rules (Backend)
-4. **No `@Entity` on domain model classes — ever.** JPA entities live in `infrastructure/persistence/`.
-5. **No Spring annotations in `domain/` packages — ever.**
+4. **No persistence framework annotations on domain model classes — ever.** Domain models are plain objects. Persistence entities belong in `infrastructure/persistence/`.
+5. **No framework annotations or imports in `domain/` packages — ever.**
 6. **No public setters on Aggregate Roots or Entities.** State changes through behaviour methods only.
 7. **Dependencies only flow inward** — domain has no knowledge of application or infrastructure.
 
 ### Architecture Rules (Frontend)
 8. **No API calls in components or services that bypass the data layer — ever.**
-9. **No framework imports in `domain/` files — ever.** Pure TypeScript / pure Dart only.
-10. **No magic values.** Always use design token constants (AppColors, AppTypography, AppSpacing).
+9. **No framework imports in `domain/` files — ever.** Domain code is pure business logic only.
+10. **No magic values.** Always use named design token constants.
 
 ### Contract Rules
 11. **No hand-written DTOs on either side.** Both codebases generate from the OpenAPI spec.
@@ -91,21 +91,23 @@ Five tables. No prose. Everything you need to look up quickly.
 
 ### Quality Rules
 22. **No merge without `ops-reviewer` PRODUCTION READY.**
-23. **Backend coverage ≥ 80% (JaCoCo).** Frontend domain + application ≥ 75%.
-24. **`ddl-auto: validate`** in all non-local Spring profiles.
-25. **Flyway migration required** for every `@Entity` change.
+23. **Backend test coverage ≥ 80%. Frontend domain + application layer coverage ≥ 75%.** Use your stack's coverage tool.
+24. **Schema validation mode enabled in all non-local environments.** Never allow auto-migration in production.
+25. **Schema migration required for every data model change.** Never modify a live schema without a versioned migration script.
 
 ---
 
 ## Hooks
 
+> The current hooks target the default Java + Angular/Dart stack. Use `/rushee:extend` to add equivalent hooks for other stacks.
+
 | Hook | When | Fires on | Behaviour |
-|------|--------|----------|-----------|
-| `guard-domain-purity` | Pre-write | `**/domain/**/*.java` | **BLOCKS** Spring/JPA annotations in `domain/` layer |
+|------|------|----------|-----------|
+| `guard-domain-purity` | Pre-write | `**/domain/**/*.java` | **BLOCKS** persistence/framework annotations in `domain/` layer |
 | `guard-no-hardcoded-secrets` | Pre-write | `**/*.{java,yml,properties,dart}` | **BLOCKS** passwords, API keys, tokens in source |
-| `guard-no-code-before-feature-card` | Pre-write | `**/src/main/java/**/*.java` | **WARNS** production Java without a Feature Card |
-| `guard-openapi-contract-sync` | Post-write | `**/*-api.yaml,**/*.openapi.yaml` | **WARNS** — run `./regenerate-clients.sh` and contract tests |
-| `remind-migration-on-entity-change` | Post-write | `**/infrastructure/persistence/**/*Entity.java` | **WARNS** — create a Flyway migration |
+| `guard-no-code-before-feature-card` | Pre-write | `**/src/main/java/**/*.java` | **WARNS** production code written before Feature Card |
+| `guard-openapi-contract-sync` | Post-write | `**/*-api.yaml,**/*.openapi.yaml` | **WARNS** — regenerate clients and run contract tests |
+| `remind-migration-on-entity-change` | Post-write | `**/infrastructure/persistence/**/*Entity.java` | **WARNS** — create a schema migration |
 | `auto-run-tests-after-edit` | Post-write | `**/*Test.java,**/*Spec.java,**/*_test.dart` | **WARNS** — run the test suite |
 | `session-start-discipline-reminder` | Session start | — | **INFO** Displays pipeline banner and suggests next command |
 
@@ -119,11 +121,11 @@ Five tables. No prose. Everything you need to look up quickly.
 | 1 — Event Storm | `docs/architecture/context-map.md` exists | `docs/architecture/` | Optional |
 | 1b — DDD Model | `docs/domain/<context>/domain-model.md` + domain skeleton classes | `docs/domain/` | Optional |
 | 2 — Feature Card | Feature Card exists: `docs/features/FDD-NNN.md` | `docs/features/` | Optional |
-| 2b — API Design | OpenAPI spec valid: `npx @openapitools/openapi-generator-cli validate -i backend/src/main/resources/api/<name>-api.yaml` | `*-api.yaml` | **Recommended** |
-| 3 — BDD Spec | Feature file exists: `backend/src/test/resources/features/...` | `*.feature file` | Optional |
-| 3b — ATDD | Cucumber RED: `cd backend && ./mvnw test -Dtest=*Cucumber*` | step-def classes | **Recommended** |
-| 4 — Backend | All tests GREEN: `./mvnw test` | backend code | **Recommended** |
-| 4f — Frontend | App builds: `ng build` (Angular default) | frontend code | **Recommended** |
+| 2b — API Design | OpenAPI spec valid: `npx @openapitools/openapi-generator-cli validate -i <path-to-spec>.yaml` | `*-api.yaml` | **Recommended** |
+| 3 — BDD Spec | Feature file exists under test resources | `*.feature` | Optional |
+| 3b — ATDD | Acceptance tests RED: run your stack's BDD test command | step-def classes | **Recommended** |
+| 4 — Backend | All tests GREEN: run your stack's test command | backend code | **Recommended** |
+| 4f — Frontend | Frontend builds with no errors | frontend code | **Recommended** |
 | 5 — Security | `security-reviewer` returns APPROVED | security review notes | Before merge |
 
 ---
@@ -132,13 +134,12 @@ Five tables. No prose. Everything you need to look up quickly.
 
 | Layer | Default | Alternatives |
 |-------|---------|-------------|
-| **Frontend** | Angular (NgRx / signals) | React, Svelte (web); see Mobile row for Flutter |
-| **Backend** | Spring Boot 3.x + Java 17 | FastAPI (Python), NestJS (TS), Go, Rust |
-| **Mobile** | — | Flutter 3.7+ / Dart 3.0+ |
-| **API contract** | OpenAPI 3.1 | — (pipeline requires OpenAPI) |
-| **Backend testing** | JUnit 5 + Mockito + Cucumber-JVM 7.x | — |
-| **Coverage** | JaCoCo 0.8.x | — |
-| **Schema migration** | Flyway 9.x+ | — |
-| **Architecture tests** | ArchUnit 1.x | — |
-| **Security** | Spring Security + OAuth2 | — |
-| **Build** | Maven 3.8+ | Gradle (bring your own) |
+| **Frontend** | Angular (NgRx / signals) | React, Svelte (web); Flutter (mobile) |
+| **Backend** | Spring Boot 3.x (Java 17) | FastAPI (Python), NestJS (TS), Go, Rust |
+| **API contract** | OpenAPI 3.1 | — (required by pipeline) |
+| **BDD / acceptance tests** | Cucumber (JVM, pytest-bdd, Godog — stack default) | Any BDD framework for your stack |
+| **Unit tests** | Stack default (JUnit 5, pytest, Jest, Vitest, etc.) | — |
+| **Coverage** | Stack default (JaCoCo, pytest-cov, Istanbul, c8, etc.) | Target: ≥ 80% backend, ≥ 75% domain + app layers |
+| **Schema migration** | Stack default (Flyway, Alembic, TypeORM migrations, etc.) | Any versioned migration tool |
+| **Architecture tests** | Stack default (ArchUnit, import-linter, dependency-cruiser, etc.) | Any layer enforcement tool |
+| **Security** | Stack default (Spring Security, FastAPI-Security, Passport.js, etc.) | — |
