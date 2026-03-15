@@ -63,7 +63,7 @@ Five tables. No prose. Everything you need to look up quickly.
 
 ### Architecture Rules (Backend)
 4. **No persistence framework annotations on domain model classes — ever.** Domain models are plain objects. Persistence entities belong in `infrastructure/persistence/`.
-5. **No framework annotations or imports in `domain/` packages — ever.**
+5. **No framework annotations or imports in `domain/` — ever.**
 6. **No public setters on Aggregate Roots or Entities.** State changes through behaviour methods only.
 7. **Dependencies only flow inward** — domain has no knowledge of application or infrastructure.
 
