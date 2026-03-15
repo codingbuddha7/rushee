@@ -3,8 +3,11 @@ name: start
 description: >
   The guided entry point for Rushee. Use this when you are starting a new project
   or have never used Rushee before. Invokes pipeline-bootstrapper in onboarding mode:
-  explains the full pipeline, detects any existing work, and launches the correct
-  first command. Triggers on: "where do I start", "how do I use rushee",
+  explains the pipeline, detects any existing work, and recommends the correct
+  first command. For intern/junior teams (set level: intern or level: junior in
+  CLAUDE.md), recommends /rushee:feature-brief as the first step. For mid/senior
+  teams, recommends the full pipeline starting with /rushee:ux-discovery.
+  Triggers on: "where do I start", "how do I use rushee",
   "new project", "getting started", "I don't know what to do", "/rushee:start".
 argument-hint: (no argument needed — or provide a one-line project description)
 allowed-tools: [Read, Bash, Glob]
