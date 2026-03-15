@@ -40,7 +40,28 @@ Based on their answers: if they answer "no" or "not sure" to key questions, offe
 
 ### Step 0a — Print the pipeline map
 
-Print this exactly:
+**If verbosity is high (intern/junior)**, print this:
+
+    ╔══════════════════════════════════════════════════════════════╗
+    ║       RUSHEE v2.2 — PROGRESSIVE PIPELINE (JUNIOR)            ║
+    ╠══════════════════════════════════════════════════════════════╣
+    ║  Phase 0  /rushee:feature-brief   Who? Problem? Concepts?    ║
+    ║  Phase 2  /rushee:feature         What is being built?       ║
+    ║  Phase 2b /rushee:api-design      What is the contract?      ║
+    ║  Phase 3  /rushee:bdd-spec        [OPTIONAL] Acceptance tests ║
+    ║  Phase 4  /rushee:tdd-cycle       Build the backend          ║
+    ║  Phase 4f /rushee:angular-feature Build the frontend         ║
+    ║  Phase 5  /rushee:security-check  Is it secure?              ║
+    ║  Phase 6  /rushee:status          Is it ready to ship?       ║
+    ╚══════════════════════════════════════════════════════════════╝
+
+    Quick start rule: Brief → Feature Card → Contract → Code
+    Phases 1 and 1b (Event Storming, DDD) are intentionally skipped here —
+    run /rushee:event-storm and /rushee:ddd-model when your team is ready.
+    Phase 3 (BDD/Gherkin) is optional — add it when your team is ready.
+    Full pipeline available any time: /rushee:ux-discovery
+
+**If verbosity is terse (mid/senior or level not set)**, print this:
 
     ╔══════════════════════════════════════════════════════════════╗
     ║           RUSHEE v2.2 — FULL-STACK PIPELINE                  ║
@@ -53,7 +74,7 @@ Print this exactly:
     ║  Phase 3  /rushee:bdd-spec        What must be true?         ║
     ║  Phase 3b /rushee:atdd-run        Wire the failing tests     ║
     ║  Phase 4  /rushee:tdd-cycle       Build the backend          ║
-    ║  Phase 4f /rushee:angular-feature Build the Angular app     ║
+    ║  Phase 4f /rushee:angular-feature Build the Angular app      ║
     ║  Phase 5  /rushee:security-check  Is it secure?              ║
     ║  Phase 6  /rushee:status          Is it ready to ship?       ║
     ╚══════════════════════════════════════════════════════════════╝
@@ -83,7 +104,9 @@ If verbosity is **high** and you have not yet run the skill-gap probe (Step 0.2)
 
 Based on the scan, say the matching line below. For **every** recommendation, add the corresponding **Skills used** and **If new** line so the developer can self-serve a primer. If verbosity is **high** (intern/junior), also add the **Why** line.
 
-- **Nothing found:** "This looks like a brand new project. **Start here: `/rushee:ux-discovery`** — tell me who your users are and what they need to do." **Skills used:** Personas, job stories, screen inventory. **If new:** ask \"Explain job stories vs user stories\" or \"What is a screen inventory?\"" **Why (if high):** "User journeys drive domain events; we discover them before any code."
+- **Nothing found:**
+  - **If verbosity is high (intern/junior):** "This looks like a brand new project. **Start here: `/rushee:feature-brief`** — I'll ask you three quick questions to capture your feature context (10 min, no DDD or UX knowledge needed)." **Why:** "The feature brief gets you to a Feature Card in ~10 minutes. You can backfill the full pipeline later with `/rushee:ux-discovery` and `/rushee:event-storm` as the team matures."
+  - **If verbosity is terse (mid/senior or not set):** "This looks like a brand new project. **Start here: `/rushee:ux-discovery`** — tell me who your users are and what they need to do." **Skills used:** Personas, job stories, screen inventory. **If new:** ask \"Explain job stories vs user stories\" or \"What is a screen inventory?\""
 - **Phase 0 done, not Phase 1:** "UX discovery is done. **Next: `/rushee:event-storm`** — map the domain events from your job stories." **Skills used:** Bounded contexts, domain events, context map. **If new:** ask \"What is event storming?\" or \"Explain bounded contexts.\"" **Why (if high):** "Event Storming turns job-story events into a context map for the domain model."
 - **Phase 1 done, not Phase 1b:** "Context map exists. **Next: `/rushee:ddd-model <context-name>`** — design the aggregates for your core domain." **Skills used:** Aggregates, entities, value objects, repository interfaces. **If new:** ask \"Explain aggregates and value objects\" or \"Why no @Entity in domain?\"" **Why (if high):** "The domain model is pure business logic; infrastructure (DB, HTTP) stays in adapters."
 - **Phase 1b done, no feature cards:** "Domain model exists. **Next: `/rushee:feature <description>`** — create your first Feature Card." **Skills used:** Feature Card, acceptance criteria, screen links. **If new:** ask \"What goes in a Feature Card?\"" **Why (if high):** "The Feature Card is the single spec for both backend and frontend; it links to screens and the contract."
