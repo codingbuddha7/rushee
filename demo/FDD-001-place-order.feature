@@ -10,7 +10,7 @@ Feature: Place order from cart
 
   Scenario: Shopper places a successful order
     Given Amara has added 1 "Laptop Stand" to her cart
-    And Amara has added 2 "USB-C Hub" to her cart
+    And Amara has added 2 "USB-C Hub" units to her cart
     When Amara places her order
     Then an order is created with status "PENDING"
     And the order total is 109.97

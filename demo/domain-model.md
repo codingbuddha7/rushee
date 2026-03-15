@@ -66,3 +66,4 @@ public interface OrderRepository {
 ```
 
 `OrderJpaEntity` lives in `infrastructure/persistence/` — never in `domain/`.
+This is a language-agnostic output port expressed in Java — in a Python/FastAPI stack this maps to an abstract base class or `typing.Protocol`; in TypeScript (NestJS) it becomes an abstract class or interface.
