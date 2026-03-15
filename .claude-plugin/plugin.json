@@ -27,6 +27,8 @@
     "commands/debug.md",
     "commands/security-check.md",
     "commands/status.md",
+    "commands/skill-check.md",
+    "commands/skill-map.md",
     "commands/extend.md"
   ],
   "agents": [

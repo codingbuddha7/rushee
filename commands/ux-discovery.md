@@ -6,6 +6,9 @@ example: /rushee:ux-discovery "ecommerce mobile app — browse products, cart, p
 example: /rushee:ux-discovery
 ---
 
+**Skills needed for this phase:** Personas, job stories (When/situation I want/motivation so I can/outcome), screen inventory, navigation map, wireframe specs (text). Rushee skill: ux-discovery-first.
+**New to this?** Say: "Explain job stories vs user stories" or "What is a screen inventory?" — then we'll run the session.
+
 Invoke the **ux-analyst** agent to run a structured UX discovery session.
 
 This command:

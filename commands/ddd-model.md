@@ -5,6 +5,9 @@ usage: /rushee:ddd-model <bounded-context-name>
 example: /rushee:ddd-model order-management
 ---
 
+**Skills needed for this phase:** Aggregates, entities, value objects, domain events, repository interfaces, rich domain (no anemic model). Rushee skills: ddd-tactical-design, ddd-ubiquitous-language, clean-architecture-ports-adapters.
+**New to this?** Say: "Explain aggregates and value objects" or "Why no @Entity in domain?" — then we'll run the modeller.
+
 Invoke the **domain-modeller** agent for the specified bounded context.
 
 This command:

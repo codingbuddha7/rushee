@@ -5,6 +5,9 @@ usage: /rushee:event-storm [system description]
 example: /rushee:event-storm "e-commerce platform handling orders, payments, and fulfilment"
 ---
 
+**Skills needed for this phase:** Bounded contexts, domain events, context map, subdomains (Core/Supporting/Generic). Rushee skill: ddd-strategic-design.
+**New to this?** Say: "What is event storming?" or "Explain bounded contexts" — then we'll run the session.
+
 Invoke the **event-stormer** agent to facilitate a domain discovery session.
 
 This command:

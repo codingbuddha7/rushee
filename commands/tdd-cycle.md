@@ -4,6 +4,9 @@ argument-hint: <FDD-NNN> [layer: controller|service|repository]
 allowed-tools: [Read, Write, Bash, Glob, Grep]
 ---
 
+**Skills needed for this phase:** Outside-in TDD, ports & adapters, domain purity (no framework in domain). Rushee skills: tdd-red-green-refactor, clean-architecture-ports-adapters, spring-boot-patterns.
+**New to this?** Say: "Explain outside-in TDD" or "What are ports and adapters?" — then we'll run the tdd-implementer.
+
 Invoke the `tdd-implementer` agent for: $ARGUMENTS
 
 The agent will:

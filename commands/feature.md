@@ -4,6 +4,9 @@ argument-hint: <feature description>
 allowed-tools: [Read, Write, Glob]
 ---
 
+**Skills needed for this phase:** Feature Card, acceptance criteria, screen links. Rushee skill: fdd-feature-design.
+**New to this?** Say: "What goes in a Feature Card?" — then we'll run the feature-analyst.
+
 Invoke the `feature-analyst` agent to begin Feature-Driven Development for the following:
 
 $ARGUMENTS

@@ -18,6 +18,11 @@ if [[ "$FILE_PATH" == *"/domain/"* ]] && [[ "$FILE_PATH" == *".java" ]]; then
     echo ""
     echo "   See skill: clean-architecture-ports-adapters"
     echo "   The Dependency Rule: domain knows nothing about infrastructure."
+    echo ""
+    echo "   💡 Teachable moment: This suggests you may need to review Hexagonal"
+    echo "   Architecture / DDD domain purity. Ask: \"Explain why domain classes must"
+    echo "   not use @Entity\" or say \"Explain domain purity and ports and adapters\" —"
+    echo "   then continue with the same skill for the correct pattern."
     exit 1
   fi
 
@@ -30,6 +35,10 @@ if [[ "$FILE_PATH" == *"/domain/"* ]] && [[ "$FILE_PATH" == *".java" ]]; then
     echo "   Spring wiring belongs in the infrastructure or application layer."
     echo ""
     echo "   See skill: clean-architecture-ports-adapters"
+    echo ""
+    echo "   💡 Teachable moment: You may need to review Hexagonal Architecture /"
+    echo "   DDD domain purity. Ask: \"Explain why domain must not use @Service\" or"
+    echo "   \"Explain ports and adapters\" — then continue with the same skill."
     exit 1
   fi
 

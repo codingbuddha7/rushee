@@ -6,6 +6,9 @@ example: /rushee:security-check FDD-005
 example: /rushee:security-check src/main/java/com/myapp/order/
 ---
 
+**Skills needed for this phase:** OWASP Top 10, auth (JWT/OAuth2), input validation, mobile security (secure storage, pinning). Rushee skills: security-by-design, mobile-security-by-design.
+**New to this?** Say: "What should I check for security?" — then we'll run the security-reviewer.
+
 Invoke the **security-reviewer** agent to perform a security gate review.
 
 This command:

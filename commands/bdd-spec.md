@@ -4,6 +4,9 @@ argument-hint: <FDD-NNN or feature description>
 allowed-tools: [Read, Write, Glob, Grep]
 ---
 
+**Skills needed for this phase:** BDD, Gherkin (Given/When/Then), domain language, no HTTP/URLs in scenarios. Rushee skill: bdd-gherkin-spec.
+**New to this?** Say: "Explain Gherkin and BDD" or "How to write good acceptance scenarios?" — then we'll run the writer.
+
 Invoke the `gherkin-writer` agent for feature: $ARGUMENTS
 
 Then immediately invoke `spec-guardian` to validate the generated Gherkin for implementation leakage.

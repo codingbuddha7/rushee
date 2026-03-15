@@ -4,6 +4,9 @@ argument-hint: <FDD-NNN>
 allowed-tools: [Read, Write, Bash, Glob, Grep]
 ---
 
+**Skills needed for this phase:** Cucumber-JVM, step definitions, RED-first (no impl until tests fail). Rushee skill: atdd-acceptance-first.
+**New to this?** Say: "How do step definitions work?" — then we'll run the acceptance-enforcer.
+
 Invoke the `acceptance-enforcer` agent for feature: $ARGUMENTS
 
 The agent will:

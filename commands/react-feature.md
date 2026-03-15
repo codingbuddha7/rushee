@@ -5,6 +5,9 @@ usage: /rushee:react-feature <FDD-NNN>
 example: /rushee:react-feature FDD-001
 ---
 
+**Skills needed for this phase:** Clean layers (domain/data/presentation), state (Zustand/React Query), design tokens, generated API client. Rushee skill: react-clean-architecture.
+**New to this?** Say: "Explain clean architecture on the frontend" — then we'll run the react-implementer.
+
 Invoke the **react-implementer** agent to implement the feature in the React client.
 
 **Prerequisites:** Feature Card (`docs/features/FDD-NNN.md`), OpenAPI spec, screen inventory. Frontend project (e.g. Vite + React + TypeScript) with OpenAPI client generation.

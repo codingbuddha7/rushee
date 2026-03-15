@@ -5,6 +5,9 @@ usage: /rushee:flutter-feature <FDD-NNN>
 example: /rushee:flutter-feature FDD-001
 ---
 
+**Skills needed for this phase:** Clean layers (domain/data/presentation), BLoC or Riverpod, design tokens, generated API client. Rushee skills: flutter-clean-architecture, flutter-testing-discipline, openapi-contract-sync.
+**New to this?** Say: "Explain clean architecture on the frontend" or "How does BLoC work with use cases?" — then we'll run the flutter-implementer.
+
 Invoke the **flutter-implementer** agent to implement a Feature Card in the Flutter client.
 
 This command runs the Flutter implementation stream in parallel with `/rushee:tdd-cycle`

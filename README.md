@@ -246,6 +246,20 @@ your-project/
 - **Phases 3–4 (BDD, ATDD, TDD):** Add Java 17+, Maven 3.8+, and a backend project (e.g. `backend/` with `pom.xml`). Optional: `openapi-generator-cli` for generated API interfaces.
 - **Phase 4f (Angular):** Add Node 18+, Angular 17+, and a `frontend/` project. Design tokens (e.g. `frontend/src/styles/ or theme`) are required for the presentation layer; Figma or a stub is needed. Run `/rushee:start` to see what’s missing for your current phase.
 
+### Developer profile (optional)
+
+In your **project root**, you can add a developer profile so Rushee tailors explanations to your level. Create or edit `CLAUDE.md` (or `.cursorrules`) and add:
+
+```markdown
+## DeveloperProfile
+level: intern | junior | mid | senior
+```
+
+- **intern / junior:** Pipeline bootstrapper and phase agents include brief “What is X?” and “Why we do this” explanations when recommending or running a step. Run `/rushee:start` or `/rushee:skill-check` for a skill-gap probe and tailored path.
+- **mid / senior:** Output stays terse: next command and phase gate reminder only.
+
+The session-start hook does not change; agents read the profile when you run `/rushee:start` or a phase command. If no profile is present, behaviour defaults to mid/senior (terse). Create `.rushee-profile` (e.g. after running `/rushee:skill-check`) if you want the session-start hint to stop appearing.
+
 ---
 
 ## 4. The Full-Stack Pipeline
@@ -744,6 +758,14 @@ Add new skills, commands, or agents to Rushee.
 #### `/rushee:status`
 
 Full pipeline status + 8-gate backend review + 5-gate Flutter review.
+
+#### `/rushee:skill-check` [FDD-NNN]
+
+Run a short self-assessment for the **next phase** in the pipeline. Scans the repo, asks up to 5 questions for that phase, and returns either **Ready — proceed** with the next command or a **prioritised list of skills to develop** with suggested prompts to ask in chat. Ideal for interns and juniors. Optionally creates `.rushee-profile` so the session-start first-time hint can stop showing.
+
+#### `/rushee:skill-map`
+
+Show a **visual skill tree** and phase–skill table: which concepts and Rushee skills apply to each phase, and what to ask if you're new. Gives juniors a roadmap they can point at.
 
 ---
 

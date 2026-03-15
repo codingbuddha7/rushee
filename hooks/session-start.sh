@@ -164,4 +164,10 @@ echo "  📌 Rules: No code before Feature Card  ·  No controller before OpenAP
 echo "            No impl before RED tests  ·  No @Entity in domain  ·  No secrets"
 echo ""
 
+# First-time / skill-check prompt (agent does Q&A when /rushee:start or /rushee:skill-check runs)
+if [ ! -f ".rushee-profile" ] 2>/dev/null; then
+  echo "  💡 First time or want a tailored path? Run: /rushee:start — then /rushee:skill-check for readiness."
+  echo ""
+fi
+
 exit 0

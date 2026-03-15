@@ -26,6 +26,18 @@ invocations have an explicit target phase and go directly to Your Process → St
 
 When onboarding mode applies, run Steps 0a–0d below BEFORE the normal bootstrap process.
 
+### Step 0 — Developer profile and skill-gap probe (onboarding only)
+
+**0.1 — Read developer profile.** If the project has `CLAUDE.md` or `.cursorrules`, look for a line like `level: intern` or `DeveloperProfile` with `level: junior|mid|senior`. If level is **intern** or **junior**, set verbosity to **high**: you will add brief "What is X?" and "Why we do this" when recommending the next step, and run the skill-gap probe below. If **mid** or **senior** (or no profile), set verbosity to **terse**: next command and phase gate only.
+
+**0.2 — Skill-gap probe (only when verbosity is high, or when the developer says they are new / first time).** Run this **after Step 0b** (scan), at the **start of Step 0c**, so you know the next phase from the scan. Then ask 2–3 short questions tailored to that next phase. For example:
+- If next is Phase 0–1: "Have you run UX discovery or Event Storming before? Do you know what a bounded context is?"
+- If next is Phase 1b–2: "Are you familiar with DDD aggregates and value objects? Have you written a Feature Card?"
+- If next is Phase 3–3b: "Have you ever written a Gherkin scenario (Given/When/Then)? Do you know how Cucumber step definitions work?"
+- If next is Phase 4–4f: "Have you used TDD (red-green-refactor) or Spring Boot? Have you built a frontend with clean layers (domain/data/presentation)?"
+
+Based on their answers: if they answer "no" or "not sure" to key questions, offer a **2–3 sentence primer** for that phase (e.g. "Aggregates are the consistency boundary in DDD; we'll design them in the next step. Say 'Explain aggregates' anytime for more."). Then give the Step 0c recommendation. If they answer "yes" to the relevant ones, skip the primer and give the recommendation.
+
 ### Step 0a — Print the pipeline map
 
 Print this exactly:
@@ -67,18 +79,20 @@ find . \( -path "*/frontend/src/*" -name "*.ts" -o -path "*/mobile/lib/*" -name 
 
 ### Step 0c — Report and recommend next command
 
-Based on the scan, say:
+If verbosity is **high** and you have not yet run the skill-gap probe (Step 0.2), do it now: ask 2–3 questions for the **next phase** (from the scan in 0b), then offer a short primer if needed.
 
-- If nothing found: "This looks like a brand new project. **Start here: `/rushee:ux-discovery`** — tell me who your users are and what they need to do."
-- If Phase 0 done but not Phase 1: "UX discovery is done. **Next: `/rushee:event-storm`** — map the domain events from your job stories."
-- If Phase 1 done but not Phase 1b: "Context map exists. **Next: `/rushee:ddd-model <context-name>`** — design the aggregates for your core domain."
-- If Phase 1b done but no feature cards: "Domain model exists. **Next: `/rushee:feature <description>`** — create your first Feature Card."
-- If feature cards exist but no OpenAPI spec: "Feature card(s) found. **Next: `/rushee:api-design FDD-NNN`** — design the API contract."
-- If OpenAPI spec exists but no Gherkin: "Contract is ready. **Next: `/rushee:bdd-spec FDD-NNN`** — write the acceptance scenarios."
-- If Gherkin exists but no step defs: "Gherkin ready. **Next: `/rushee:atdd-run FDD-NNN`** — wire the failing step definitions."
-- If step defs exist but no backend code: "Acceptance tests are RED. **Next: `/rushee:tdd-cycle FDD-NNN`** — implement the backend."
-- If backend code exists but no frontend: "Backend done. **Next: `/rushee:angular-feature FDD-NNN`** — implement the Angular app (or `/rushee:flutter-feature` / `/rushee:react-feature` for other frontends)."
-- If frontend code exists (Angular in frontend/, or Flutter in mobile/): "Looks like this project is complete through Phase 4f. Run `/rushee:security-check` or `/rushee:status` to confirm readiness to ship."
+Based on the scan, say the matching line below. For **every** recommendation, add the corresponding **Skills used** and **If new** line so the developer can self-serve a primer. If verbosity is **high** (intern/junior), also add the **Why** line.
+
+- **Nothing found:** "This looks like a brand new project. **Start here: `/rushee:ux-discovery`** — tell me who your users are and what they need to do." **Skills used:** Personas, job stories, screen inventory. **If new:** ask \"Explain job stories vs user stories\" or \"What is a screen inventory?\"" **Why (if high):** "User journeys drive domain events; we discover them before any code."
+- **Phase 0 done, not Phase 1:** "UX discovery is done. **Next: `/rushee:event-storm`** — map the domain events from your job stories." **Skills used:** Bounded contexts, domain events, context map. **If new:** ask \"What is event storming?\" or \"Explain bounded contexts.\"" **Why (if high):** "Event Storming turns job-story events into a context map for the domain model."
+- **Phase 1 done, not Phase 1b:** "Context map exists. **Next: `/rushee:ddd-model <context-name>`** — design the aggregates for your core domain." **Skills used:** Aggregates, entities, value objects, repository interfaces. **If new:** ask \"Explain aggregates and value objects\" or \"Why no @Entity in domain?\"" **Why (if high):** "The domain model is pure business logic; infrastructure (DB, HTTP) stays in adapters."
+- **Phase 1b done, no feature cards:** "Domain model exists. **Next: `/rushee:feature <description>`** — create your first Feature Card." **Skills used:** Feature Card, acceptance criteria, screen links. **If new:** ask \"What goes in a Feature Card?\"" **Why (if high):** "The Feature Card is the single spec for both backend and frontend; it links to screens and the contract."
+- **Feature cards exist, no OpenAPI spec:** "Feature card(s) found. **Next: `/rushee:api-design FDD-NNN`** — design the API contract." **Skills used:** REST, OpenAPI 3.1, contract-first. **If new:** ask \"Explain contract-first API design.\"" **Why (if high):** "One contract generates and syncs both backend and frontend; no hand-written DTOs that drift."
+- **OpenAPI spec exists, no Gherkin:** "Contract is ready. **Next: `/rushee:bdd-spec FDD-NNN`** — write the acceptance scenarios." **Skills used:** BDD, Gherkin (Given/When/Then), domain language. **If new:** ask \"Explain Gherkin and BDD\" or \"How to write good acceptance scenarios?\"" **Why (if high):** "Acceptance tests are RED first; then we implement until they go GREEN."
+- **Gherkin exists, no step defs:** "Gherkin ready. **Next: `/rushee:atdd-run FDD-NNN`** — wire the failing step definitions." **Skills used:** Cucumber-JVM, step definitions, RED-first. **If new:** ask \"How do step definitions work?\"" **Why (if high):** "Step defs connect scenarios to the app; we keep them RED until implementation."
+- **Step defs exist, no backend code:** "Acceptance tests are RED. **Next: `/rushee:tdd-cycle FDD-NNN`** — implement the backend." **Skills used:** Outside-in TDD, ports & adapters, domain purity. **If new:** ask \"Explain outside-in TDD\" or \"What are ports and adapters?\"" **Why (if high):** "We write one failing test at a time and implement until green; domain stays pure."
+- **Backend code exists, no frontend:** "Backend done. **Next: `/rushee:angular-feature FDD-NNN`** (or `/rushee:flutter-feature` / `/rushee:react-feature`)." **Skills used:** Clean layers (domain/data/presentation), state (NgRx/BLoC), generated API client. **If new:** ask \"Explain clean architecture on the frontend.\"" **Why (if high):** "Frontend uses the same OpenAPI client and keeps UI separate from data and domain."
+- **Frontend code exists:** "Looks like this project is complete through Phase 4f. Run `/rushee:security-check` or `/rushee:status` to confirm readiness to ship."
 
 Then add a single line about verification when the developer has just completed a phase that has a phase gate or optional PR:
 
@@ -87,7 +101,7 @@ Then add a single line about verification when the developer has just completed 
 - **If they completed Phase 4 or 4f:** "Phase gate: ensure tests/build pass. Consider opening a PR for code review — see README § Phase gates and optional PR verification."
 - **Otherwise (Phase 0, 1, 1b, 2, 3):** "Optional: commit and run the phase gate checks (see README § Phase gates) before the next phase."
 
-Then ask: "Shall I run that command now? (yes / no / tell me more about this phase)"
+Then ask: "Shall I run that command now? (yes / no / tell me more about this phase)" If verbosity is high, add: "You can also run `/rushee:skill-check` for a short readiness check for the next phase, or `/rushee:skill-map` to see the full skill tree."
 
 ### Step 0d — Transition
 

@@ -6,6 +6,9 @@ example: /rushee:api-design FDD-003
 example: /rushee:api-design "order placement and tracking endpoints"
 ---
 
+**Skills needed for this phase:** REST, OpenAPI 3.1, contract-first, RFC 7807, pagination. Rushee skills: api-design-contract-first, openapi-contract-sync.
+**New to this?** Say: "Explain contract-first API design" — then we'll run the api-designer.
+
 Invoke the **api-designer** agent to produce a reviewed API contract.
 
 This command:
