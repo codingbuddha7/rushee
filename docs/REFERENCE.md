@@ -103,12 +103,12 @@ Five tables. No prose. Everything you need to look up quickly.
 
 | Hook | When | Fires on | Behaviour |
 |------|------|----------|-----------|
-| `guard-domain-purity` | Pre-write | `**/domain/**/*.java` | **BLOCKS** persistence/framework annotations in `domain/` layer |
-| `guard-no-hardcoded-secrets` | Pre-write | `**/*.{java,yml,properties,dart}` | **BLOCKS** passwords, API keys, tokens in source |
-| `guard-no-code-before-feature-card` | Pre-write | `**/src/main/java/**/*.java` | **WARNS** production code written before Feature Card |
+| `guard-domain-purity` | Pre-write | `**/domain/**/*.java` (default stack) | **BLOCKS** persistence/framework annotations in `domain/` layer |
+| `guard-no-hardcoded-secrets` | Pre-write | `**/*.{java,yml,properties,dart}` (default stack) | **BLOCKS** passwords, API keys, tokens in source |
+| `guard-no-code-before-feature-card` | Pre-write | `**/src/main/java/**/*.java` (default stack) | **WARNS** production code written before Feature Card |
 | `guard-openapi-contract-sync` | Post-write | `**/*-api.yaml,**/*.openapi.yaml` | **WARNS** — regenerate clients and run contract tests |
-| `remind-migration-on-entity-change` | Post-write | `**/infrastructure/persistence/**/*Entity.java` | **WARNS** — create a schema migration |
-| `auto-run-tests-after-edit` | Post-write | `**/*Test.java,**/*Spec.java,**/*_test.dart` | **WARNS** — run the test suite |
+| `remind-migration-on-entity-change` | Post-write | `**/infrastructure/persistence/**/*` (default stack) | **WARNS** — create a schema migration |
+| `auto-run-tests-after-edit` | Post-write | `**/*Test.java,**/*Spec.java,**/*_test.dart` (default stack) | **WARNS** — run the test suite |
 | `session-start-discipline-reminder` | Session start | — | **INFO** Displays pipeline banner and suggests next command |
 
 ---
