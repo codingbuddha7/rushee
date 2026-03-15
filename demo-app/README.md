@@ -60,3 +60,5 @@ The app talks to **http://localhost:8080**. CORS is enabled for localhost.
 | [backend/](backend/) | Spring Boot 3.2, H2, products + cart + orders |
 | [mobile/](mobile/) | Flutter app (BLoC, product list / cart / order confirmation) |
 | [STEPS.md](STEPS.md) | Pipeline phases applied to build this demo |
+
+To follow the same pipeline in your own project, run **`/rushee:start`** from your project root. Use **`/rushee:skill-check`** for a readiness check for the next phase and **`/rushee:skill-map`** for the full skill tree (see main [README.md](../README.md)).

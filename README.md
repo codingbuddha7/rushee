@@ -52,6 +52,8 @@ is blocked, and both codebases stay in sync through a shared OpenAPI contract.
 
 **Stuck on *how* to do a step?** (e.g. “What’s an aggregate?” “How do I write a repository?”) Use a **deep-dive or companion skill** for that topic in the same session — Rushee tells you *when* to do each step; a deep-dive helps with the *how*. See [Using companion skills (e.g. deep-dive) with Rushee](#using-companion-skills-eg-deep-dive-with-rushee) for when to use what.
 
+**First time or want to check if you're ready for the next phase?** Run **`/rushee:skill-check`** for a short self-assessment; it returns "Ready — proceed" or suggests skills to develop first. Run **`/rushee:skill-map`** to see the full skill tree and phase–skill table.
+
 ---
 
 ### Greenfield vs brownfield
@@ -112,7 +114,7 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 
 | Your situation | What you do |
 |----------------|-------------|
-| New to Rushee / not sure | Run **`/rushee:start`** from project root. Do what it says. Repeat. |
+| New to Rushee / not sure | Run **`/rushee:start`** from project root. Do what it says. Repeat. Optionally run **`/rushee:skill-check`** for readiness, **`/rushee:skill-map`** for the full roadmap. |
 | **New project (greenfield)** | Path A or B. Use `/rushee:start` as your loop from Phase 0. |
 | **Existing project (brownfield)** | Run **`/rushee:start`** — it detects what exists and suggests the next step. Or run **`/rushee:bootstrap retrofit`** to scan and map; then **`/rushee:bootstrap phase-N FDD-NNN`** to jump to a phase. |
 | Full app (backend + frontend) | Path A. Use `/rushee:start` as your loop. |
@@ -124,7 +126,7 @@ Pick the one that matches your situation. Then follow the steps in order. Each p
 ## 2. What is Rushee?
 
 Rushee is a Claude Code plugin — a collection of **33 skills**, **25 agents**,
-**23 commands**, and **7 hooks** that enforce a structured engineering methodology
+**25 commands**, and **7 hooks** that enforce a structured engineering methodology
 across full-stack projects. **Default stack:** Angular + Spring Boot (full Spring ecosystem in infrastructure; domain stays pure). **Also supported** (same pipeline, same contract): React, Svelte (web); Flutter (mobile); FastAPI (Python), NestJS (TypeScript), Go, Rust (backends). Start with **`/rushee:start`** for a guided entry point.
 
 ### The Problem Rushee Solves
@@ -887,9 +889,9 @@ Skills fire **automatically** when your conversation matches their trigger phras
 
 | Hook | Fires | Behaviour |
 |------|-------|-----------|
-| **session-start-discipline-reminder** | Every session start | Displays pipeline banner. Warns if no context map or screen inventory exists |
+| **session-start-discipline-reminder** | Every session start | Displays pipeline banner and suggested next command. If no `.rushee-profile` exists, prompts to run `/rushee:start` and `/rushee:skill-check` for a tailored path. Warns if no context map or screen inventory exists. |
 | **guard-no-code-before-feature-card** | Writing `*.java` in `src/main/java` | **WARNS** — production Java without a Feature Card |
-| **guard-domain-purity** | Writing `*.java` in `**/domain/**` | **BLOCKS** — `@Entity`, `@Service`, Spring/JPA imports in domain layer |
+| **guard-domain-purity** | Writing `*.java` in `**/domain/**` | **BLOCKS** — `@Entity`, `@Service`, Spring/JPA imports in domain layer. Adds a short **teachable moment**: suggests asking for an explanation (e.g. "Explain why domain classes must not use @Entity") or see skill `clean-architecture-ports-adapters`. |
 | **guard-no-hardcoded-secrets** | Writing `*.java`, `*.yml`, `*.properties`, `*.dart` | **BLOCKS** — passwords, API keys, tokens in source files |
 | **guard-openapi-contract-sync** | After writing `*-api.yaml` | **WARNS** — reminds to run `./regenerate-clients.sh` and run contract tests on both sides |
 | **remind-migration-on-entity-change** | After writing `*Entity.java` | **WARNS** — create a Flyway migration |
@@ -1735,7 +1737,7 @@ precedence when names conflict.
 2. **When you don’t understand the *how*:** In the same session, ask explicitly, e.g. “Using the [deep-dive / X] skill, explain how to design this aggregate” or “I’m in Phase 4 (backend); give me a deep dive on Spring Boot repositories and then we’ll continue with Rushee.”
 3. **What’s “available”:** Depends on your setup. In Claude Code or Cursor, any installed plugin or skill (e.g. from a marketplace or your org’s “deep dive” framework) is available in the same chat. Rushee doesn’t ship a specific deep-dive product; it just recommends *when* to reach for one so juniors don’t have to guess.
 
-**Summary for juniors:** If Rushee says “do Phase X” and you’re not sure *how* to do it well, that’s the moment to ask for a deep-dive (or similar) on that topic — then continue with Rushee for the next step.
+**Summary for juniors:** If Rushee says “do Phase X” and you’re not sure *how* to do it well, that’s the moment to ask for a deep-dive (or similar) on that topic — then continue with Rushee for the next step. Run **`/rushee:skill-check`** to see if you're ready for the next phase (or what to learn first), and **`/rushee:skill-map`** to see the full skill tree.
 
 ---
 
@@ -1833,7 +1835,7 @@ not for architecture.
 **Q: The guard-domain-purity hook blocked my file. What do I do?**
 A: You added `@Entity`, `@Service`, or a Spring annotation to a class in `domain/`.
 Domain classes are pure Java. Move the class to `infrastructure/persistence/` (for
-JPA entities) or remove the annotation. Same applies in Flutter — if you added a
+JPA entities) or remove the annotation. The hook message includes a **teachable moment**: ask in chat "Explain why domain classes must not use @Entity" or "Explain domain purity and ports and adapters" to understand the rule, then see skill `clean-architecture-ports-adapters`. Same applies in Flutter — if you added a
 `dio` import to a `domain/` Dart file, move the data access to the `data/` layer.
 
 **Q: Both the backend and Flutter need to change for a single feature. Is that normal?**
