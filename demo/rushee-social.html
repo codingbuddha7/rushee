@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Rushee — Social Demo</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  width:900px; height:500px; overflow:hidden;
+  background:#0d1117;
+  font-family:'SF Mono','Cascadia Code','Consolas',monospace;
+  font-size:12px; color:#e6edf3;
+}
+#stage { width:900px; height:500px; position:relative; }
+.scene {
+  position:absolute; top:0; left:0; width:900px; height:500px;
+  display:flex; flex-direction:column; opacity:0;
+}
+.winbar {
+  height:32px; background:#161b22; border-bottom:1px solid #30363d;
+  display:flex; align-items:center; padding:0 14px; gap:6px; flex-shrink:0;
+}
+.dot { width:10px; height:10px; border-radius:50%; }
+.dot-r { background:#f85149; }
+.dot-y { background:#e3b341; }
+.dot-g { background:#3fb950; }
+.wintitle { margin-left:auto; color:#8b949e; font-size:10px; letter-spacing:1px; }
+.panels { display:flex; flex:1; overflow:hidden; }
+.panel { flex:1; padding:18px 20px; overflow:hidden; }
+.panel-l { border-right:1px solid #30363d; }
+.c-blue { color:#58a6ff; }
+.c-green { color:#3fb950; }
+.c-red { color:#f85149; }
+.c-yellow { color:#e3b341; }
+.c-purple { color:#a78bfa; }
+.c-muted { color:#8b949e; }
+.c-dim { color:#484f58; }
+.c-kw { color:#79c0ff; }
+.ln { line-height:1.9; white-space:pre; }
+.hidden { opacity:0; }
+.cur {
+  display:inline-block; width:7px; height:13px;
+  background:#e6edf3; vertical-align:text-bottom;
+  animation:blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity:0; } }
+.pl-label { color:#a78bfa; font-size:10px; letter-spacing:2px; margin-bottom:14px; }
+.counter { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:10px; }
+.count-val { font-size:28px; font-weight:600; }
+.count-arrow { color:#8b949e; font-size:20px; opacity:0; }
+/* End card */
+.endcard {
+  width:900px; height:500px; display:flex;
+  align-items:center; justify-content:center;
+  background:#0d1117;
+}
+.endcard-inner { text-align:center; }
+.endcard-title {
+  color:#a78bfa; font-size:22px; letter-spacing:4px;
+  font-family:'SF Mono','Cascadia Code','Consolas',monospace;
+  margin-bottom:16px;
+}
+.endcard-rule {
+  width:200px; height:1px; background:#30363d; margin:0 auto 16px;
+}
+.endcard-tagline {
+  color:#e6edf3; font-size:14px; line-height:1.8;
+  font-family:'SF Mono','Cascadia Code','Consolas',monospace;
+}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- SCENE 1: Session Banner -->
+<div class="scene" id="s1">
+  <div class="winbar">
+    <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+    <div class="wintitle">TERMINAL</div>
+  </div>
+  <div class="panels">
+    <div class="panel panel-l">
+      <div class="ln"><span class="c-blue" id="s1c"></span><span class="cur" id="s1k"></span></div>
+      <div class="ln c-green hidden" id="s1a">✔ Rushee loaded</div>
+      <div class="ln c-muted hidden" id="s1b">Scanning repo…</div>
+      <div class="ln c-yellow hidden" id="s1d">▸ Next step: /rushee:feature</div>
+    </div>
+    <div class="panel">
+      <div class="pl-label">RUSHEE PIPELINE</div>
+      <div class="ln c-green">✔  UX Discovery</div>
+      <div class="ln c-green">✔  Event Storm</div>
+      <div class="ln c-green">✔  DDD Model</div>
+      <div class="ln"><b>▶  Feature Card</b>  <span class="c-muted" style="font-size:10px">← you are here</span></div>
+      <div class="ln c-dim">○  API Design</div>
+      <div class="ln c-dim">○  BDD · ATDD · TDD</div>
+      <div class="ln c-dim">○  Frontend · Security</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 2: Feature Card → OpenAPI -->
+<div class="scene" id="s2">
+  <div class="winbar">
+    <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+    <div class="wintitle">TERMINAL</div>
+  </div>
+  <div class="panels">
+    <div class="panel panel-l">
+      <div class="ln"><span class="c-blue" id="s2c1"></span><span class="cur" id="s2k1"></span></div>
+      <div class="ln c-green hidden" id="s2a">✔ FDD-001.md written</div>
+      <div class="ln" style="margin-top:10px"><span class="c-blue" id="s2c2"></span><span class="cur hidden" id="s2k2"></span></div>
+      <div class="ln c-green hidden" id="s2b">✔ order-api.yaml written</div>
+    </div>
+    <div class="panel" style="position:relative">
+      <div id="s2fdd" style="transition:opacity 0.3s">
+        <div class="ln c-yellow" style="margin-bottom:10px">FDD-001.md</div>
+        <div class="ln"><span class="c-kw">ID:</span>                FDD-001</div>
+        <div class="ln"><span class="c-kw">Actor:</span>             Amara (Shopper)</div>
+        <div class="ln"><span class="c-kw">Feature Statement:</span> Place an order from the</div>
+        <div class="ln">                   current cart so the shopper</div>
+        <div class="ln">                   can complete their purchase.</div>
+      </div>
+      <div id="s2api" style="position:absolute;top:0;left:0;right:0;padding:18px 20px;opacity:0;transition:opacity 0.3s">
+        <div class="ln c-yellow" style="margin-bottom:10px">order-api.yaml</div>
+        <div class="ln c-muted"># order-api.yaml  (2 more endpoints omitted)</div>
+        <div class="ln" style="margin-top:8px"><span class="c-kw">POST</span> /api/v1/orders</div>
+        <div class="ln">  → <span class="c-green">201</span>  OrderConfirmed</div>
+        <div class="ln">  → <span class="c-red">422</span>  Unprocessable</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 3: BDD Gherkin -->
+<div class="scene" id="s3">
+  <div class="winbar">
+    <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+    <div class="wintitle">TERMINAL</div>
+  </div>
+  <div class="panels">
+    <div class="panel panel-l">
+      <div class="ln"><span class="c-blue" id="s3c"></span><span class="cur" id="s3k"></span></div>
+      <div class="ln c-muted hidden" id="s3a">No HTTP. No URLs. No SQL.</div>
+      <div class="ln c-green hidden" id="s3b">✔ FDD-001-place-order.feature written</div>
+    </div>
+    <div class="panel" style="font-size:11px">
+      <div class="ln c-yellow" style="margin-bottom:8px">FDD-001-place-order.feature</div>
+      <div class="ln"><span class="c-purple">Background:</span></div>
+      <div class="ln c-muted">  Given the product catalogue contains:</div>
+      <div class="ln c-yellow">    | name         | price |</div>
+      <div class="ln c-muted">    | Laptop Stand | 49.99 |</div>
+      <div class="ln c-muted">    | USB-C Hub    | 29.99 |</div>
+      <div class="ln" style="margin-top:6px"><span class="c-purple">Scenario:</span><span class="c-muted"> Shopper places a successful order</span></div>
+      <div class="ln c-muted">  Given Amara has added 1 <span class="c-green">"Laptop Stand"</span> to her cart</div>
+      <div class="ln c-muted">  And Amara has added 2 <span class="c-green">"USB-C Hub"</span> units to her cart</div>
+      <div class="ln c-muted">  When Amara places her order</div>
+      <div class="ln c-muted">  Then an order is created with status <span class="c-green">"PENDING"</span></div>
+      <div class="ln c-muted">  And the order total is <span class="c-green">109.97</span></div>
+      <div class="ln c-muted" style="font-size:10px">  # … (1 more step omitted for display)</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 4: RED → GREEN -->
+<div class="scene" id="s4">
+  <div class="winbar">
+    <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+    <div class="wintitle">TERMINAL</div>
+  </div>
+  <div class="panels">
+    <div class="panel panel-l">
+      <div class="ln"><span class="c-blue" id="s4c1"></span><span class="cur" id="s4k1"></span></div>
+      <div class="ln c-red hidden" id="s4a">● 3 scenarios FAILED</div>
+      <div class="ln c-muted hidden" id="s4b">✔ Tests confirmed RED</div>
+      <div class="ln" style="margin-top:10px"><span class="c-blue" id="s4c2"></span><span class="cur hidden" id="s4k2"></span></div>
+      <div class="ln c-green hidden" id="s4d">✔ 3 scenarios PASSED</div>
+    </div>
+    <div class="panel">
+      <div class="counter">
+        <div class="count-val c-red" id="s4fail">● 3 failed</div>
+        <div class="count-arrow" id="s4arr">↓</div>
+        <div class="count-val c-green hidden" id="s4pass">✔ 3 passed</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENE 5: End Card -->
+<div class="scene" id="s5">
+  <div class="endcard">
+    <div class="endcard-inner">
+      <div class="endcard-title">RUSHEE</div>
+      <div class="endcard-rule"></div>
+      <div class="endcard-tagline">
+        Every phase guided.<br>
+        Shortcuts caught.<br>
+        Any stack supported.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- #stage -->
+<script>
+const $ = id => document.getElementById(id);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+async function type(elId, text, spd) {
+  const el = $(elId);
+  el.textContent = '';
+  for (const ch of text) { el.textContent += ch; await wait(spd); }
+}
+async function appear(elId, delay) {
+  if (delay) await wait(delay);
+  $(elId).classList.remove('hidden');
+  $(elId).style.opacity = '1';
+}
+async function fadeIn(id) {
+  const el = $(id);
+  el.style.transition = 'opacity 0.3s'; el.style.opacity = '1'; await wait(300);
+}
+async function fadeOut(id) {
+  const el = $(id);
+  el.style.transition = 'opacity 0.3s'; el.style.opacity = '0'; await wait(300);
+}
+
+async function runScene1(spd) {
+  await type('s1c', '$ claude', spd);
+  $('s1k').style.display = 'none';
+  await appear('s1a', 100); await appear('s1b', 200); await appear('s1d', 200);
+  await wait(1700);
+}
+async function runScene2(spd) {
+  await type('s2c1', '/rushee:feature "Place order"', spd);
+  $('s2k1').style.display = 'none';
+  await appear('s2a', 200); await wait(400);
+  $('s2fdd').style.transition='opacity 0.3s'; $('s2fdd').style.opacity='0';
+  await wait(150); $('s2api').style.opacity='1'; await wait(150);
+  $('s2k2').classList.remove('hidden');
+  await type('s2c2', '/rushee:api-design FDD-001', spd);
+  $('s2k2').classList.add('hidden');
+  await appear('s2b', 200); await wait(600);
+}
+async function runScene3(spd) {
+  await type('s3c', '/rushee:bdd-spec FDD-001', spd);
+  $('s3k').style.display = 'none';
+  await appear('s3a', 200); await appear('s3b', 300); await wait(2400);
+}
+async function runScene4(spd) {
+  await type('s4c1', '/rushee:atdd-run FDD-001', spd);
+  $('s4k1').style.display = 'none';
+  await appear('s4a', 200); await appear('s4b', 200); await wait(400);
+  $('s4k2').classList.remove('hidden');
+  await type('s4c2', '/rushee:tdd-cycle FDD-001', spd);
+  $('s4k2').classList.add('hidden');
+  await appear('s4d', 200); await wait(200);
+  $('s4arr').style.transition='opacity 0.3s'; $('s4arr').style.opacity='1'; await wait(400);
+  $('s4pass').classList.remove('hidden');
+  $('s4pass').style.transition='opacity 0.3s'; $('s4pass').style.opacity='1';
+  await wait(1200);
+}
+
+async function main() {
+  const SPD = 40;
+  // Scene 1
+  await fadeIn('s1'); await runScene1(SPD); await fadeOut('s1');
+  // Scene 2
+  $('s2c1').textContent=''; $('s2c2').textContent='';
+  $('s2k1').style.display='inline-block'; $('s2k2').classList.add('hidden');
+  ['s2a','s2b'].forEach(id=>{$(id).classList.add('hidden');$(id).style.opacity='0';});
+  $('s2fdd').style.opacity='1'; $('s2api').style.opacity='0';
+  await fadeIn('s2'); await runScene2(SPD); await fadeOut('s2');
+  // Scene 3
+  $('s3c').textContent=''; $('s3k').style.display='inline-block';
+  ['s3a','s3b'].forEach(id=>{$(id).classList.add('hidden');$(id).style.opacity='0';});
+  await fadeIn('s3'); await runScene3(SPD); await fadeOut('s3');
+  // Scene 4
+  $('s4c1').textContent=''; $('s4c2').textContent='';
+  $('s4k1').style.display='inline-block'; $('s4k2').classList.add('hidden');
+  ['s4a','s4b','s4d'].forEach(id=>{$(id).classList.add('hidden');$(id).style.opacity='0';});
+  $('s4arr').style.opacity='0';
+  $('s4pass').classList.add('hidden'); $('s4pass').style.opacity='0';
+  await fadeIn('s4'); await runScene4(SPD); await fadeOut('s4');
+  // Scene 5: end card — holds for 2s then freezes
+  await fadeIn('s5');
+  await wait(2000);
+  // GIF ends here (animation is done)
+}
+main();
+</script>
+</body>
+</html>
