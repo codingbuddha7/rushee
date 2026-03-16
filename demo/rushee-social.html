@@ -228,7 +228,7 @@ async function runScene1(spd) {
   await type('s1c', '$ claude', spd);
   $('s1k').style.display = 'none';
   await appear('s1a', 100); await appear('s1b', 200); await appear('s1d', 200);
-  await wait(1700);
+  await wait(1580);
 }
 async function runScene2(spd) {
   await type('s2c1', '/rushee:feature "Place order"', spd);
@@ -239,12 +239,12 @@ async function runScene2(spd) {
   $('s2k2').classList.remove('hidden');
   await type('s2c2', '/rushee:api-design FDD-001', spd);
   $('s2k2').classList.add('hidden');
-  await appear('s2b', 200); await wait(600);
+  await appear('s2b', 200); await wait(100);
 }
 async function runScene3(spd) {
   await type('s3c', '/rushee:bdd-spec FDD-001', spd);
   $('s3k').style.display = 'none';
-  await appear('s3a', 200); await appear('s3b', 300); await wait(2400);
+  await appear('s3a', 200); await appear('s3b', 300); await wait(1940);
 }
 async function runScene4(spd) {
   await type('s4c1', '/rushee:atdd-run FDD-001', spd);
@@ -257,7 +257,7 @@ async function runScene4(spd) {
   $('s4arr').style.transition='opacity 0.3s'; $('s4arr').style.opacity='1'; await wait(400);
   $('s4pass').classList.remove('hidden');
   $('s4pass').style.transition='opacity 0.3s'; $('s4pass').style.opacity='1';
-  await wait(1200);
+  await wait(840);
 }
 
 async function main() {
