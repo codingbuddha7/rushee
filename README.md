@@ -1,6 +1,8 @@
 # Rushee
 > Every phase guided. Shortcuts caught. Any stack supported.
 
+▶ See it in action → [README demo](demo/rushee-readme.html) · [Social demo](demo/rushee-social.html)
+
 **Rushee** is a Claude Code plugin that enforces production-grade engineering discipline for full-stack projects — from first UX sketch to security review. Every architectural shortcut is caught and blocked. The same pipeline works for Angular, React, or Svelte on the frontend and Spring Boot, FastAPI, NestJS, Go, or Rust on the backend.
 
 **Default implementation:** Angular + Spring Boot. → [See what the pipeline produces](demo/README.md)
