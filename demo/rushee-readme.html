@@ -196,37 +196,37 @@ async function runScene1(spd) {
 async function runScene2(spd) {
   await type('s2c1', '/rushee:feature "Place order"', spd);
   $('s2k1').style.display = 'none';
-  await appear('s2a', 200);
-  await wait(300);
+  await appear('s2a', 150);
+  await wait(150);
   $('s2fdd').style.transition = 'opacity 0.3s'; $('s2fdd').style.opacity = '0';
   await wait(150); $('s2api').style.opacity = '1'; await wait(150);
   $('s2k2').classList.remove('hidden');
   await type('s2c2', '/rushee:api-design FDD-001', spd);
   $('s2k2').classList.add('hidden');
-  await appear('s2b', 200);
-  await wait(400);
+  await appear('s2b', 100);
+  await wait(200);
 }
 
 async function runScene3(spd) {
   await type('s3c1', '/rushee:atdd-run FDD-001', spd);
   $('s3k1').style.display = 'none';
-  await appear('s3a', 200);
-  await appear('s3b', 200);
-  await wait(300);
+  await appear('s3a', 100);
+  await appear('s3b', 100);
+  await wait(200);
   $('s3k2').classList.remove('hidden');
   await type('s3c2', '/rushee:tdd-cycle FDD-001', spd);
   $('s3k2').classList.add('hidden');
-  await appear('s3d', 200);
-  await wait(200);
+  await appear('s3d', 100);
+  await wait(100);
   $('s3arr').style.transition = 'opacity 0.3s'; $('s3arr').style.opacity = '1';
-  await wait(400);
+  await wait(300);
   $('s3pass').classList.remove('hidden');
   $('s3pass').style.transition = 'opacity 0.3s'; $('s3pass').style.opacity = '1';
-  await wait(500);
+  await wait(250);
 }
 
 async function main() {
-  const SPD = 25;
+  const SPD = 18;
   while (true) {
     reset1(); await fadeIn('s1'); await runScene1(SPD); await fadeOut('s1');
     reset2(); await fadeIn('s2'); await runScene2(SPD); await fadeOut('s2');
